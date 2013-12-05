@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WMS.ServicesInterface.DataContracts
+namespace WMS.ServicesInterface.DTOs
 {
-    class QueryRequest : Request
+    public class StatisticsDto
     {
         // TODO
     }

@@ -27,7 +27,8 @@ namespace WMS.Services
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
         {
             return new Response<List<WarehouseSimpleDto>>(request.Id,
-                Transaction(tc => tc.Entities.Warehouses.ToList().Select(warehouseAssembler.ToSimpleDto).ToList()));
+                Transaction(tc => tc.Entities.Warehouses.Where(x => x.Internal && !x.Deleted).ToList().
+                    Select(warehouseAssembler.ToSimpleDto).ToList()));
         }
     }
 }

@@ -18,4 +18,16 @@ namespace WMS.ServicesInterface.DataContracts
             get { return _id; }
         }
     }
+
+    [DataContract]
+    public class Request<T>
+    {
+        public Request(T content)
+        {
+            Content = content;
+        }
+
+        [DataMember]
+        public T Content { get; set; }
+    }
 }

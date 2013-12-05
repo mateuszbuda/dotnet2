@@ -41,11 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\QueryRequest.cs" />
     <Compile Include="DataContracts\Request.cs" />
     <Compile Include="DataContracts\Response.cs" />
+    <Compile Include="DTOs\GroupDto.cs" />
+    <Compile Include="DTOs\PartnerDto.cs" />
+    <Compile Include="DTOs\ProductDto.cs" />
+    <Compile Include="DTOs\SectorDto.cs" />
+    <Compile Include="DTOs\StatisticsDto.cs" />
     <Compile Include="DTOs\WarehouseDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContracts\IGroupsService.cs" />
+    <Compile Include="ServiceContracts\IPartnersService.cs" />
+    <Compile Include="ServiceContracts\IProductsService.cs" />
     <Compile Include="ServiceContracts\IWarehousesService.cs" />
   </ItemGroup>
   <ItemGroup />

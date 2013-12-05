@@ -6,6 +6,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.ServicesInterface", "WMS.ServicesInterface\WMS.ServicesInterface.csproj", "{69E0D959-E43E-42F0-8E48-998700A21A98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.Client", "WMS.Client\WMS.Client.csproj", "{58B647CA-59AA-4F29-AAAB-AF80523ACE6E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{69E0D959-E43E-42F0-8E48-998700A21A98} = {69E0D959-E43E-42F0-8E48-998700A21A98}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.DatabaseAccess", "WMS.DatabaseAccess\WMS.DatabaseAccess.csproj", "{3F533C53-DDE5-4FF3-B53D-5B694D7CA488}"
 EndProject

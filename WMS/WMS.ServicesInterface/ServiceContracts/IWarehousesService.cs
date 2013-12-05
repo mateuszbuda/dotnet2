@@ -14,5 +14,17 @@ namespace WMS.ServicesInterface.ServiceContracts
     {
         [OperationContract]
         Response<List<WarehouseSimpleDto>> GetWarehouses(Request request);
+
+        //[OperationContract]
+        //Response<StatisticsDto> GetStatistics(Request request);
+
+        //[OperationContract]
+        //Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId);
+
+        //[OperationContract]
+        //Response<List<SectorDto>> GetSectors(Request<int> WarehouseId);
+
+        //[OperationContract]
+        //Response<SectorDto> GetSector(Request<int> SectorId);
     }
 }
