@@ -20,7 +20,7 @@ namespace WMS.ServicesInterface.DataContracts
     }
 
     [DataContract]
-    public class Request<T>
+    public class Request<T> : Request
     {
         public Request(T content)
         {

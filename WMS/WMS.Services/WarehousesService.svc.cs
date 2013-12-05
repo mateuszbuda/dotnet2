@@ -30,5 +30,32 @@ namespace WMS.Services
                 Transaction(tc => tc.Entities.Warehouses.Where(x => x.Internal && !x.Deleted).ToList().
                     Select(warehouseAssembler.ToSimpleDto).ToList()));
         }
+
+        public Response<bool> DeleteIfEmpty(Request<int> WarehouseId)
+        {
+            bool ret = false;
+
+            Transaction(tc =>
+                {
+                    var w = (from x in tc.Entities.Warehouses
+                             where x.Id == WarehouseId.Content
+                             select x).FirstOrDefault();
+
+                    int c = (from s in w.Sectors
+                             where s.Deleted == false
+                             where s.Groups.Count != 0
+                             select s).Count();
+
+                    if (c == 0)
+                    {
+                        ret = true;
+
+                        w.Deleted = true;
+                        tc.Entities.SaveChanges();
+                    }
+                });
+
+            return new Response<bool>(WarehouseId.Id, ret);    
+        }
     }
 }

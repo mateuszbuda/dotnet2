@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.DataContracts;
+using WMS.Client.Dialogs;
 
 namespace WMS.Client.Menus
 {
@@ -50,16 +51,14 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void WarehouseClick(Object sender, RoutedEventArgs e)
         {
-            //int id = (int)(e.Source as Button).Tag;
-            //string name = (from w in warehouses
-            //               where w.Id == id
-            //               select w.Name).FirstOrDefault();
+            int id = (int)(e.Source as Button).Tag;
+            string name = (from w in warehouses
+                           where w.Id == id
+                           select w.Name).FirstOrDefault();
 
-            //Grid content = Parent as Grid;
+            Grid content = Parent as Grid;
 
-            //tokenSource.Cancel();
-
-            //content.Children.Remove(this);
+            content.Children.Remove(this);
             //content.Children.Add(new WarehouseMenu(mainWindow, id, name));
         }
 
@@ -124,32 +123,16 @@ namespace WMS.Client.Menus
         /// Usunięcie magazynu
         /// </summary>
         /// <param name="id">Id magazynu</param>
-        //private void DeleteWarehouse(int id)
-        //{
-        //    DatabaseAccess.SystemContext.Transaction(context =>
-        //    {
-        //        DatabaseAccess.Warehouse w = (from x in context.Warehouses
-        //                                      where x.Id == id
-        //                                      select x).FirstOrDefault();
-
-        //        int c = (from s in w.Sectors
-        //                 where s.Deleted == false
-        //                 where s.Groups.Count != 0
-        //                 select s).Count();
-
-        //        if (c != 0)
-        //        {
-        //            MessageBox.Show("Magazyn nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-        //            return false;
-        //        }
-
-        //        w.Deleted = true;
-
-        //        context.SaveChanges();
-
-        //        return true;
-        //    }, t => LoadWarehouses());
-        //}
+        private void DeleteWarehouse(int id)
+        {
+            Execute(() => WarehousesService.DeleteIfEmpty(new Request<int>(id)).Data, t =>
+                {
+                    if (t)
+                        LoadWarehouses();
+                    else
+                        MessageBox.Show("Magazyn nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
+        }
 
         /// <summary>
         /// Usunięcie magazynu
@@ -158,14 +141,14 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         void DeleteClick(object sender, RoutedEventArgs e)
         {
-            //int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
-            //string name = (from w in warehouses
-            //               where w.Id == id
-            //               select w.Name).FirstOrDefault();
+            int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
+            string name = (from w in warehouses
+                           where w.Id == id
+                           select w.Name).FirstOrDefault();
 
-            //if (MessageBox.Show("Czy chcesz usunąć magazyn '" + name + "'?", "Uwaga!",
-            //    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-            //    DeleteWarehouse(id);
+            if (MessageBox.Show("Czy chcesz usunąć magazyn '" + name + "'?", "Uwaga!",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                DeleteWarehouse(id);
         }
 
         /// <summary>
@@ -175,7 +158,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditClick(object sender, RoutedEventArgs e)
         {
-            //int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
+            int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
 
             //WarehouseDialog dlg = new WarehouseDialog(mainWindow, id);
             //dlg.Show();

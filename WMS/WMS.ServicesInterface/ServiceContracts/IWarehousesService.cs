@@ -15,6 +15,9 @@ namespace WMS.ServicesInterface.ServiceContracts
         [OperationContract]
         Response<List<WarehouseSimpleDto>> GetWarehouses(Request request);
 
+        [OperationContract]
+        Response<bool> DeleteIfEmpty(Request<int> WarehouseId);
+
         //[OperationContract]
         //Response<StatisticsDto> GetStatistics(Request request);
 
