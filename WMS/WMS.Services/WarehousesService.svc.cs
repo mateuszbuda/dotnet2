@@ -11,6 +11,7 @@ using WMS.ServicesInterface.ServiceContracts;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 using WMS.Services.Assemblers;
+using WMS.DatabaseAccess.Entities;
 
 namespace WMS.Services
 {
@@ -18,10 +19,12 @@ namespace WMS.Services
     public class WarehousesService : ServiceBase, IWarehousesService
     {
         WarehouseAssembler warehouseAssembler;
+        SectorAssembler sectorAssembler;
 
         public WarehousesService()
         {
             warehouseAssembler = new WarehouseAssembler();
+            sectorAssembler = new SectorAssembler();
         }
 
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
@@ -140,6 +143,13 @@ namespace WMS.Services
         public Response<SectorDto> GetSector(Request<int> SectorId)
         {
             throw new NotImplementedException();
+        }
+
+        public Response<SectorDto> AddSector(Request<SectorDto> sector)
+        {
+            Sector s = null;
+            Transaction(tc => s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content)));
+            return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
         }
     }
 }

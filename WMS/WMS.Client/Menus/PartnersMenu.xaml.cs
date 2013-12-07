@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WMS.Client.Dialogs;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
@@ -83,8 +84,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void AddNewButton_Click(object sender, RoutedEventArgs e)
         {
-            //PartnerDialog dlg = new PartnerDialog(mainWindow);
-            //dlg.Show();
+            PartnerDialog dlg = new PartnerDialog(mainWindow);
+            dlg.Show();
         }
 
         /// <summary>
@@ -136,8 +137,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void PartnerEditClick(object sender, RoutedEventArgs e)
         {
-            //PartnerDialog dlg = new PartnerDialog(mainWindow, (int)(sender as Button).Tag);
-            //dlg.Show();
+            PartnerDialog dlg = new PartnerDialog(mainWindow, (int)(sender as Button).Tag);
+            dlg.Show();
         }
     }
 }

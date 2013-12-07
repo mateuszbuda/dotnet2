@@ -17,5 +17,11 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         Response<ProductDto> GetProduct(Request<int> ProductId);
+
+        [OperationContract]
+        Response<bool> AddNew(Request<ProductDto> product);
+
+        [OperationContract]
+        Response<bool> Edit(Request<ProductDto> product);
     }
 }

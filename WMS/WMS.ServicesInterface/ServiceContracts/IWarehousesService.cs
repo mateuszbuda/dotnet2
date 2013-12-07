@@ -29,5 +29,8 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         Response<SectorDto> GetSector(Request<int> SectorId);
+
+        [OperationContract]
+        Response<SectorDto> AddSector(Request<SectorDto> sector);
     }
 }

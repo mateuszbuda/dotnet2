@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using WMS.ServicesInterface.DTOs;
 using WMS.DatabaseAccess.Entities;
+using System.ServiceModel;
 
 namespace WMS.Services.Assemblers
 {
@@ -20,7 +21,8 @@ namespace WMS.Services.Assemblers
                 Name = p.Warehouse.Name,
                 Num = p.Num,
                 Street = p.Street,
-                Tel = p.Tel
+                Tel = p.Tel, 
+                Version = p.Version
             };
         }
 
@@ -36,8 +38,27 @@ namespace WMS.Services.Assemblers
                 Num = p.Num,
                 Street = p.Street,
                 Tel = p.Tel,
-                Warehouse = new WarehouseAssembler().ToDto(p.Warehouse)
+                Warehouse = new WarehouseAssembler().ToDto(p.Warehouse),
+                Version = p.Version
             };
+        }
+
+        public Partner ToEntity(PartnerDto p, Partner ent = null)
+        {
+            if(ent != null && !p.Version.SequenceEqual(ent.Version))
+                throw new FaultException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz.");
+
+            ent = ent ?? new Partner();
+
+            ent.City = p.City;
+            ent.Code = p.Code;
+            ent.Mail = p.Mail;
+            ent.Num = p.Num;
+            ent.Street = p.Street;
+            ent.Tel = p.Tel;
+            ent.Warehouse = new WarehouseAssembler().ToEntity(p.Warehouse, ent.Warehouse);
+
+            return ent;
         }
     }
 }

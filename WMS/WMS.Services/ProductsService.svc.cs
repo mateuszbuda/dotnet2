@@ -11,8 +11,7 @@ using WMS.ServicesInterface.ServiceContracts;
 
 namespace WMS.Services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "ProductsService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select ProductsService.svc or ProductsService.svc.cs at the Solution Explorer and start debugging.
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class ProductsService : ServiceBase, IProductsService
     {
         private ProductAssembler productAssembler;
@@ -32,6 +31,25 @@ namespace WMS.Services
         {
             return new Response<ProductDto>(ProductId.Id, Transaction(tc =>
                 productAssembler.ToDto(tc.Entities.Products.Find(ProductId.Content))));
+        }
+
+        public Response<bool> AddNew(Request<ProductDto> product)
+        {
+            Transaction(tc => tc.Entities.Products.Add(productAssembler.ToEntity(product.Content)));
+            return new Response<bool>(product.Id, true);
+        }
+
+        public Response<bool> Edit(Request<ProductDto> product)
+        {
+            Transaction(tc =>
+                {
+                    var p = tc.Entities.Products.Find(product.Content.Id);
+                    if (p == null)
+                        throw new FaultException("Ten produkt nie istnieje!");
+
+                    productAssembler.ToEntity(product.Content, p);
+                });
+            return new Response<bool>(product.Id, true);
         }
     }
 }

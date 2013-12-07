@@ -18,6 +18,7 @@ namespace WMS.ServicesInterface.DTOs
         public string City { get; set; }
         public string Code { get; set; }
         public bool Deleted { get; set; }
+        public byte[] Version { get; set; }
     }
 
     public class WarehouseSimpleDto

@@ -12,6 +12,7 @@ namespace WMS.ServicesInterface.DTOs
         public string Name { get; set; }
         public DateTime ProductionDate { get; set; }
         public decimal Price { get; set; }
+        public byte[] Version { get; set; }
     }
 
     public class ProductDetailsDto : ProductDto  // do użycia w podglądzie Partii (okno 5)
