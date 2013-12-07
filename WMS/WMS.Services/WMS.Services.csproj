@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Assemblers\GroupAssembler.cs" />
     <Compile Include="Assemblers\PartnerAssembler.cs" />
+    <Compile Include="Assemblers\SectorAssembler.cs" />
     <Compile Include="Assemblers\WarehouseAssembler.cs" />
     <Compile Include="PartnersService.svc.cs">
       <DependentUpon>PartnersService.svc</DependentUpon>

@@ -18,10 +18,12 @@ namespace WMS.Services
     public class WarehousesService : ServiceBase, IWarehousesService
     {
         WarehouseAssembler warehouseAssembler;
+        SectorAssembler sectorAssembler;
 
         public WarehousesService()
         {
             warehouseAssembler = new WarehouseAssembler();
+            sectorAssembler = new SectorAssembler();
         }
 
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
@@ -93,53 +95,25 @@ namespace WMS.Services
 
         public Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId)
         {
-            WarehouseDto warehouse = new WarehouseDto();
-            Transaction(tc =>
-                {
-                    DatabaseAccess.Entities.Warehouse w = (from x in tc.Entities.Warehouses
-                                                           where x.Id == WarehouseId.Content
-                                                           select x).FirstOrDefault();
-                    // Może można to było jakoś mądrzej zrobić, ale wolałem nie ryzykować...
-                    warehouse.City = w.City;
-                    warehouse.Code = w.City;
-                    warehouse.Deleted = w.Deleted;
-                    warehouse.Id = w.Id;
-                    warehouse.Internal = w.Internal;
-                    warehouse.Mail = w.Mail;
-                    warehouse.Name = w.Name;
-                    warehouse.Num = w.Num;
-                    warehouse.Street = w.Street;
-                    warehouse.Tel = w.Tel;
-                });
-
-            return new Response<WarehouseDto>(WarehouseId.Id, warehouse);
+            return new Response<WarehouseDto>(WarehouseId.Id, Transaction(tc =>
+                tc.Entities.Warehouses.Where(x => x.Id == WarehouseId.Content).
+                Select(warehouseAssembler.ToDto).FirstOrDefault()));
         }
 
         public Response<List<SectorDto>> GetSectors(Request<int> WarehouseId)
         {
-            List<SectorDto> sectors = new List<SectorDto>();
-
-            Transaction(tc =>
-                {
-                    DatabaseAccess.Entities.Warehouse w = (from x in tc.Entities.Warehouses
-                                                           where x.Id == WarehouseId.Content
-                                                           select x).FirstOrDefault();
-
-                    List<DatabaseAccess.Entities.Sector> sec = (from s in w.Sectors
-                                                                where s.Deleted == false
-                                                                where s.Groups.Count != 0
-                                                                select s).ToList();
-
-                    foreach (DatabaseAccess.Entities.Sector s in sec)
-                        sectors.Add(new SectorDto(s.Id, s.Number, s.Limit, s.Deleted, s.WarehouseId, s.Groups.Count));
-                });
-
-            return new Response<List<SectorDto>>(WarehouseId.Id, sectors);
+            return new Response<List<SectorDto>>(WarehouseId.Id, Transaction(tc =>
+                tc.Entities.Sectors.Where(s =>
+                    (s.WarehouseId == WarehouseId.Content && s.Deleted == false && s.Groups.Count != 0)).
+                Include(x => x.Groups).
+                Select(sectorAssembler.ToDto).ToList()));
         }
 
         public Response<SectorDto> GetSector(Request<int> SectorId)
         {
-            throw new NotImplementedException();
+            return new Response<SectorDto>(SectorId.Id, Transaction(tc =>
+                tc.Entities.Sectors.Where(s => s.Id == SectorId.Content).
+                Select(sectorAssembler.ToDto).FirstOrDefault()));
         }
     }
 }
