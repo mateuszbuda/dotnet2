@@ -18,16 +18,16 @@ namespace WMS.ServicesInterface.ServiceContracts
         [OperationContract]
         Response<bool> DeleteIfEmpty(Request<int> WarehouseId);
 
-        //[OperationContract]
-        //Response<StatisticsDto> GetStatistics(Request request);
+        [OperationContract]
+        Response<StatisticsDto> GetStatistics(Request request);
 
-        //[OperationContract]
-        //Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId);
+        [OperationContract]
+        Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId);
 
-        //[OperationContract]
-        //Response<List<SectorDto>> GetSectors(Request<int> WarehouseId);
+        [OperationContract]
+        Response<List<SectorDto>> GetSectors(Request<int> WarehouseId);
 
-        //[OperationContract]
-        //Response<SectorDto> GetSector(Request<int> SectorId);
+        [OperationContract]
+        Response<SectorDto> GetSector(Request<int> SectorId);
     }
 }
