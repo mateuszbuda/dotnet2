@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Assemblers\GroupAssembler.cs" />
     <Compile Include="Assemblers\PartnerAssembler.cs" />
+    <Compile Include="Assemblers\SectorAssembler.cs" />
     <Compile Include="Assemblers\ProductAssembler.cs" />
     <Compile Include="Assemblers\SectorAssembler.cs" />
     <Compile Include="Assemblers\WarehouseAssembler.cs" />
