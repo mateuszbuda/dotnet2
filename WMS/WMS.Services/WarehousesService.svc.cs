@@ -17,8 +17,8 @@ namespace WMS.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class WarehousesService : ServiceBase, IWarehousesService
     {
-        WarehouseAssembler warehouseAssembler;
-        SectorAssembler sectorAssembler;
+        private WarehouseAssembler warehouseAssembler;
+        private SectorAssembler sectorAssembler;
 
         public WarehousesService()
         {

@@ -12,46 +12,45 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WMS.ServicesInterface.DataContracts;
+using WMS.ServicesInterface.DTOs;
 
 namespace WMS.Client.Menus
 {
     /// <summary>
     /// Główne menu alpikacji.
     /// </summary>
-    public partial class MainMenu : UserControl // 1
+    public partial class MainMenu : BaseMenu // 1
     {
         private MainWindow mainWindow;
+        private StatisticsDto stats;
+        private bool isLoaded;
 
         /// <summary>
         /// Wyświetlanie statystyk
         /// </summary>
-        //private void ShowStats()
-        //{
-        //    DatabaseAccess.SystemContext.Transaction(context =>
-        //    {
-        //        return new
-        //        {
-        //            WarehousesCount = context.GetWarehousesCount(),
-        //            ProductsCount = context.Products.Count(),
-        //            PartnersCount = context.Partners.Count(),
-        //            GroupsCount = context.GetInternalGroupsCount(),
-        //            ShiftsCount = context.Shifts.Count(),
-        //            Fill = context.GetFillRate()
-        //        };
-        //    },
-        //        t => Dispatcher.BeginInvoke(new Action(() =>
-        //        {
-        //            WarehousesCountInfo.Text = t.WarehousesCount.ToString();
-        //            ProductsCountInfo.Text = t.ProductsCount.ToString();
-        //            PartnersCountInfo.Text = t.PartnersCount.ToString();
-        //            GroupsCountInfo.Text = t.GroupsCount.ToString();
-        //            ShiftsCountInfo.Text = t.ShiftsCount.ToString();
-        //            WarehousesInfo.Text = String.Format("{0}%", t.Fill);
-        //        }
-        //        )), tokenSource);
-        //}
+        private void LoadStats()
+        {
+            Execute(() => WarehousesService.GetStatistics(new Request()), t =>
+                {
+                    stats = t.Data;
+                    isLoaded = true;
+                    ShowStats();
+                });
+        }
 
-        //private CancellationTokenSource tokenSource;
+        private void ShowStats()
+        {
+            if (!isLoaded)
+                return;
+
+            WarehousesCountInfo.Text = stats.WarehousesCount.ToString();
+            ProductsCountInfo.Text = stats.ProductsCount.ToString();
+            PartnersCountInfo.Text = stats.PartnersCount.ToString();
+            GroupsCountInfo.Text = stats.GroupsCount.ToString();
+            ShiftsCountInfo.Text = stats.ShiftsCount.ToString();
+            WarehousesInfo.Text = String.Format("{0}%", stats.FIllRate);
+        }
 
         /// <summary>
         /// Inicjalizacja głównego menu
@@ -63,9 +62,10 @@ namespace WMS.Client.Menus
             mainWindow.Title = "Menu Główne";
             //mainWindow.ReloadWindow = ShowStats;
 
+            isLoaded = false;
             InitializeComponent();
 
-            //ShowStats();
+            LoadStats();
         }
 
         /// <summary>

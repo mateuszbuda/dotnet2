@@ -13,7 +13,7 @@ namespace WMS.ServicesInterface.DTOs
         public string SenderName { get; set; }
         public DateTime Date { get; set; }
         public int WarehouseId { get; set; }
-        public int WarehouseName { get; set; }
+        public string WarehouseName { get; set; }
         public bool Internal { get; set; }
     }
 
