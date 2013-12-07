@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WMS.Client.Dialogs;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
@@ -76,8 +77,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            //ProductDialog dlg = new ProductDialog(mainWindow, productId);
-            //dlg.Show();
+            ProductDialog dlg = new ProductDialog(mainWindow, productId);
+            dlg.Show();
         }
 
         /// <summary>

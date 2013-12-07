@@ -21,5 +21,6 @@ namespace WMS.ServicesInterface.DTOs
         public string Num { get; set; }
         public string Tel { get; set; }
         public string Mail { get; set; }
+        public byte[] Version { get; set; }
     }
 }

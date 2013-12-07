@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using WMS.DatabaseAccess;
 using WMS.DatabaseAccess.Entities;
@@ -23,7 +24,8 @@ namespace WMS.Services.Assemblers
                 Name = w.Name,
                 Num = w.Num,
                 Street = w.Street,
-                Tel = w.Tel
+                Tel = w.Tel,
+                Version = w.Version
             };
         }
 
@@ -44,6 +46,26 @@ namespace WMS.Services.Assemblers
                 SectorsCount = w.Sectors.Count,
                 FreeSectorsCount = fsc
             };
+        }
+
+        public Warehouse ToEntity(WarehouseDto w, Warehouse ent = null)
+        {
+            if (ent != null && !w.Version.SequenceEqual(ent.Version))
+                throw new FaultException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz.");
+
+            ent = ent ?? new Warehouse();
+
+            ent.City = w.City;
+            ent.Code = w.Code;
+            ent.Deleted = w.Deleted;
+            ent.Internal = w.Internal;
+            ent.Mail = w.Mail;
+            ent.Name = w.Name;
+            ent.Num = w.Num;
+            ent.Street = w.Street;
+            ent.Tel = w.Tel;
+
+            return ent;
         }
     }
 }

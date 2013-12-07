@@ -11,6 +11,7 @@ using WMS.ServicesInterface.ServiceContracts;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 using WMS.Services.Assemblers;
+using WMS.DatabaseAccess.Entities;
 
 namespace WMS.Services
 {
@@ -114,6 +115,13 @@ namespace WMS.Services
             return new Response<SectorDto>(SectorId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s => s.Id == SectorId.Content).
                 Select(sectorAssembler.ToDto).FirstOrDefault()));
+        }
+
+        public Response<SectorDto> AddSector(Request<SectorDto> sector)
+        {
+            Sector s = null;
+            Transaction(tc => s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content)));
+            return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
         }
     }
 }

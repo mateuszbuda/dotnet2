@@ -9,6 +9,7 @@ using WMS.Services.Assemblers;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.ServiceContracts;
+using WMS.DatabaseAccess.Entities;
 
 namespace WMS.Services
 {
@@ -45,6 +46,13 @@ namespace WMS.Services
                     return tc.Entities.Shifts.Where(s => (s.SenderId == wId || s.Group.Sector.WarehouseId == wId)).
                     Include(x => x.Sender).Include(x => x.Group.Sector.Warehouse).Select(groupAssembler.ToHistoryDto).ToList();
                 }));
+        }
+
+        public Response<PartnerDto> AddNew(Request<PartnerDto> partner)
+        {
+            Partner p = null;
+            Transaction(tc => p = tc.Entities.Partners.Add(partnerAssembler.ToEntity(partner.Content)));
+            return new Response<PartnerDto>(partner.Id, partnerAssembler.ToDto(p));
         }
     }
 }

@@ -18,5 +18,6 @@ namespace WMS.ServicesInterface.DTOs
         public bool Deleted { get; set; }
         public int WarehouseId { get; set; }
         public int GroupsCount { get; set; } // info ile zajete
+        public byte[] Version { get; set; }
     }
 }

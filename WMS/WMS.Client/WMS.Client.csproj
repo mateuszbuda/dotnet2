@@ -56,6 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\PartnerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ProductDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\WarehouseDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -67,6 +75,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialog.cs" />
+    <Compile Include="Dialogs\PartnerDialog.xaml.cs">
+      <DependentUpon>PartnerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ProductDialog.xaml.cs">
+      <DependentUpon>ProductDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\WarehouseDialog.xaml.cs">
       <DependentUpon>WarehouseDialog.xaml</DependentUpon>
@@ -136,6 +151,9 @@
       <SubType>Code</SubType>
       <DependentUpon>WarehousesMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Misc\DelegatedCommand.cs" />
+    <Compile Include="Misc\ProductValidationRule.cs" />
+    <Compile Include="Misc\WarehouseValidationRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

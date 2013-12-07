@@ -20,5 +20,8 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> PartnerId);
+
+        [OperationContract]
+        Response<PartnerDto> AddNew(Request<PartnerDto> partner);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using WMS.DatabaseAccess.Entities;
 using WMS.ServicesInterface.DTOs;
@@ -16,7 +17,8 @@ namespace WMS.Services.Assemblers
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
-                ProductionDate = p.Date
+                ProductionDate = p.Date,
+                Version = p.Version
             };
         }
 
@@ -30,6 +32,20 @@ namespace WMS.Services.Assemblers
                 ProductionDate = g.Product.Date,
                 Count = g.Count
             };
+        }
+
+        public Product ToEntity(ProductDto p, Product ent = null)
+        {
+            if (ent != null && !p.Version.SequenceEqual(ent.Version))
+                throw new FaultException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz.");
+
+            ent = ent ?? new Product();
+
+            ent.Name = p.Name;
+            ent.Date = p.ProductionDate;
+            ent.Price = p.Price;
+
+            return ent;
         }
     }
 }
