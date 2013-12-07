@@ -9,7 +9,8 @@ using WMS.ServicesInterface.DTOs;
 
 namespace WMS.ServicesInterface.ServiceContracts
 {
-    interface IGroupsService
+    [ServiceContract]
+    public interface IGroupsService
     {
         [OperationContract]
         Response<List<GroupDto>> GetSectorGroups(Request<int> SectorId);

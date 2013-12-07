@@ -79,6 +79,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Menus\PartnerHistoryMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Menus\PartnerMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Menus\PartnersMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Menus\WarehouseMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +105,15 @@
     <Compile Include="Menus\MainMenu.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\PartnerHistoryMenu.xaml.cs">
+      <DependentUpon>PartnerHistoryMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\PartnerMenu.xaml.cs">
+      <DependentUpon>PartnerMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\PartnersMenu.xaml.cs">
+      <DependentUpon>PartnersMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Menus\WarehouseMenu.xaml.cs">
       <DependentUpon>WarehouseMenu.xaml</DependentUpon>
