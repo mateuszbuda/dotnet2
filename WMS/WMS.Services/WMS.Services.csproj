@@ -69,15 +69,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="PartnersService.svc" />
+    <Content Include="ProductsService.svc" />
     <Content Include="WarehousesService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblers\GroupAssembler.cs" />
     <Compile Include="Assemblers\PartnerAssembler.cs" />
+    <Compile Include="Assemblers\ProductAssembler.cs" />
     <Compile Include="Assemblers\WarehouseAssembler.cs" />
     <Compile Include="PartnersService.svc.cs">
       <DependentUpon>PartnersService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="ProductsService.svc.cs">
+      <DependentUpon>ProductsService.svc</DependentUpon>
     </Compile>
     <Compile Include="WarehousesService.svc.cs">
       <DependentUpon>WarehousesService.svc</DependentUpon>

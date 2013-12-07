@@ -91,6 +91,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Menus\ProductMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Menus\ProductsMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Menus\WarehouseMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +122,12 @@
     </Compile>
     <Compile Include="Menus\PartnersMenu.xaml.cs">
       <DependentUpon>PartnersMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\ProductMenu.xaml.cs">
+      <DependentUpon>ProductMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\ProductsMenu.xaml.cs">
+      <DependentUpon>ProductsMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Menus\WarehouseMenu.xaml.cs">
       <DependentUpon>WarehouseMenu.xaml</DependentUpon>

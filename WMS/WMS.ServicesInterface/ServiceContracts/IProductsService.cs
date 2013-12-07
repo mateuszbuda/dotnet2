@@ -13,9 +13,9 @@ namespace WMS.ServicesInterface.ServiceContracts
     public interface IProductsService
     {
         [OperationContract]
-        Request<List<ProductDto>> GetProducts(Request request);
+        Response<List<ProductDto>> GetProducts(Request request);
 
         [OperationContract]
-        Request<ProductDto> GetProduct(Request<int> ProductId);
+        Response<ProductDto> GetProduct(Request<int> ProductId);
     }
 }

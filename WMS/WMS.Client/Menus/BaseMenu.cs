@@ -15,6 +15,7 @@ namespace WMS.Client.Menus
     {
         protected IWarehousesService WarehousesService { get; private set; }
         protected IPartnersService PartnersService { get; private set; }
+        protected IProductsService ProductsService { get; private set; }
 
         public BaseMenu()
         {
@@ -23,6 +24,9 @@ namespace WMS.Client.Menus
 
             var partnersChannelFactory = new ChannelFactory<IPartnersService>("BasicHttpBinding_IPartnersService");
             PartnersService = partnersChannelFactory.CreateChannel();
+
+            var productsChannelFactory = new ChannelFactory<IProductsService>("BasicHttpBinding_IProductsService");
+            ProductsService = productsChannelFactory.CreateChannel();
         }
 
         protected void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
