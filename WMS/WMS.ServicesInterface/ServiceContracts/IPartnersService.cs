@@ -9,7 +9,8 @@ using WMS.ServicesInterface.DTOs;
 
 namespace WMS.ServicesInterface.ServiceContracts
 {
-    interface IPartnersService
+    [ServiceContract]
+    public interface IPartnersService
     {
         [OperationContract]
         Response<List<PartnerSimpleDto>> GetPartners(Request request);

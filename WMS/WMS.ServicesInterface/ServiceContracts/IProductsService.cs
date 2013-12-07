@@ -9,7 +9,8 @@ using WMS.ServicesInterface.DTOs;
 
 namespace WMS.ServicesInterface.ServiceContracts
 {
-    interface IProductsService
+    [ServiceContract]
+    public interface IProductsService
     {
         [OperationContract]
         Request<List<ProductDto>> GetProducts(Request request);

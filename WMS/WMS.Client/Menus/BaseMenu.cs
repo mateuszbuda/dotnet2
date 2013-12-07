@@ -14,11 +14,15 @@ namespace WMS.Client.Menus
     public class BaseMenu : UserControl
     {
         protected IWarehousesService WarehousesService { get; private set; }
+        protected IPartnersService PartnersService { get; private set; }
 
         public BaseMenu()
         {
             var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("BasicHttpBinding_IWarehousesService");
             WarehousesService = warehouseChannelFactory.CreateChannel();
+
+            var partnersChannelFactory = new ChannelFactory<IPartnersService>("BasicHttpBinding_IPartnersService");
+            PartnersService = partnersChannelFactory.CreateChannel();
         }
 
         protected void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
@@ -37,7 +41,7 @@ namespace WMS.Client.Menus
 
         private void DefaultExceptionHandler(Exception e)
         {
-            MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.", "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException)), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         protected void Execute(Action action, Action success = null, Action<Exception> exception = null)

@@ -65,8 +65,6 @@ namespace WMS.Client.Menus
 
             InitializeComponent();
 
-            //tokenSource = new CancellationTokenSource();
-
             //ShowStats();
         }
 
@@ -77,8 +75,6 @@ namespace WMS.Client.Menus
         private void ChangeMenu(UserControl menu)
         {
             Grid content = Parent as Grid;
-
-            //tokenSource.Cancel();
 
             content.Children.Remove(this);
             content.Children.Add(menu);
@@ -101,7 +97,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void ButtonPartners_Click(object sender, RoutedEventArgs e)
         {
-            //ChangeMenu(new PartnersMenu(mainWindow));
+            ChangeMenu(new PartnersMenu(mainWindow));
         }
 
         /// <summary>
