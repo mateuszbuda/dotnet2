@@ -117,7 +117,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void ButtonProducts_Click(object sender, RoutedEventArgs e)
         {
-            //ChangeMenu(new ProductsMenu(mainWindow));
+            ChangeMenu(new ProductsMenu(mainWindow));
         }
     }
 }
