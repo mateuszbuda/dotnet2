@@ -22,7 +22,7 @@ namespace WMS.Client.Menus
     /// <summary>
     /// Interaction logic for WarehouseMenu.xaml
     /// </summary>
-    public partial class WarehouseMenu : BaseMenu
+    public partial class WarehouseMenu : BaseMenu   // 3
     {
         private int warehouseId;
         private WarehouseDto warehouse;

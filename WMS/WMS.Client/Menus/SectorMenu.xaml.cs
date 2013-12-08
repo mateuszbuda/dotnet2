@@ -21,7 +21,7 @@ namespace WMS.Client.Menus
     /// <summary>
     /// Interaction logic for SectorMenu.xaml
     /// </summary>
-    public partial class SectorMenu : BaseMenu
+    public partial class SectorMenu : BaseMenu  // 4
     {
         private int sectorId;
         private int warehouseId;
@@ -154,8 +154,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            //SectorsDialog dlg = new SectorsDialog(mainWindow, sector.WarehouseId, sectorId);
-            //dlg.Show();
+            SectorsDialog dlg = new SectorsDialog(mainWindow, sector.WarehouseId, sectorId);
+            dlg.Show();
         }
 
         /// <summary>

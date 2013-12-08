@@ -127,7 +127,7 @@ namespace WMS.Services
             return new Response<List<SectorDto>>(WarehouseId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s =>
                     (s.WarehouseId == WarehouseId.Content && s.Deleted == false)).
-                Include(x => x.Groups).
+                Include(x => x.Groups).Include(x => x.Warehouse).
                 Select(sectorAssembler.ToDto).ToList()));
         }
 
@@ -142,7 +142,13 @@ namespace WMS.Services
         public Response<SectorDto> AddSector(Request<SectorDto> sector)
         {
             Sector s = null;
-            Transaction(tc => s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content)));
+            Transaction(tc =>
+                {
+                    s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content));
+                    if (s.Warehouse == null)
+                        s.Warehouse = tc.Entities.Warehouses.Find(s.WarehouseId);
+                });
+                            
             return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
         }
 
@@ -186,18 +192,23 @@ namespace WMS.Services
 
         public Response<SectorDto> EditSector(Request<SectorDto> sector)
         {
-            Sector s = null;
+            SectorDto ret = null;
 
             Transaction(tc =>
             {
-                s = tc.Entities.Sectors.Find(sector.Content.Id);
+                Sector s = tc.Entities.Sectors.Find(sector.Content.Id);
                 if (s == null)
                     throw new FaultException("Taki sektor nie istnieje!");
 
                 sectorAssembler.ToEntity(sector.Content, s);
+
+                if(s.Warehouse == null)
+                    s.Warehouse = tc.Entities.Warehouses.Find(s.WarehouseId);
+
+                ret = sectorAssembler.ToDto(s);
             });
 
-            return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
+            return new Response<SectorDto>(sector.Id, ret);
         }
     }
 }
