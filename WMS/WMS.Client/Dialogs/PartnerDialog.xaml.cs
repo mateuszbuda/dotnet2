@@ -136,83 +136,37 @@ namespace WMS.Client.Dialogs
                             {
                                 mainWindow.ReloadWindow();
                                 this.Close();
-                            });//, x =>
-                            //{
-                            //});
+                            }, x =>
+                            {
+                                MessageBox.Show(x.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                                this.Close();
+                            });
                     }, t =>
                     {
-
+                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        this.Close();
                     });
-
-
             }
             else
             {
+                partner.Warehouse.City = partner.City = CityTB.Text;
+                partner.Warehouse.Code = partner.Code = CodeTB.Text;
+                partner.Warehouse.Mail = partner.Mail = MailTB.Text;
+                partner.Warehouse.Name = partner.Name = NameTB.Text;
+                partner.Warehouse.Num = partner.Num = NumberTB.Text;
+                partner.Warehouse.Street = partner.Street = StreetTB.Text;
+                partner.Warehouse.Tel = partner.Tel = PhoneTB.Text;
+
+                Execute(() => PartnersService.Update(new Request<PartnerDto>(partner)), t =>
+                    {
+                        mainWindow.ReloadWindow();
+                        this.Close();
+                    }, t =>
+                    {
+                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        this.Close();
+                    });
             }
-
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    DatabaseAccess.Partner p;
-
-            //    if (partnerId == -1)
-            //    {
-            //        p = new DatabaseAccess.Partner();
-            //        DatabaseAccess.Warehouse w = new DatabaseAccess.Warehouse();
-            //        DatabaseAccess.Sector s = new DatabaseAccess.Sector();
-
-            //        s.Limit = 0;
-            //        s.Deleted = false;
-            //        s.Number = 1;
-
-            //        w.Name = data.Name;
-            //        w.Internal = false;
-            //        w.City = data.City;
-            //        w.Code = data.Code;
-            //        w.Street = data.Street;
-            //        w.Num = data.Num;
-            //        w.Tel = data.Tel;
-            //        w.Mail = data.Mail;
-            //        w.Deleted = false;
-            //        w.Sectors = new HashSet<DatabaseAccess.Sector>();
-            //        w.Sectors.Add(s);
-
-            //        p.Warehouse = w;
-            //        p.City = data.City;
-            //        p.Code = data.Code;
-            //        p.Street = data.Street;
-            //        p.Num = data.Num;
-            //        p.Tel = data.Tel;
-            //        p.Mail = data.Mail;
-
-            //        context.Partners.Add(p);
-            //    }
-            //    else
-            //    {
-            //        p = (from partner in context.Partners.Include("Warehouse") where partner.Id == partnerId select partner).FirstOrDefault();
-            //        p.Warehouse.Name = data.Name;
-            //        p.City = data.City;
-            //        p.Code = data.Code;
-            //        p.Street = data.Street;
-            //        p.Num = data.Num;
-            //        p.Tel = data.Tel;
-            //        p.Mail = data.Mail;
-
-            //        p.Warehouse.City = data.City;
-            //        p.Warehouse.Code = data.Code;
-            //        p.Warehouse.Street = data.Street;
-            //        p.Warehouse.Num = data.Num;
-            //        p.Warehouse.Tel = data.Tel;
-            //        p.Warehouse.Mail = data.Mail;
-            //    }
-
-            //    context.SaveChanges();
-
-            //    return true;
-            //}, t => Dispatcher.BeginInvoke(new Action(() =>
-            //{
-            //    mainWindow.ReloadWindow();
-            //    this.Close();
-            //})), tokenSource);
         }
 
         /// <summary>
