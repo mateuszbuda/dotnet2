@@ -97,7 +97,7 @@ namespace WMS.Services
         public Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId)
         {
             return new Response<WarehouseDto>(WarehouseId.Id, Transaction(tc =>
-                tc.Entities.Warehouses.Where(x => x.Id == WarehouseId.Content).
+                tc.Entities.Warehouses.Where(x => x.Id == WarehouseId.Content).Include(x => x.Sectors).
                 Select(warehouseAssembler.ToDto).FirstOrDefault()));
         }
 
@@ -114,6 +114,7 @@ namespace WMS.Services
         {
             return new Response<SectorDto>(SectorId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s => s.Id == SectorId.Content).
+                Include(x => x.Groups).
                 Select(sectorAssembler.ToDto).FirstOrDefault()));
         }
 

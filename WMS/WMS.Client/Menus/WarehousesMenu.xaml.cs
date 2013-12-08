@@ -59,7 +59,7 @@ namespace WMS.Client.Menus
             Grid content = Parent as Grid;
 
             content.Children.Remove(this);
-            //content.Children.Add(new WarehouseMenu(mainWindow, id, name));
+            content.Children.Add(new WarehouseMenu(mainWindow, id, name));
         }
 
         /// <summary>
@@ -128,7 +128,10 @@ namespace WMS.Client.Menus
             Execute(() => WarehousesService.DeleteIfEmpty(new Request<int>(id)).Data, t =>
                 {
                     if (t)
+                    {
+                        MessageBox.Show("Magazyn został pomyślnie usunięty!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadWarehouses();
+                    }
                     else
                         MessageBox.Show("Magazyn nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                 });

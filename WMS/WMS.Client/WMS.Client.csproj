@@ -39,6 +39,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -114,6 +115,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Menus\GroupsMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Menus\SectorMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Menus\WarehouseMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +152,12 @@
     </Compile>
     <Compile Include="Menus\ProductsMenu.xaml.cs">
       <DependentUpon>ProductsMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\GroupsMenu.xaml.cs">
+      <DependentUpon>GroupsMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\SectorMenu.xaml.cs">
+      <DependentUpon>SectorMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Menus\WarehouseMenu.xaml.cs">
       <DependentUpon>WarehouseMenu.xaml</DependentUpon>
