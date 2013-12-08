@@ -136,10 +136,9 @@ namespace WMS.Client.Dialogs
                             {
                                 mainWindow.ReloadWindow();
                                 this.Close();
-                            }, x =>
-                            {
-
-                            });
+                            });//, x =>
+                            //{
+                            //});
                     }, t =>
                     {
 
