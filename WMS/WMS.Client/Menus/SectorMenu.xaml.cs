@@ -83,7 +83,7 @@ namespace WMS.Client.Menus
         {
             LoadingLabel.Visibility = System.Windows.Visibility.Hidden;
 
-            WarehouseSectorLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}", sector.Warehouse.Name, sector.Number);
+            //WarehouseSectorLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}", sector.Warehouse.Name, sector.Number);
 
             GroupsGrid.Items.Clear();
 
@@ -245,7 +245,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SectorsButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.Warehouse.Name));
+            //LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.Warehouse.Name));
         }
 
         /// <summary>

@@ -41,5 +41,10 @@ namespace WMS.Client
         {
             LoginTextBox.Text = "";
         }
+
+        private void PasswordTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordTextBox.Password = "";
+        }
     }
 }
