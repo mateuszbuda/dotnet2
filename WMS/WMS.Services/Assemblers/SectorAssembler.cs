@@ -27,10 +27,12 @@ namespace WMS.Services.Assemblers
 
         public SectorDto ToDto(Sector s)
         {
+            int gc = s.Groups == null ? -1 : s.Groups.Count;
+
             return new SectorDto
             {
                 Deleted = s.Deleted,
-                GroupsCount = s.Groups.Count(),
+                GroupsCount = gc,
                 Id = s.Id,
                 Limit = s.Limit,
                 Number = s.Number,

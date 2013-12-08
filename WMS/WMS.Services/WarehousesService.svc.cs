@@ -54,7 +54,7 @@ namespace WMS.Services
                         ret = true;
 
                         w.Deleted = true;
-                        tc.Entities.SaveChanges();
+                        //tc.Entities.SaveChanges();
                     }
                 });
 
@@ -120,8 +120,10 @@ namespace WMS.Services
         public Response<SectorDto> AddSector(Request<SectorDto> sector)
         {
             Sector s = null;
-            Transaction(tc => s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content)));
-            return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
+            var c = sectorAssembler.ToEntity(sector.Content);
+            Transaction(tc => s = tc.Entities.Sectors.Add(c));
+            var p = sectorAssembler.ToDto(s);
+            return new Response<SectorDto>(sector.Id, p);
         }
     }
 }

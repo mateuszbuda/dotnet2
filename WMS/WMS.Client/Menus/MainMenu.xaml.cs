@@ -60,7 +60,7 @@ namespace WMS.Client.Menus
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Menu Główne";
-            //mainWindow.ReloadWindow = ShowStats;
+            mainWindow.ReloadWindow = ShowStats;
 
             isLoaded = false;
             InitializeComponent();
