@@ -16,19 +16,22 @@ namespace WMS.ServicesInterface.ServiceContracts
         Response<List<WarehouseSimpleDto>> GetWarehouses(Request request);
 
         [OperationContract]
-        Response<bool> DeleteIfEmpty(Request<int> WarehouseId);
+        Response<bool> DeleteIfEmpty(Request<int> warehouseId);
+
+        [OperationContract]
+        Response<bool> DeleteSectorIfEmpty(Request<int> sectorId);
 
         [OperationContract]
         Response<StatisticsDto> GetStatistics(Request request);
 
         [OperationContract]
-        Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId);
+        Response<WarehouseDto> GetWarehouse(Request<int> warehouseId);
 
         [OperationContract]
-        Response<List<SectorDto>> GetSectors(Request<int> WarehouseId);
+        Response<List<SectorDto>> GetSectors(Request<int> warehouseId);
 
         [OperationContract]
-        Response<SectorDto> GetSector(Request<int> SectorId);
+        Response<SectorDto> GetSector(Request<int> sectorId);
 
         [OperationContract]
         Response<SectorDto> AddSector(Request<SectorDto> sector);

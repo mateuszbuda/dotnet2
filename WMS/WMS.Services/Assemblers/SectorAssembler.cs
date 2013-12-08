@@ -37,6 +37,7 @@ namespace WMS.Services.Assemblers
                 Limit = s.Limit,
                 Number = s.Number,
                 WarehouseId = s.WarehouseId,
+                WarehouseName = s.Warehouse.Name,
                 Version = s.Version
             };
         }
