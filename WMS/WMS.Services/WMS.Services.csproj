@@ -68,7 +68,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GroupService.svc" />
+    <Content Include="GroupsService.svc" />
     <Content Include="PartnersService.svc" />
     <Content Include="ProductsService.svc" />
     <Content Include="WarehousesService.svc" />
@@ -80,8 +80,8 @@
     <Compile Include="Assemblers\SectorAssembler.cs" />
     <Compile Include="Assemblers\ProductAssembler.cs" />
     <Compile Include="Assemblers\WarehouseAssembler.cs" />
-    <Compile Include="GroupService.svc.cs">
-      <DependentUpon>GroupService.svc</DependentUpon>
+    <Compile Include="GroupsService.svc.cs">
+      <DependentUpon>GroupsService.svc</DependentUpon>
     </Compile>
     <Compile Include="PartnersService.svc.cs">
       <DependentUpon>PartnersService.svc</DependentUpon>

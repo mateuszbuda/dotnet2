@@ -34,14 +34,14 @@ namespace WMS.Services
                     Select(warehouseAssembler.ToSimpleDto).ToList()));
         }
 
-        public Response<bool> DeleteIfEmpty(Request<int> WarehouseId)
+        public Response<bool> DeleteIfEmpty(Request<int> warehouseId)
         {
             bool ret = false;
 
             Transaction(tc =>
                 {
                     var w = (from x in tc.Entities.Warehouses
-                             where x.Id == WarehouseId.Content
+                             where x.Id == warehouseId.Content
                              select x).FirstOrDefault();
 
                     int c = (from s in w.Sectors
@@ -57,9 +57,31 @@ namespace WMS.Services
                     }
                 });
 
-            return new Response<bool>(WarehouseId.Id, ret);
+            return new Response<bool>(warehouseId.Id, ret);
         }
 
+        public Response<bool> DeleteSectorIfEmpty(Request<int> sectorId)
+        {
+            bool ret = false;
+
+            Transaction(tc =>
+            {
+                var s = (from x in tc.Entities.Sectors
+                         where x.Id == sectorId.Content
+                         select x).FirstOrDefault();
+
+                int c = (from gr in s.Groups
+                         select gr).Count();
+
+                if (c == 0)
+                {
+                    ret = true;
+                    s.Deleted = true;
+                }
+            });
+
+            return new Response<bool>(sectorId.Id, ret);
+        }
 
         public Response<StatisticsDto> GetStatistics(Request request)
         {
@@ -113,7 +135,7 @@ namespace WMS.Services
         {
             return new Response<SectorDto>(SectorId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s => s.Id == SectorId.Content).
-                Include(x => x.Groups).
+                Include(x => x.Groups).Include(x => x.Warehouse).
                 Select(sectorAssembler.ToDto).FirstOrDefault()));
         }
 

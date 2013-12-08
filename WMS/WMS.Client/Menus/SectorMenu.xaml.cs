@@ -53,27 +53,17 @@ namespace WMS.Client.Menus
         /// </summary>
         private void LoadData()
         {
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    sector = (from s in context.Sectors.Include("Warehouse")
-            //              where s.Id == sectorId
-            //              select s).FirstOrDefault();
+            Execute(() => WarehousesService.GetSector(new Request<int>(sectorId)), t =>
+                {
+                    sector = t.Data;
 
-            //    groups = new List<Group>();
-
-            //    foreach (var g in sector.Groups)
-            //        groups.Add(new Group()
-            //        {
-            //            Id = g.Id,
-            //            Date = g.GetLastDate(),
-            //            SenderId = g.GetLastSenderId(),
-            //            InternalSender = g.IsSenderInternal(),
-            //            SenderName = g.GetSenderName()
-            //        });
-
-            //    return 0;
-            //}, t => Dispatcher.BeginInvoke(new Action(() => InitializeData())), tokenSource);
-
+                    Execute(() => GroupService.GetSectorGroups(new Request<int>(sectorId)), x =>
+                        {
+                            groups = x.Data;
+                            isLoaded = true;
+                            InitializeData();
+                        });
+                });
         }
 
         /// <summary>
@@ -83,7 +73,7 @@ namespace WMS.Client.Menus
         {
             LoadingLabel.Visibility = System.Windows.Visibility.Hidden;
 
-            //WarehouseSectorLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}", sector.Warehouse.Name, sector.Number);
+            WarehouseSectorLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}", sector.WarehouseName, sector.Number);
 
             GroupsGrid.Items.Clear();
 
@@ -123,14 +113,11 @@ namespace WMS.Client.Menus
         /// <param name="id"></param>
         private void FindSender(int id)
         {
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    int pId = (from p in context.Partners
-            //               where p.WarehouseId == id
-            //               select p.Id).FirstOrDefault();
-
-            //    return pId;
-            //}, t => Dispatcher.BeginInvoke(new Action(() => LoadNewMenu(new PartnerMenu(mainWindow, t)))), tokenSource);
+			Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
+            {
+                int pId = t.Data.Id;
+                LoadNewMenu(new PartnerMenu(mainWindow, pId));
+            });
         }
 
         /// <summary>
@@ -144,7 +131,6 @@ namespace WMS.Client.Menus
 
             GroupDto group = groups.FirstOrDefault(g => g.Id == int.Parse((sender as Button).Tag as string));
 
-            // ?
             if (group.Internal)
                 LoadNewMenu(new WarehouseMenu(mainWindow, group.SenderId, group.SenderName));
             else
@@ -177,32 +163,17 @@ namespace WMS.Client.Menus
         /// </summary>
         private void DeleteSector()
         {
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    DatabaseAccess.Sector sec = (from s in context.Sectors.Include("Warehouse")
-            //                                 where s.Id == sectorId
-            //                                 select s).FirstOrDefault();
-
-            //    if (sec.Groups.Count != 0)
-            //    {
-            //        MessageBox.Show("Sektor nie jest pusty!", "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
-            //        return new { F = false, Name = "", WarehouseId = 0 };
-            //    }
-
-            //    var ret = new { F = true, Name = sec.Warehouse.Name, WarehouseId = sec.WarehouseId };
-
-            //    sec.Deleted = true;
-
-            //    context.SaveChanges();
-            //    return ret;
-            //}, t => Dispatcher.BeginInvoke(new Action(() =>
-            //{
-            //    if (t.F)
-            //    {
-            //        mainWindow.MainWindowContent.Children.Clear();
-            //        mainWindow.MainWindowContent.Children.Add(new WarehouseMenu(mainWindow, t.WarehouseId, t.Name));
-            //    }
-            //})), tokenSource);
+            Execute(() => WarehousesService.DeleteSectorIfEmpty(new Request<int>(sectorId)).Data, t =>
+                {
+                    if (t)
+                    {
+                        MessageBox.Show("Sektor został pomyślnie usunięty!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                        mainWindow.MainWindowContent.Children.Clear();
+                        mainWindow.MainWindowContent.Children.Add(new WarehouseMenu(mainWindow, warehouseId, sector.WarehouseName));
+                    }
+                    else
+                        MessageBox.Show("Sektor nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
 
         /// <summary>
@@ -245,7 +216,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SectorsButton_Click(object sender, RoutedEventArgs e)
         {
-            //LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.Warehouse.Name));
+             LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.WarehouseName));
         }
 
         /// <summary>

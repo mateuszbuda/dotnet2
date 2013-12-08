@@ -137,8 +137,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SectorClick(Object sender, RoutedEventArgs e)
         {
-            //int id = (int)(e.Source as Button).Tag;
-            //LoadNewMenu(new SectorMenu(mainWindow, id));
+            int id = (int)(e.Source as Button).Tag;
+            LoadNewMenu(new SectorMenu(mainWindow, id));
         }
 
         /// <summary>
@@ -181,24 +181,16 @@ namespace WMS.Client.Menus
         /// <param name="id"></param>
         private void DeleteSector(int id)
         {
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    DatabaseAccess.Sector sec = (from s in context.Sectors
-            //                                 where s.Id == id
-            //                                 select s).FirstOrDefault();
-
-            //    if (sec.Groups.Count != 0)
-            //    {
-            //        MessageBox.Show("Sektor nie jest pusty!", "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
-            //        return false;
-            //    }
-
-            //    sec.Deleted = true;
-
-            //    context.SaveChanges();
-
-            //    return true;
-            //}, t => Dispatcher.BeginInvoke(new Action(() => LoadData())), tokenSource);
+            Execute(() => WarehousesService.DeleteSectorIfEmpty(new Request<int>(id)).Data, t =>
+                {
+                    if (t)
+                    {
+                        MessageBox.Show("Sektor został pomyślnie usunięty!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadData();
+                    }
+                    else
+                        MessageBox.Show("Sektor nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
 
         /// <summary>
@@ -250,7 +242,7 @@ namespace WMS.Client.Menus
                     if (t)
                     {
                         MessageBox.Show("Magazyn został pomyślnie usunięty!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadNewMenu(new MainMenu(mainWindow));
+                        LoadData();
                     }
                     else
                         MessageBox.Show("Magazyn nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);

@@ -13,7 +13,7 @@ using WMS.ServicesInterface.ServiceContracts;
 namespace WMS.Services
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
-    public class GroupService : ServiceBase, IGroupsService
+    public class GroupsService : ServiceBase, IGroupsService
     {
         private GroupAssembler groupAssembler;
 
