@@ -23,5 +23,8 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         Response<PartnerDto> AddNew(Request<PartnerDto> partner);
+
+        [OperationContract]
+        Response<PartnerDto> Update(Request<PartnerDto> partner);
     }
 }

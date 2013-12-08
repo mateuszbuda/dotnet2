@@ -28,9 +28,18 @@ namespace WMS.Client
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
             MainWindowContent.Children.Clear();
             MainWindowContent.Children.Add(new WMS.Client.Menus.MainMenu(this));
+        }
+
+        private void LoginTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            LoginTextBox.Text = "";
         }
     }
 }

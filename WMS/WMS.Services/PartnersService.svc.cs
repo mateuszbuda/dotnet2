@@ -54,5 +54,22 @@ namespace WMS.Services
             Transaction(tc => p = tc.Entities.Partners.Add(partnerAssembler.ToEntity(partner.Content)));
             return new Response<PartnerDto>(partner.Id, partnerAssembler.ToDto(p));
         }
+
+        public Response<PartnerDto> Update(Request<PartnerDto> partner)
+        {
+            PartnerDto ret = null;
+
+            Transaction(tc =>
+                {
+                    var p = tc.Entities.Partners.Find(partner.Content.Id);
+                    if (p == null)
+                        throw new FaultException("Ten partner nie istnieje!");
+
+                    partnerAssembler.ToEntity(partner.Content, p);
+                    ret = partnerAssembler.ToDto(p);
+                });
+
+            return new Response<PartnerDto>(partner.Id, ret);
+        }
     }
 }
