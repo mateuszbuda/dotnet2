@@ -25,10 +25,10 @@ namespace WMS.Services.Assemblers
 
         public GroupDto ToDto(Group g)
         {
-            DateTime date = new DateTime();
+            //DateTime date = new DateTime();
             return new GroupDto()
             {
-                Date = date,
+                //Date = date,
                 Id = g.Id,
                 Internal = g.Sector.Warehouse.Internal,
                 SenderId = g.Sector.WarehouseId,

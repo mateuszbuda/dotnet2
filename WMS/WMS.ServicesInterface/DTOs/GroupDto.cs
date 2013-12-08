@@ -9,10 +9,14 @@ namespace WMS.ServicesInterface.DTOs
     public class GroupDto
     {
         public int Id { get; set; }
+        // id magazynu nadawcy
         public int SenderId { get; set; }
+        // nazwa magazynu nadawcy
         public string SenderName { get; set; }
         public DateTime Date { get; set; }
+        // id magazynu odbiorcy
         public int WarehouseId { get; set; }
+        // nazwa magazynu odbiorcy
         public string WarehouseName { get; set; }
         public bool Internal { get; set; }
     }
