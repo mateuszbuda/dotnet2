@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using WMS.DatabaseAccess;
+using WMS.DatabaseAccess.Entities;
 using WMS.Services.Assemblers;
 using WMS.ServicesInterface;
+using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services
 {
@@ -42,6 +45,16 @@ namespace WMS.Services
             {
                 context.TransactionSync(action);
             }
+        }
+
+        protected void CheckPermissions(int permission)
+        {
+            User u = null;
+            Transaction(tc => u = tc.Entities.Users.
+                Where(x => x.Username == ServiceSecurityContext.Current.PrimaryIdentity.Name).FirstOrDefault());
+
+            if (u == null || u.Permissions > permission)
+                throw new FaultException<ServiceException>(new ServiceException("Brak uprawnień!"));
         }
     }
 }

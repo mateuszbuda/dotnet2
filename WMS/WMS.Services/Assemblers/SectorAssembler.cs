@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web;
 using WMS.DatabaseAccess.Entities;
+using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
 namespace WMS.Services.Assemblers
@@ -13,7 +14,7 @@ namespace WMS.Services.Assemblers
         public Sector ToEntity(SectorDto s, Sector ent = null)
         {
             if (ent != null && !s.Version.SequenceEqual(ent.Version))
-                throw new FaultException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz.");
+                throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 
             ent = ent ?? new Sector();
 

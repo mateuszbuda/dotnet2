@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -46,7 +47,7 @@ namespace WMS.Client.Dialogs
         /// Konstruktor wykorzystywany przy tworzeniu nowego partnera.
         /// </summary>
         /// <param name="mainWindow"></param>
-        public PartnerDialog(MainWindow mainWindow)
+        public PartnerDialog(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
 
@@ -138,12 +139,14 @@ namespace WMS.Client.Dialogs
                                 this.Close();
                             }, x =>
                             {
-                                MessageBox.Show(x.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                                DefaultExceptionHandler(x);
+                                mainWindow.ReloadWindow();
                                 this.Close();
                             });
                     }, t =>
                     {
-                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DefaultExceptionHandler(t);
+                        mainWindow.ReloadWindow();
                         this.Close();
                     });
             }
@@ -163,7 +166,8 @@ namespace WMS.Client.Dialogs
                         this.Close();
                     }, t =>
                     {
-                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DefaultExceptionHandler(t);
+                        mainWindow.ReloadWindow();
                         this.Close();
                     });
             }

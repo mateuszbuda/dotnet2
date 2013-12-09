@@ -5,6 +5,7 @@ using System.Web;
 using WMS.ServicesInterface.DTOs;
 using WMS.DatabaseAccess.Entities;
 using System.ServiceModel;
+using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services.Assemblers
 {
@@ -46,7 +47,7 @@ namespace WMS.Services.Assemblers
         public Partner ToEntity(PartnerDto p, Partner ent = null)
         {
             if(ent != null && !p.Version.SequenceEqual(ent.Version))
-                throw new FaultException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz.");
+                throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 
             ent = ent ?? new Partner();
 

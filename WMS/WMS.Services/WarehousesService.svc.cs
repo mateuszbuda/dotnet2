@@ -20,6 +20,7 @@ namespace WMS.Services
     {
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
         {
+            CheckPermissions(0);
             return new Response<List<WarehouseSimpleDto>>(request.Id,
                 Transaction(tc => tc.Entities.Warehouses.Where(x => x.Internal && !x.Deleted).ToList().
                     Select(warehouseAssembler.ToSimpleDto).ToList()));
@@ -158,7 +159,7 @@ namespace WMS.Services
                 {
                     w = tc.Entities.Warehouses.Find(warehouse.Content.Id);
                     if (w == null)
-                        throw new FaultException("Taki magazyn nie istnieje!");
+                        throw new FaultException<ServiceException>(new ServiceException("Taki magazyn nie istnieje!"));
 
                     warehouseAssembler.ToEntity(warehouse.Content, w);
                 });
@@ -189,7 +190,7 @@ namespace WMS.Services
             {
                 Sector s = tc.Entities.Sectors.Find(sector.Content.Id);
                 if (s == null)
-                    throw new FaultException("Taki sektor nie istnieje!");
+                    throw new FaultException<ServiceException>(new ServiceException("Taki sektor nie istnieje!"));
 
                 sectorAssembler.ToEntity(sector.Content, s);
 

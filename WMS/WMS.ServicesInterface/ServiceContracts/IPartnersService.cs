@@ -13,21 +13,27 @@ namespace WMS.ServicesInterface.ServiceContracts
     public interface IPartnersService
     {
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<List<PartnerSimpleDto>> GetPartners(Request request);
 
         [OperationContract]
-        Response<PartnerDto> GetPartner(Request<int> partnerId);
+        [FaultContract(typeof(ServiceException))]
+        Response<PartnerDto> GetPartner(Request<int> PartnerId);
 
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> PartnerId);
+
+        [OperationContract]
+		[FaultContract(typeof(ServiceException))]
         Response<PartnerDto> GetPartnerByWarehouse(Request<int> warehouseId);
 
         [OperationContract]
-        Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> partnerId);
-
-        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<PartnerDto> AddNew(Request<PartnerDto> partner);
 
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<PartnerDto> Update(Request<PartnerDto> partner);
     }
 }

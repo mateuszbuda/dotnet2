@@ -32,7 +32,7 @@ namespace WMS.Client.Menus
         /// Inicjalizacja menu
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
-        public PartnersMenu(MainWindow mainWindow)
+        public PartnersMenu(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Partnerzy";

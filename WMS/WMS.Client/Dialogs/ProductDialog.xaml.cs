@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,6 +33,7 @@ namespace WMS.Client.Dialogs
         /// <param name="mainWindow"></param>
         /// <param name="id">Id edytowanego produktu lub -1 jśli tworzony jest nowy produkt</param>
         public ProductDialog(MainWindow mainWindow, int id)
+            : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             productID = id;
@@ -106,7 +108,8 @@ namespace WMS.Client.Dialogs
                         this.Close();
                     }, t =>
                     {
-                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DefaultExceptionHandler(t);
+                        mainWindow.ReloadWindow();
                         this.Close();
                     });
             }
@@ -121,7 +124,8 @@ namespace WMS.Client.Dialogs
                         this.Close();
                     }, t =>
                     {
-                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DefaultExceptionHandler(t);
+                        mainWindow.ReloadWindow();
                         this.Close();
                     });
             }

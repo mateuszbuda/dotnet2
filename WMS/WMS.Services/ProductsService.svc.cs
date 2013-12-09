@@ -38,7 +38,7 @@ namespace WMS.Services
                 {
                     var p = tc.Entities.Products.Find(product.Content.Id);
                     if (p == null)
-                        throw new FaultException("Ten produkt nie istnieje!");
+                        throw new FaultException<ServiceException>(new ServiceException("Ten produkt nie istnieje!"));
 
                     productAssembler.ToEntity(product.Content, p);
                 });

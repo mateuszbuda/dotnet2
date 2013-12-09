@@ -31,7 +31,7 @@ namespace WMS.Client.Menus
         /// Inicjalizacja menu
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
-        public ProductsMenu(MainWindow mainWindow)
+        public ProductsMenu(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Produkty";

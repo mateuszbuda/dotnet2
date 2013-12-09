@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="DataContracts\Request.cs" />
     <Compile Include="DataContracts\Response.cs" />
+    <Compile Include="DataContracts\ServiceException.cs" />
     <Compile Include="DTOs\GroupDto.cs" />
     <Compile Include="DTOs\PartnerDto.cs" />
     <Compile Include="DTOs\ProductDto.cs" />

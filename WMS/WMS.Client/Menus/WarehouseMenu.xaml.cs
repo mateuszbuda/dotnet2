@@ -33,7 +33,7 @@ namespace WMS.Client.Menus
         private ContextMenu contextMenu;
         private MainWindow mainWindow;
 
-        public WarehouseMenu(MainWindow mainWindow, int warehouseId, string name)
+        public WarehouseMenu(MainWindow mainWindow, int warehouseId, string name) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Podgląd Magazynu";

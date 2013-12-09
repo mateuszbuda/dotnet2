@@ -33,7 +33,7 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="id">ID Grupy</param>
-        public GroupHistoryMenu(MainWindow mainWindow, int id)
+        public GroupHistoryMenu(MainWindow mainWindow, int id) : base(mainWindow)
         {
             groupId = id;
             this.mainWindow = mainWindow;

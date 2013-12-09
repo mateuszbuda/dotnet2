@@ -13,6 +13,7 @@ namespace WMS.ServicesInterface.ServiceContracts
     public interface IAuthenticationService
     {
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<UserDto> Authenticate(Request<UserDto> user);
     }
 }

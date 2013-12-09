@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.ServiceContracts;
 
 namespace WMS.Client.Dialogs
@@ -16,15 +17,21 @@ namespace WMS.Client.Dialogs
         protected IPartnersService PartnersService { get; private set; }
         protected IProductsService ProductsService { get; private set; }
 
-        public BaseDialog()
+        public BaseDialog(MainWindow mainWindow)
         {
-            var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("BasicHttpBinding_IWarehousesService");
+            var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("SecureBinding_IWarehousesService");
+            warehouseChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+            warehouseChannelFactory.Credentials.UserName.Password = mainWindow.Password;
             WarehousesService = warehouseChannelFactory.CreateChannel();
 
-            var partnersChannelFactory = new ChannelFactory<IPartnersService>("BasicHttpBinding_IPartnersService");
+            var partnersChannelFactory = new ChannelFactory<IPartnersService>("SecureBinding_IPartnersService");
+            partnersChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+            partnersChannelFactory.Credentials.UserName.Password = mainWindow.Password;
             PartnersService = partnersChannelFactory.CreateChannel();
 
-            var productsChannelFactory = new ChannelFactory<IProductsService>("BasicHttpBinding_IProductsService");
+            var productsChannelFactory = new ChannelFactory<IProductsService>("SecureBinding_IProductsService");
+            productsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+            productsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
             ProductsService = productsChannelFactory.CreateChannel();
         }
 
@@ -42,9 +49,13 @@ namespace WMS.Client.Dialogs
             task.Start();
         }
 
-        private void DefaultExceptionHandler(Exception e)
+        protected void DefaultExceptionHandler(Exception e)
         {
-            MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.Message + (e.InnerException.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.InnerException.Message))), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (e.InnerException != null && e.InnerException.GetType() == typeof(FaultException<ServiceException>))
+                MessageBox.Show((e.InnerException as FaultException<ServiceException>).Detail.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+                MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            //MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.Message + (e.InnerException.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.InnerException.Message))), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         protected void Execute(Action action, Action success = null, Action<Exception> exception = null)

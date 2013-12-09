@@ -21,7 +21,7 @@ namespace WMS.Services
             Transaction(tc => ret = tc.Entities.Users.Where(x => x.Username == u.Username).FirstOrDefault());
 
             if (ret == null || ret.Password != u.Password)
-                throw new FaultException("Zły login lub hasło!");
+                throw new FaultException<ServiceException>(new ServiceException("Zły login lub hasło!"));
 
             return new Response<UserDto>(user.Id, userAssembler.ToDto(ret));
         }

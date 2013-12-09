@@ -34,7 +34,7 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="id">ID sektora</param>
-        public SectorMenu(MainWindow mainWindow, int id)
+        public SectorMenu(MainWindow mainWindow, int id) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Podgląd Sektora";

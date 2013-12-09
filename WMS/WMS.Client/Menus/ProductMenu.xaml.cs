@@ -32,7 +32,7 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="id">Id produktu</param>
-        public ProductMenu(MainWindow mainWindow, int id)
+        public ProductMenu(MainWindow mainWindow, int id) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Podgląd Produktu";
