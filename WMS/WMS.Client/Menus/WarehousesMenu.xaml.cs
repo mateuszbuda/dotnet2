@@ -92,7 +92,7 @@ namespace WMS.Client.Menus
         /// Inicjalizacja manu
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
-        public WarehousesMenu(MainWindow mainWindow)
+        public WarehousesMenu(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Magazyny";

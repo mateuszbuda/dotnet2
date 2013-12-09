@@ -56,7 +56,7 @@ namespace WMS.Client.Menus
         /// Inicjalizacja głównego menu
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
-        public MainMenu(MainWindow mainWindow)
+        public MainMenu(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Menu Główne";

@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
@@ -173,6 +174,7 @@
       <SubType>Code</SubType>
       <DependentUpon>WarehousesMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Misc\CertValidator.cs" />
     <Compile Include="Misc\DelegatedCommand.cs" />
     <Compile Include="Misc\ProductValidationRule.cs" />
     <Compile Include="Misc\RegexValidationRule.cs" />

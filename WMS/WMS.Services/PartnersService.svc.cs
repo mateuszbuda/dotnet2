@@ -54,7 +54,7 @@ namespace WMS.Services
                 {
                     var p = tc.Entities.Partners.Find(partner.Content.Id);
                     if (p == null)
-                        throw new FaultException("Ten partner nie istnieje!");
+                        throw new FaultException<ServiceException>(new ServiceException("Ten partner nie istnieje!"));
 
                     partnerAssembler.ToEntity(partner.Content, p);
                     ret = partnerAssembler.ToDto(p);

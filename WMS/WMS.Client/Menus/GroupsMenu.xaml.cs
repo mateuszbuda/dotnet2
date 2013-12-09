@@ -29,7 +29,7 @@ namespace WMS.Client.Menus
         private bool showInternal = false;
         private bool showExternal = false;
 
-        public GroupsMenu(MainWindow mainWindow)
+        public GroupsMenu(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Przetwarzane Partie";

@@ -43,16 +43,19 @@ namespace WMS.Client
             LoginButton.Content = "Logowanie...";
             LoginButton.IsEnabled = false;
 
-            var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("BasicHttpBinding_IAuthenticationService");
-            IAuthenticationService AuthService = authenticationChannelFactory.CreateChannel();
-
             UserDto user = new UserDto()
             {
                 Username = LoginTextBox.Text,
                 Password = PasswordTextBox.Password,
             };
 
-            BaseMenu menu = new BaseMenu();
+            var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("SecureBinding_IAuthenticationService");
+            authenticationChannelFactory.Credentials.UserName.UserName = user.Username;
+            authenticationChannelFactory.Credentials.UserName.Password = user.Password;
+            IAuthenticationService AuthService = authenticationChannelFactory.CreateChannel();
+
+
+            BaseMenu menu = new BaseMenu(this);
             menu.Execute(() => AuthService.Authenticate(new Request<UserDto>(user)), t =>
                 {
                     Username = t.Data.Username;
@@ -66,8 +69,11 @@ namespace WMS.Client
                     LoginButton.Content = "Zaloguj";
                     LoginButton.IsEnabled = true;
 
-                    MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                });            
+                    if(t.InnerException != null && t.InnerException.InnerException != null)
+                        MessageBox.Show(t.InnerException.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
 
         private void LoginTextBox_GotFocus(object sender, RoutedEventArgs e)

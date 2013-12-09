@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web;
 using WMS.DatabaseAccess.Entities;
+using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
 namespace WMS.Services.Assemblers
@@ -37,7 +38,7 @@ namespace WMS.Services.Assemblers
         public Product ToEntity(ProductDto p, Product ent = null)
         {
             if (ent != null && !p.Version.SequenceEqual(ent.Version))
-                throw new FaultException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz.");
+                throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 
             ent = ent ?? new Product();
 

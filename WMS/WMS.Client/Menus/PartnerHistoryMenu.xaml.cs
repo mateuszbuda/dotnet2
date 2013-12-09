@@ -32,7 +32,7 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="partnerId">Id Partnera</param>
-        public PartnerHistoryMenu(MainWindow mainWindow, int partnerId)
+        public PartnerHistoryMenu(MainWindow mainWindow, int partnerId) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Historia Partnera";

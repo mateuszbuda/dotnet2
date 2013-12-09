@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -46,7 +47,7 @@ namespace WMS.Client.Dialogs
         /// Konstruktor używany przy tworzeniu nowego magazynu
         /// </summary>
         /// <param name="mainWindow"></param>
-        public WarehouseDialog(MainWindow mainWindow)
+        public WarehouseDialog(MainWindow mainWindow) : base(mainWindow)
         {
             this.mainWindow = mainWindow;
 
@@ -113,7 +114,8 @@ namespace WMS.Client.Dialogs
                         this.Close();
                     }, t =>
                     {
-                        MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DefaultExceptionHandler(t);
+                        mainWindow.ReloadWindow();
                         this.Close();
                     });
             }
@@ -128,7 +130,8 @@ namespace WMS.Client.Dialogs
                     this.Close();
                 }, t =>
                 {
-                    MessageBox.Show(t.InnerException.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DefaultExceptionHandler(t);
+                    mainWindow.ReloadWindow();
                     this.Close();
                 });
             }

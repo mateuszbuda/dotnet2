@@ -13,15 +13,19 @@ namespace WMS.ServicesInterface.ServiceContracts
     public interface IProductsService
     {
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<List<ProductDto>> GetProducts(Request request);
 
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<ProductDto> GetProduct(Request<int> ProductId);
 
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<bool> AddNew(Request<ProductDto> product);
 
         [OperationContract]
+        [FaultContract(typeof(ServiceException))]
         Response<bool> Edit(Request<ProductDto> product);
     }
 }
