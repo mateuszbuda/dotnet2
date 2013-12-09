@@ -107,7 +107,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void ButtonGroups_Click(object sender, RoutedEventArgs e)
         {
-            //ChangeMenu(new GroupsMenu(mainWindow));
+            ChangeMenu(new GroupsMenu(mainWindow));
         }
 
         /// <summary>

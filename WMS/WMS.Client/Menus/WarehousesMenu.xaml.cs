@@ -163,8 +163,8 @@ namespace WMS.Client.Menus
         {
             int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
 
-            //WarehouseDialog dlg = new WarehouseDialog(mainWindow, id);
-            //dlg.Show();
+            WarehouseDialog dlg = new WarehouseDialog(mainWindow, id);
+            dlg.Show();
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void AddNewButton_Click(object sender, RoutedEventArgs e)
         {
-            //WarehouseDialog dlg = new WarehouseDialog(mainWindow);
-            //dlg.Show();
+            WarehouseDialog dlg = new WarehouseDialog(mainWindow);
+            dlg.Show();
         }
 
         /// <summary>

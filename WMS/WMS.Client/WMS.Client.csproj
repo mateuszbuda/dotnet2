@@ -65,6 +65,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\SectorsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\WarehouseDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -83,6 +87,9 @@
     </Compile>
     <Compile Include="Dialogs\ProductDialog.xaml.cs">
       <DependentUpon>ProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SectorsDialog.xaml.cs">
+      <DependentUpon>SectorsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\WarehouseDialog.xaml.cs">
       <DependentUpon>WarehouseDialog.xaml</DependentUpon>
@@ -182,6 +189,7 @@
     </Compile>
     <Compile Include="Misc\DelegatedCommand.cs" />
     <Compile Include="Misc\ProductValidationRule.cs" />
+    <Compile Include="Misc\RegexValidationRule.cs" />
     <Compile Include="Misc\WarehouseValidationRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

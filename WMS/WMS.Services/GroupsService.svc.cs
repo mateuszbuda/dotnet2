@@ -15,8 +15,6 @@ namespace WMS.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class GroupsService : ServiceBase, IGroupsService
     {
-        private GroupAssembler groupAssembler;
-
         public Response<List<GroupDto>> GetSectorGroups(Request<int> SectorId)
         {
             throw new NotImplementedException();

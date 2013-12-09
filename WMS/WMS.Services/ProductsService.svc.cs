@@ -14,13 +14,6 @@ namespace WMS.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class ProductsService : ServiceBase, IProductsService
     {
-        private ProductAssembler productAssembler;
-
-        public ProductsService()
-        {
-            productAssembler = new ProductAssembler();
-        }
-
         public Response<List<ProductDto>> GetProducts(Request request)
         {
             return new Response<List<ProductDto>>(request.Id, Transaction(tc => 

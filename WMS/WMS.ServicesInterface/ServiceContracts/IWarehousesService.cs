@@ -35,5 +35,17 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         Response<SectorDto> AddSector(Request<SectorDto> sector);
+
+        [OperationContract]
+        Response<WarehouseDto> AddNew(Request<WarehouseDto> warehouse);
+
+        [OperationContract]
+        Response<WarehouseDto> Edit(Request<WarehouseDto> warehouse);
+
+        [OperationContract]
+        Response<int> GetNextSectorNumber(Request<int> warehouseId);
+
+        [OperationContract]
+        Response<SectorDto> EditSector(Request<SectorDto> sector);
     }
 }

@@ -18,15 +18,6 @@ namespace WMS.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class WarehousesService : ServiceBase, IWarehousesService
     {
-        private WarehouseAssembler warehouseAssembler;
-        private SectorAssembler sectorAssembler;
-
-        public WarehousesService()
-        {
-            warehouseAssembler = new WarehouseAssembler();
-            sectorAssembler = new SectorAssembler();
-        }
-
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
         {
             return new Response<List<WarehouseSimpleDto>>(request.Id,
@@ -54,7 +45,6 @@ namespace WMS.Services
                         ret = true;
 
                         w.Deleted = true;
-                        //tc.Entities.SaveChanges();
                     }
                 });
 
@@ -127,7 +117,7 @@ namespace WMS.Services
         {
             return new Response<List<SectorDto>>(WarehouseId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s =>
-                    (s.WarehouseId == WarehouseId.Content && s.Deleted == false && s.Groups.Count != 0)).
+                    (s.WarehouseId == WarehouseId.Content && s.Deleted == false)).
                 Include(x => x.Groups).Include(x => x.Warehouse).
                 Select(sectorAssembler.ToDto).ToList()));
         }
@@ -143,9 +133,73 @@ namespace WMS.Services
         public Response<SectorDto> AddSector(Request<SectorDto> sector)
         {
             Sector s = null;
-            Transaction(tc => s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content)));
+            Transaction(tc =>
+                {
+                    s = tc.Entities.Sectors.Add(sectorAssembler.ToEntity(sector.Content));
+                    if (s.Warehouse == null)
+                        s.Warehouse = tc.Entities.Warehouses.Find(s.WarehouseId);
+                });
+                            
             return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
         }
 
+        public Response<WarehouseDto> AddNew(Request<WarehouseDto> warehouse)
+        {
+            Warehouse w = null;
+            Transaction(tc => w = tc.Entities.Warehouses.Add(warehouseAssembler.ToEntity(warehouse.Content)));
+            return new Response<WarehouseDto>(warehouse.Id, warehouseAssembler.ToDto(w));
+        }
+
+        public Response<WarehouseDto> Edit(Request<WarehouseDto> warehouse)
+        {
+            Warehouse w = null;
+
+            Transaction(tc =>
+                {
+                    w = tc.Entities.Warehouses.Find(warehouse.Content.Id);
+                    if (w == null)
+                        throw new FaultException("Taki magazyn nie istnieje!");
+
+                    warehouseAssembler.ToEntity(warehouse.Content, w);
+                });
+
+            return new Response<WarehouseDto>(warehouse.Id, warehouseAssembler.ToDto(w));
+        }
+
+        public Response<int> GetNextSectorNumber(Request<int> warehouseId)
+        {
+            int ret = 1;
+
+            Transaction(tc => 
+                {
+                    var w = tc.Entities.Warehouses.Find(warehouseId.Content);
+
+                    if (w.Sectors.Count > 0)
+                        ret = w.Sectors.Max(s => s.Number) + 1;
+                });
+
+            return new Response<int>(warehouseId.Id, ret);
+        }
+
+        public Response<SectorDto> EditSector(Request<SectorDto> sector)
+        {
+            SectorDto ret = null;
+
+            Transaction(tc =>
+            {
+                Sector s = tc.Entities.Sectors.Find(sector.Content.Id);
+                if (s == null)
+                    throw new FaultException("Taki sektor nie istnieje!");
+
+                sectorAssembler.ToEntity(sector.Content, s);
+
+                if(s.Warehouse == null)
+                    s.Warehouse = tc.Entities.Warehouses.Find(s.WarehouseId);
+
+                ret = sectorAssembler.ToDto(s);
+            });
+
+            return new Response<SectorDto>(sector.Id, ret);
+        }
     }
 }

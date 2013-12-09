@@ -21,7 +21,7 @@ namespace WMS.Client.Menus
     /// <summary>
     /// Interaction logic for SectorMenu.xaml
     /// </summary>
-    public partial class SectorMenu : BaseMenu
+    public partial class SectorMenu : BaseMenu  // 4
     {
         private int sectorId;
         private int warehouseId;
@@ -71,9 +71,6 @@ namespace WMS.Client.Menus
         /// </summary>
         private void InitializeData()
         {
-            if (!isLoaded)
-                return;
-
             LoadingLabel.Visibility = System.Windows.Visibility.Hidden;
 
             WarehouseSectorLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}", sector.WarehouseName, sector.Number);
@@ -116,11 +113,11 @@ namespace WMS.Client.Menus
         /// <param name="id"></param>
         private void FindSender(int id)
         {
-            Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
-                {
-                    int pId = t.Data.Id;
-                    LoadNewMenu(new PartnerMenu(mainWindow, pId));
-                });
+			Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
+            {
+                int pId = t.Data.Id;
+                LoadNewMenu(new PartnerMenu(mainWindow, pId));
+            });
         }
 
         /// <summary>
@@ -157,8 +154,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            //SectorsDialog dlg = new SectorsDialog(mainWindow, sector.WarehouseId, sectorId);
-            //dlg.Show();
+            SectorsDialog dlg = new SectorsDialog(mainWindow, sector.WarehouseId, sectorId);
+            dlg.Show();
         }
 
         /// <summary>
@@ -219,7 +216,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SectorsButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.WarehouseName));
+             LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.WarehouseName));
         }
 
         /// <summary>

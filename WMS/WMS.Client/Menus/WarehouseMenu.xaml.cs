@@ -22,7 +22,7 @@ namespace WMS.Client.Menus
     /// <summary>
     /// Interaction logic for WarehouseMenu.xaml
     /// </summary>
-    public partial class WarehouseMenu : BaseMenu
+    public partial class WarehouseMenu : BaseMenu   // 3
     {
         private int warehouseId;
         private WarehouseDto warehouse;
@@ -216,8 +216,8 @@ namespace WMS.Client.Menus
         {
             int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
 
-            //SectorsDialog dlg = new SectorsDialog(mainWindow, warehouseId, id);
-            //dlg.Show();
+            SectorsDialog dlg = new SectorsDialog(mainWindow, warehouseId, id);
+            dlg.Show();
         }
 
         /// <summary>
@@ -227,8 +227,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void AddNewButton_Click(object sender, RoutedEventArgs e)
         {
-            //SectorsDialog dlg = new SectorsDialog(mainWindow, warehouseId, -1);
-            //dlg.Show();
+            SectorsDialog dlg = new SectorsDialog(mainWindow, warehouseId, -1);
+            dlg.Show();
         }
 
         /// <summary>
@@ -268,8 +268,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            //WarehouseDialog dlg = new WarehouseDialog(mainWindow, warehouseId);
-            //dlg.Show();
+            WarehouseDialog dlg = new WarehouseDialog(mainWindow, warehouseId);
+            dlg.Show();
         }
 
         /// <summary>
