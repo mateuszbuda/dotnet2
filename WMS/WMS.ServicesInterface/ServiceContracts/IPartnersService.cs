@@ -25,6 +25,10 @@ namespace WMS.ServicesInterface.ServiceContracts
         Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> PartnerId);
 
         [OperationContract]
+		[FaultContract(typeof(ServiceException))]
+        Response<PartnerDto> GetPartnerByWarehouse(Request<int> warehouseId);
+
+        [OperationContract]
         [FaultContract(typeof(ServiceException))]
         Response<PartnerDto> AddNew(Request<PartnerDto> partner);
 

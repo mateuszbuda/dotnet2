@@ -99,6 +99,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Menus\GroupHistoryMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Menus\GroupMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Menus\MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -142,6 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Menus\BaseMenu.cs" />
+    <Compile Include="Menus\GroupHistoryMenu.xaml.cs">
+      <DependentUpon>GroupHistoryMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\GroupMenu.xaml.cs">
+      <DependentUpon>GroupMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Menus\MainMenu.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>MainMenu.xaml</DependentUpon>

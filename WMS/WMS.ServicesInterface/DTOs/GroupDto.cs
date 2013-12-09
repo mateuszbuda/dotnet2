@@ -37,5 +37,6 @@ namespace WMS.ServicesInterface.DTOs
         public int RecipientId { get; set; }
         public string RecipientName { get; set; }
         public DateTime Date { get; set; }
+        public bool Internal { get; set; }
     }
 }

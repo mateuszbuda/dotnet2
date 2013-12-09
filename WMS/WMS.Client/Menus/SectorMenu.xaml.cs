@@ -24,7 +24,6 @@ namespace WMS.Client.Menus
     public partial class SectorMenu : BaseMenu  // 4
     {
         private int sectorId;
-        private int warehouseId;
         private SectorDto sector;
         private List<GroupDto> groups;
         private bool isLoaded;
@@ -71,6 +70,9 @@ namespace WMS.Client.Menus
         /// </summary>
         private void InitializeData()
         {
+            if (!isLoaded)
+                return;
+
             LoadingLabel.Visibility = System.Windows.Visibility.Hidden;
 
             WarehouseSectorLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}", sector.WarehouseName, sector.Number);
@@ -113,7 +115,7 @@ namespace WMS.Client.Menus
         /// <param name="id"></param>
         private void FindSender(int id)
         {
-			Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
+            Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
             {
                 int pId = t.Data.Id;
                 LoadNewMenu(new PartnerMenu(mainWindow, pId));
@@ -169,7 +171,7 @@ namespace WMS.Client.Menus
                     {
                         MessageBox.Show("Sektor został pomyślnie usunięty!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                         mainWindow.MainWindowContent.Children.Clear();
-                        mainWindow.MainWindowContent.Children.Add(new WarehouseMenu(mainWindow, warehouseId, sector.WarehouseName));
+                        mainWindow.MainWindowContent.Children.Add(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.WarehouseName));
                     }
                     else
                         MessageBox.Show("Sektor nie jest pusty!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -216,7 +218,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SectorsButton_Click(object sender, RoutedEventArgs e)
         {
-             LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.WarehouseName));
+            LoadNewMenu(new WarehouseMenu(mainWindow, sector.WarehouseId, sector.WarehouseName));
         }
 
         /// <summary>

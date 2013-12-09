@@ -24,8 +24,15 @@ namespace WMS.Services
 
         public Response<PartnerDto> GetPartner(Request<int> PartnerId)
         {
-            return new Response<PartnerDto>(PartnerId.Id, Transaction(tc => 
+            return new Response<PartnerDto>(PartnerId.Id, Transaction(tc =>
                 tc.Entities.Partners.Where(x => x.Id == PartnerId.Content).Include(x => x.Warehouse).
+                Select(partnerAssembler.ToDto).FirstOrDefault()));
+        }
+
+        public Response<PartnerDto> GetPartnerByWarehouse(Request<int> warehouseId)
+        {
+            return new Response<PartnerDto>(warehouseId.Id, Transaction(tc =>
+                tc.Entities.Partners.Where(x => x.WarehouseId == warehouseId.Content).Include(x => x.Warehouse).
                 Select(partnerAssembler.ToDto).FirstOrDefault()));
         }
 
@@ -62,5 +69,6 @@ namespace WMS.Services
 
             return new Response<PartnerDto>(partner.Id, ret);
         }
+
     }
 }
