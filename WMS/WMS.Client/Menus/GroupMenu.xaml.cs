@@ -27,7 +27,6 @@ namespace WMS.Client.Menus
         private int groupId;
         private bool isLoaded;
         private GroupLocationDto group;
-        private string warehouseName;
         private bool isInternal;
 
         private List<ProductDetailsDto> products;
@@ -58,6 +57,7 @@ namespace WMS.Client.Menus
             Execute(() => GroupService.GetGroupInfo(new Request<int>(groupId)), t =>
                 {
                     group = t.Data;
+                    isInternal = t.Data.Internal;
                     Execute(() => GroupService.GetGroupDetails(new Request<int>(group.Id)), x =>
                         {
                             products = x.Data;
@@ -80,7 +80,7 @@ namespace WMS.Client.Menus
 
             LoadingLabel.Visibility = System.Windows.Visibility.Hidden;
 
-            GroupLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}, Partia #{2}", warehouseName, group.SectorNumber, group.Id);
+            GroupLabel.Content = String.Format("Magazyn '{0}', Sektor #{1}, Partia #{2}", group.WarehouseName, group.SectorNumber, group.Id);
 
             ProductsGrid.Items.Clear();
 
