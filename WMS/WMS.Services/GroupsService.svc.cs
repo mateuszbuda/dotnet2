@@ -17,27 +17,42 @@ namespace WMS.Services
     {
         public Response<List<GroupDto>> GetSectorGroups(Request<int> SectorId)
         {
-            throw new NotImplementedException();
+            return new Response<List<GroupDto>>(SectorId.Id, Transaction(tc =>
+                tc.Entities.Shifts.Where(x => x.Latest && x.Group.SectorId == SectorId.Content).
+                    Include(x => x.Group.Sector.Warehouse).Include(x => x.Sender).
+                Select(groupAssembler.ToDto).ToList()));
         }
 
         public Response<GroupLocationDto> GetGroupInfo(Request<int> GroupId)
         {
-            throw new NotImplementedException();
+            return new Response<GroupLocationDto>(GroupId.Id, Transaction(tc =>
+                tc.Entities.Groups.Where(x => x.Id == GroupId.Content).
+                    Include(x => x.Sector.Warehouse).
+                Select(groupAssembler.ToLocationDto).FirstOrDefault()));
         }
 
         public Response<List<GroupHistoryDto>> GetGroupHistory(Request<int> GroupId)
         {
-            throw new NotImplementedException();
+            return new Response<List<GroupHistoryDto>>(GroupId.Id, Transaction(tc =>
+                tc.Entities.Shifts.Where(x => x.GroupId == GroupId.Content).
+                    Include(x => x.Group.Sector.Warehouse).
+                Select(groupAssembler.ToHistoryDto).ToList()));
         }
 
         public Response<List<GroupDto>> GetGroups(Request request)
         {
-            throw new NotImplementedException();
+            return new Response<List<GroupDto>>(request.Id, Transaction(tc =>
+                tc.Entities.Shifts.Where(x => x.Latest).
+                    Include(x => x.Group.Sector.Warehouse).Include(x => x.Sender).
+                Select(groupAssembler.ToDto).ToList()));
         }
 
         public Response<List<ProductDetailsDto>> GetGroupDetails(Request<int> GroupId)
         {
-            throw new NotImplementedException();
+            return new Response<List<ProductDetailsDto>>(GroupId.Id, Transaction(tc =>
+                tc.Entities.GroupsDetails.Where(x => x.GroupId == GroupId.Content).
+                    Include(x => x.Product).
+                Select(productAssembler.ToDetailsDto).ToList()));
         }
     }
 }
