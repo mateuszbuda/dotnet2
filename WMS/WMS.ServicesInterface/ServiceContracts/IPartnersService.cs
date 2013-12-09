@@ -16,10 +16,13 @@ namespace WMS.ServicesInterface.ServiceContracts
         Response<List<PartnerSimpleDto>> GetPartners(Request request);
 
         [OperationContract]
-        Response<PartnerDto> GetPartner(Request<int> PartnerId);
+        Response<PartnerDto> GetPartner(Request<int> partnerId);
 
         [OperationContract]
-        Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> PartnerId);
+        Response<PartnerDto> GetPartnerByWarehouse(Request<int> warehouseId);
+
+        [OperationContract]
+        Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> partnerId);
 
         [OperationContract]
         Response<PartnerDto> AddNew(Request<PartnerDto> partner);
