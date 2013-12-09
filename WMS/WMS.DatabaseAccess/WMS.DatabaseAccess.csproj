@@ -54,6 +54,7 @@
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\Sector.cs" />
     <Compile Include="Entities\Shift.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="SystemContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemEntities.cs" />

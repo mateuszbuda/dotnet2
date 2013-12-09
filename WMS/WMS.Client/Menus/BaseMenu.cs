@@ -33,7 +33,7 @@ namespace WMS.Client.Menus
             GroupService = groupsChannelFactory.CreateChannel();
         }
 
-        protected void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
+        public void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
         {
             var ts = TaskScheduler.FromCurrentSynchronizationContext();
             var task = new Task<T>(action);
@@ -52,7 +52,7 @@ namespace WMS.Client.Menus
             MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException)), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        protected void Execute(Action action, Action success = null, Action<Exception> exception = null)
+        public void Execute(Action action, Action success = null, Action<Exception> exception = null)
         {
             Execute(() => { action(); return false; }, success != null ? (x => success()) : (Action<bool>)null, exception);
         }

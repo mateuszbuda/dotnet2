@@ -18,15 +18,6 @@ namespace WMS.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class WarehousesService : ServiceBase, IWarehousesService
     {
-        private WarehouseAssembler warehouseAssembler;
-        private SectorAssembler sectorAssembler;
-
-        public WarehousesService()
-        {
-            warehouseAssembler = new WarehouseAssembler();
-            sectorAssembler = new SectorAssembler();
-        }
-
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
         {
             return new Response<List<WarehouseSimpleDto>>(request.Id,

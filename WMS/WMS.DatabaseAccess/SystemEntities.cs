@@ -45,6 +45,8 @@ namespace WMS.DatabaseAccess
         /// </summary>
         public DbSet<GroupDetails> GroupsDetails { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<Shift>()

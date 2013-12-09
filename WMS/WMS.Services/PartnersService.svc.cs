@@ -16,15 +16,6 @@ namespace WMS.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class PartnersService : ServiceBase, IPartnersService
     {
-        private PartnerAssembler partnerAssembler;
-        private GroupAssembler groupAssembler;
-
-        public PartnersService()
-        {
-            partnerAssembler = new PartnerAssembler();
-            groupAssembler = new GroupAssembler();
-        }
-
         public Response<List<PartnerSimpleDto>> GetPartners(Request request)
         {
             return new Response<List<PartnerSimpleDto>>(request.Id, Transaction(tc => tc.Entities.Partners.Include(x => x.Warehouse).
