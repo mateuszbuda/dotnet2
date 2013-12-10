@@ -20,5 +20,10 @@ namespace WMS.ServicesInterface.DTOs
         public string WarehouseName { get; set; }
         public int GroupsCount { get; set; } // info ile zajete
         public byte[] Version { get; set; }
+
+        public override string ToString()
+        {
+            return "Sektor #" + Number.ToString();
+        }
     }
 }

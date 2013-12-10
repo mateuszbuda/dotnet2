@@ -45,7 +45,8 @@ namespace WMS.Services.Assemblers
                 Id = w.Id,
                 Name = w.Name,
                 SectorsCount = w.Sectors.Count,
-                FreeSectorsCount = fsc
+                FreeSectorsCount = fsc,
+                Internal = w.Internal,
             };
         }
 

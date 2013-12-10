@@ -109,8 +109,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            //ShiftDialog dlg = new ShiftDialog(mainWindow, groupId);
-            //dlg.Show();
+            ShiftDialog dlg = new ShiftDialog(mainWindow, groupId);
+            dlg.Show();
         }
 
         /// <summary>

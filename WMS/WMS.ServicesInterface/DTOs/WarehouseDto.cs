@@ -25,7 +25,13 @@ namespace WMS.ServicesInterface.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Internal { get; set; }
         public int SectorsCount { get; set; }
         public int FreeSectorsCount { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

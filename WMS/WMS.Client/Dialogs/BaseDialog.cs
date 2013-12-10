@@ -16,6 +16,7 @@ namespace WMS.Client.Dialogs
         protected IWarehousesService WarehousesService { get; private set; }
         protected IPartnersService PartnersService { get; private set; }
         protected IProductsService ProductsService { get; private set; }
+        protected IGroupsService GroupsService { get; set; }
 
         public BaseDialog(MainWindow mainWindow)
         {
@@ -33,6 +34,11 @@ namespace WMS.Client.Dialogs
             productsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
             productsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
             ProductsService = productsChannelFactory.CreateChannel();
+
+            var groupsChannelFactory = new ChannelFactory<IGroupsService>("SecureBinding_IGroupsService");
+            groupsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+            groupsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+            GroupsService = groupsChannelFactory.CreateChannel();
         }
 
         protected void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
