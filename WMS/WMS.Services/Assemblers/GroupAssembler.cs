@@ -19,7 +19,8 @@ namespace WMS.Services.Assemblers
                 RecipientId = s.Group.Sector.Warehouse.Id,
                 RecipientName = s.Group.Sector.Warehouse.Name,
                 SenderId = s.Sender.Id,
-                SenderName = s.Sender.Name
+                SenderName = s.Sender.Name,
+                Internal = s.Group.Sector.Warehouse.Internal,
             };
         }
 

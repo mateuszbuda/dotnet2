@@ -34,7 +34,8 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="id">ID sektora</param>
-        public SectorMenu(MainWindow mainWindow, int id) : base(mainWindow)
+        public SectorMenu(MainWindow mainWindow, int id)
+            : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Podgląd Sektora";
@@ -146,7 +147,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void IdButtonClick(object sender, RoutedEventArgs e)
         {
-            //LoadNewMenu(new GroupMenu(mainWindow, int.Parse((sender as Button).Tag as string)));
+            LoadNewMenu(new GroupMenu(mainWindow, int.Parse((sender as Button).Tag as string)));
         }
 
         /// <summary>

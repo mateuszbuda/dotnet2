@@ -190,6 +190,7 @@
     </Compile>
     <Compile Include="Misc\CertValidator.cs" />
     <Compile Include="Misc\DelegatedCommand.cs" />
+    <Compile Include="Misc\PriceConverter.cs" />
     <Compile Include="Misc\ProductValidationRule.cs" />
     <Compile Include="Misc\RegexValidationRule.cs" />
     <Compile Include="Misc\WarehouseValidationRule.cs" />

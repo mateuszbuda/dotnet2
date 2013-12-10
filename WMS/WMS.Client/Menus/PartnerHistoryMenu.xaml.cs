@@ -32,7 +32,8 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="partnerId">Id Partnera</param>
-        public PartnerHistoryMenu(MainWindow mainWindow, int partnerId) : base(mainWindow)
+        public PartnerHistoryMenu(MainWindow mainWindow, int partnerId)
+            : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Historia Partnera";
@@ -127,7 +128,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void IdButtonClick(object sender, RoutedEventArgs e)
         {
-            //LoadNewMenu(new GroupMenu(mainWindow, (int)(sender as Button).Tag));
+            LoadNewMenu(new GroupMenu(mainWindow, (int)(sender as Button).Tag));
         }
     }
 }

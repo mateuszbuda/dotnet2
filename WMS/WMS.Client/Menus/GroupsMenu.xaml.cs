@@ -29,7 +29,8 @@ namespace WMS.Client.Menus
         private bool showInternal = false;
         private bool showExternal = false;
 
-        public GroupsMenu(MainWindow mainWindow) : base(mainWindow)
+        public GroupsMenu(MainWindow mainWindow)
+            : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Przetwarzane Partie";
@@ -175,7 +176,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void GroupIdClick(object sender, RoutedEventArgs e)
         {
-            //LoadNewMenu(new GroupMenu(mainWindow, (int)(sender as Button).Tag));
+            LoadNewMenu(new GroupMenu(mainWindow, (int)(sender as Button).Tag));
         }
 
         /// <summary>
@@ -197,6 +198,11 @@ namespace WMS.Client.Menus
             //}
             //else
             //    MessageBox.Show("Partia znajduje się u partnera. Nie mozna przesunąć", "Uwaga");
+        }
+
+        private void WarehouseClick(object sender, RoutedEventArgs e)
+        {
+            LoadNewMenu(new WarehouseMenu(mainWindow, (int)(sender as Button).Tag, (sender as Button).Content.ToString()));
         }
     }
 }

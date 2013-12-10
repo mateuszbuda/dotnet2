@@ -99,7 +99,7 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            //LoadNewMenu(new GroupHistoryMenu(mainWindow, groupId));
+            LoadNewMenu(new GroupHistoryMenu(mainWindow, groupId));
         }
 
         /// <summary>

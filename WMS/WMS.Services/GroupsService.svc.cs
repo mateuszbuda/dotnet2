@@ -35,7 +35,7 @@ namespace WMS.Services
         {
             return new Response<List<GroupHistoryDto>>(GroupId.Id, Transaction(tc =>
                 tc.Entities.Shifts.Where(x => x.GroupId == GroupId.Content).
-                    Include(x => x.Group.Sector.Warehouse).
+                    Include(x => x.Group.Sector.Warehouse).Include(x => x.Sender).
                 Select(groupAssembler.ToHistoryDto).ToList()));
         }
 

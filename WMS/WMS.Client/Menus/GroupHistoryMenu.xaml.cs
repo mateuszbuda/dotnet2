@@ -33,7 +33,8 @@ namespace WMS.Client.Menus
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
         /// <param name="id">ID Grupy</param>
-        public GroupHistoryMenu(MainWindow mainWindow, int id) : base(mainWindow)
+        public GroupHistoryMenu(MainWindow mainWindow, int id)
+            : base(mainWindow)
         {
             groupId = id;
             this.mainWindow = mainWindow;
@@ -84,13 +85,19 @@ namespace WMS.Client.Menus
         /// <summary>
         /// Przejście do menu partnera/magazynu
         /// </summary>
-        /// <param name="id">ID nadawcy/odbiorcy</param>
-        private void RecipientSenderClick(int id)
+        /// <param name="id">ID (chyba) magazynu nadawcy/odbiorcy</param>
+        /// <param name="sender">Nadawca czy odbiorca</param>
+        private void RecipientSenderClick(int id, bool sender)
         {
             int realId = id;
             string name = null;
 
-            bool i = history.Find(x => x.Id == id).Internal;
+            bool i;
+            if (sender)
+                i = history.Find(x => x.SenderId == id).Internal;
+            else
+                i = history.Find(x => x.RecipientId == id).Internal;
+
             if (i)
                 Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
                     {
@@ -115,7 +122,7 @@ namespace WMS.Client.Menus
             int id = (int)(sender as Button).Tag;
             (sender as Button).IsEnabled = false;
 
-            RecipientSenderClick(id);
+            RecipientSenderClick(id, true);
         }
 
         /// <summary>
@@ -128,7 +135,7 @@ namespace WMS.Client.Menus
             int id = (int)(sender as Button).Tag;
             (sender as Button).IsEnabled = false;
 
-            RecipientSenderClick(id);
+            RecipientSenderClick(id, false);
         }
 
         /// <summary>
