@@ -200,9 +200,25 @@ namespace WMS.Client.Menus
             //    MessageBox.Show("Partia znajduje się u partnera. Nie mozna przesunąć", "Uwaga");
         }
 
+        private void FindSender(int id)
+        {
+            Execute(() => PartnersService.GetPartnerByWarehouse(new Request<int>(id)),
+                t => LoadNewMenu(new PartnerMenu(mainWindow, t.Data.Id)));
+        }
+
         private void WarehouseClick(object sender, RoutedEventArgs e)
         {
-            LoadNewMenu(new WarehouseMenu(mainWindow, (int)(sender as Button).Tag, (sender as Button).Content.ToString()));
+            int gid = (int)(sender as Button).Tag;
+            var group = groups.Find(x => x.Id == gid);
+
+            //Execute(() => GroupService.IsSenderInternal(new Request<GroupDto>(group)).Data, t =>
+            //{
+                if (group.Internal)
+                    LoadNewMenu(new WarehouseMenu(mainWindow, group.WarehouseId, group.WarehouseName));
+                else
+                    FindSender(group.WarehouseId);
+            //});
+            //LoadNewMenu(new WarehouseMenu(mainWindow, (int)(sender as Button).Tag, (sender as Button).Content.ToString()));
         }
     }
 }

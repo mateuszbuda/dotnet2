@@ -6,6 +6,7 @@ using WMS.DatabaseAccess.Entities;
 using WMS.ServicesInterface.DTOs;
 using System.Security.Cryptography;
 using System.Text;
+using WMS.ServicesInterface;
 
 namespace WMS.Services.Assemblers
 {
@@ -17,7 +18,7 @@ namespace WMS.Services.Assemblers
             {
                 Id = user.Id,
                 Username = user.Username,
-                Permissions = user.Permissions,
+                Permissions = (PermissionLevel)user.Permissions,
                 Password = ""
             };
         }

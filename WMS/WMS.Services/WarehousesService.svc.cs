@@ -20,7 +20,7 @@ namespace WMS.Services
     {
         public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
         {
-            CheckPermissions(0);
+            CheckPermissions(PermissionLevel.User);
             return new Response<List<WarehouseSimpleDto>>(request.Id,
                 Transaction(tc => tc.Entities.Warehouses.Where(x => x.Internal && !x.Deleted).ToList().
                     Select(warehouseAssembler.ToSimpleDto).ToList()));

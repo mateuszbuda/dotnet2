@@ -31,12 +31,12 @@ namespace WMS.Services
                 Select(groupAssembler.ToLocationDto).FirstOrDefault()));
         }
 
-        public Response<List<GroupHistoryDto>> GetGroupHistory(Request<int> GroupId)
+        public Response<List<GroupDto>> GetGroupHistory(Request<int> GroupId)
         {
-            return new Response<List<GroupHistoryDto>>(GroupId.Id, Transaction(tc =>
+            return new Response<List<GroupDto>>(GroupId.Id, Transaction(tc =>
                 tc.Entities.Shifts.Where(x => x.GroupId == GroupId.Content).
                     Include(x => x.Group.Sector.Warehouse).Include(x => x.Sender).
-                Select(groupAssembler.ToHistoryDto).ToList()));
+                Select(groupAssembler.ToDto).ToList()));
         }
 
         public Response<List<GroupDto>> GetGroups(Request request)
@@ -53,6 +53,17 @@ namespace WMS.Services
                 tc.Entities.GroupsDetails.Where(x => x.GroupId == GroupId.Content).
                     Include(x => x.Product).
                 Select(productAssembler.ToDetailsDto).ToList()));
+        }
+
+        public Response<bool> IsSenderInternal(Request<GroupDto> group)
+        {
+            bool ret = false;
+            Transaction(tc =>
+                {
+                    var s = tc.Entities.Groups.Include(x => x.Shifts).Where(x => x.Id == group.Content.Id).FirstOrDefault().Shifts.Where(x => x.Latest == true).FirstOrDefault();
+                    ret = tc.Entities.Warehouses.Find(s.SenderId).Internal;
+                });
+            return new Response<bool>(group.Id, ret);
         }
     }
 }

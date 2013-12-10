@@ -5,6 +5,7 @@ using System.Web;
 using WMS.DatabaseAccess;
 using WMS.DatabaseAccess.Entities;
 using WMS.ServicesInterface.DTOs;
+using System.Data.Entity;
 
 namespace WMS.Services.Assemblers
 {
@@ -42,7 +43,7 @@ namespace WMS.Services.Assemblers
                 {
                     context.TransactionSync(tc =>
                         {
-                            shifts = tc.Entities.Shifts.Where(x => x.GroupId == groupId).ToList().
+                            shifts = tc.Entities.Shifts.Include(x => x.Sender).Where(x => x.GroupId == groupId).ToList().
                                 FindAll(x => x.Date > s.Date);
                             shifts.Sort((x, y) =>
                                 {

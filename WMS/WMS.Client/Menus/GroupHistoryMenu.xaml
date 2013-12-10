@@ -41,7 +41,7 @@
                         <DataGridTemplateColumn Header="Odbiorca">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Margin="5,0,5,0" MinWidth="80" Background="{Binding RecipientColor}" Click="RecipientButtonClick" Tag="{Binding RecipientId}" Content="{Binding RecipientName}"/>
+                                    <Button Margin="5,0,5,0" MinWidth="80" Background="{Binding RecipientColor}" Click="RecipientButtonClick" Tag="{Binding WarehouseId}" Content="{Binding WarehouseName}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

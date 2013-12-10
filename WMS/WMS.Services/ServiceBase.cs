@@ -47,13 +47,13 @@ namespace WMS.Services
             }
         }
 
-        protected void CheckPermissions(int permission)
+        protected void CheckPermissions(PermissionLevel permission)
         {
             User u = null;
             Transaction(tc => u = tc.Entities.Users.
                 Where(x => x.Username == ServiceSecurityContext.Current.PrimaryIdentity.Name).FirstOrDefault());
 
-            if (u == null || u.Permissions > permission)
+            if (u == null || u.Permissions > (int)permission)
                 throw new FaultException<ServiceException>(new ServiceException("Brak uprawnień!"));
         }
     }
