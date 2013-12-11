@@ -19,6 +19,7 @@ namespace WMS.ServicesInterface.DTOs
         // nazwa magazynu odbiorcy
         public string WarehouseName { get; set; }
         public bool Internal { get; set; }
+        public byte[] Version { get; set; }
     }
 
     public class GroupLocationDto // do użycia w oknie 5 jako info o grupie

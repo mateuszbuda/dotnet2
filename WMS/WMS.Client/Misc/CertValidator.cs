@@ -13,8 +13,8 @@ namespace WMS.Client.Misc
     {
         public override void Validate(X509Certificate2 certificate)
         {
-            if (certificate == null || certificate.SubjectName.Name != "CN=TestCert")
-                throw new SecurityTokenValidationException("Błędny certyfikat!");
+            //if (certificate == null || certificate.SubjectName.Name != "CN=TestCert")
+            //    throw new SecurityTokenValidationException("Błędny certyfikat!");
         }
     }
 }

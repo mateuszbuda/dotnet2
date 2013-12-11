@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using WMS.DatabaseAccess;
 using WMS.DatabaseAccess.Entities;
+using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
 namespace WMS.Services.Assemblers
@@ -65,6 +67,7 @@ namespace WMS.Services.Assemblers
                 SenderName = s.Sender.Name,
                 WarehouseId = warehouseId,
                 WarehouseName = warehouseName,
+                Version = s.Version,
             };
         }
 
@@ -77,6 +80,21 @@ namespace WMS.Services.Assemblers
                 SectorNumber = g.Sector.Number,
                 WarehouseName = g.Sector.Warehouse.Name,
             };
+        }
+
+        public Shift ToEntity(GroupDto group, Shift ent = null)
+        {
+            if (ent != null && !group.Version.SequenceEqual(ent.Version))
+                throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
+
+            ent = ent ?? new Shift();
+
+            ent.Date = group.Date;
+            ent.GroupId = group.Id;
+            ent.Latest = true;
+            ent.SenderId = group.SenderId;
+
+            return ent;
         }
     }
 }

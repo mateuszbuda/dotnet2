@@ -47,23 +47,6 @@ namespace WMS.Client.Dialogs
         /// </summary>
         private void LoadData()
         {
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    group = (from g in context.Groups.Include("Sector")
-            //             where g.Id == this.groupId
-            //             select g).FirstOrDefault();
-
-            //    warehouses = (from w in context.Warehouses.Include("Sectors.Groups")
-            //                  where w.Deleted == false
-            //                  select w).ToList();
-
-            //    return true;
-            //}, t => Dispatcher.BeginInvoke(new Action(() =>
-            //{
-            //    isLoaded = true;
-            //    InitializeData();
-            //}
-            //    )), tokenSource);
             Execute(() => GroupsService.GetGroupInfo(new Request<int>(groupId)), t =>
                 {
                     group = t.Data;
@@ -128,6 +111,7 @@ namespace WMS.Client.Dialogs
                 return;
             }
 
+            
             //DatabaseAccess.Warehouse recipient =
             //    ((DatabaseAccess.Sector)WarehousesComboBox.Items[WarehousesComboBox.SelectedIndex]).Warehouse;
 

@@ -14,15 +14,15 @@ namespace WMS.ServicesInterface.ServiceContracts
     {
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<List<GroupDto>> GetSectorGroups(Request<int> SectorId);
+        Response<List<GroupDto>> GetSectorGroups(Request<int> sectorId);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<GroupLocationDto> GetGroupInfo(Request<int> GroupId);
+        Response<GroupLocationDto> GetGroupInfo(Request<int> groupId);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<List<GroupHistoryDto>> GetGroupHistory(Request<int> GroupId);
+        Response<List<GroupHistoryDto>> GetGroupHistory(Request<int> groupId);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
@@ -30,6 +30,10 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<List<ProductDetailsDto>> GetGroupDetails(Request<int> GroupId);
+        Response<List<ProductDetailsDto>> GetGroupDetails(Request<int> groupId);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<GroupDto> AddNew(Request<GroupDto> group);
     }
 }

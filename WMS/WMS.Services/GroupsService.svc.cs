@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
-using System.Data.Entity;
-using WMS.Services.Assemblers;
+using WMS.ServicesInterface;
+using WMS.ServicesInterface.ServiceContracts;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
-using WMS.ServicesInterface.ServiceContracts;
+using WMS.Services.Assemblers;
+using WMS.DatabaseAccess.Entities;
 
 namespace WMS.Services
 {
@@ -53,6 +56,14 @@ namespace WMS.Services
                 tc.Entities.GroupsDetails.Where(x => x.GroupId == GroupId.Content).
                     Include(x => x.Product).
                 Select(productAssembler.ToDetailsDto).ToList()));
+        }
+
+
+        public Response<GroupDto> AddNew(Request<GroupDto> group)
+        {
+            Shift s = null;
+            Transaction(tc => s = tc.Entities.Shifts.Add(groupAssembler.ToEntity(group.Content)));
+            return new Response<GroupDto>(group.Id, groupAssembler.ToDto(s));
         }
     }
 }

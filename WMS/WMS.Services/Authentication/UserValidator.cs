@@ -23,7 +23,8 @@ namespace WMS.Services.Authentication
 
             using (var context = new SystemContext())
             {
-                context.TransactionSync(tc => user = tc.Entities.Users.Where(x => x.Username == u.Username).FirstOrDefault());
+                context.TransactionSync(tc => 
+                    user = tc.Entities.Users.Where(x => x.Username == u.Username).FirstOrDefault());
             }
 
             // makecert.exe -sr LocalMachine -ss My -a sha1 -n CN=TestCert -sky exchange -pe
