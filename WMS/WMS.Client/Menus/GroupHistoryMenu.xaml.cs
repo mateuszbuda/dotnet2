@@ -25,7 +25,7 @@ namespace WMS.Client.Menus
     {
         private int groupId;
         private MainWindow mainWindow;
-        private List<GroupHistoryDto> history;
+        private List<GroupDto> history;
         private bool isLoaded;
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace WMS.Client.Menus
 
             HistoryGrid.Items.Clear();
 
-            foreach (GroupHistoryDto h in history)
+            foreach (GroupDto h in history)
             {
                 HistoryGrid.Items.Add(h);
             }
@@ -92,23 +92,20 @@ namespace WMS.Client.Menus
             int realId = id;
             string name = null;
 
-            bool i;
-            if (sender)
-                i = history.Find(x => x.SenderId == id).Internal;
-            else
-                i = history.Find(x => x.RecipientId == id).Internal;
+            Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
+                {
 
-            if (i)
-                Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
+                    if (t.Data.Internal)
                     {
                         name = t.Data.Name;
                         LoadNewMenu(new WarehouseMenu(mainWindow, realId, name));
-                    });
-            else
-                Execute(() => PartnersService.GetPartnerByWarehouse(new Request<int>(id)), t =>
-                {
-                    realId = t.Data.Id;
-                    LoadNewMenu(new PartnerMenu(mainWindow, realId));
+                    }
+                    else
+                        Execute(() => PartnersService.GetPartnerByWarehouse(new Request<int>(id)), x =>
+                        {
+                            realId = x.Data.Id;
+                            LoadNewMenu(new PartnerMenu(mainWindow, realId));
+                        });
                 });
         }
 

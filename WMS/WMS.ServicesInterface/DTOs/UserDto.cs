@@ -11,6 +11,6 @@ namespace WMS.ServicesInterface.DTOs
         public string Username { get; set; }
         public string Password { get; set; }
         public int Id { get; set; }
-        public int Permissions { get; set; }
+        public PermissionLevel Permissions { get; set; }
     }
 }

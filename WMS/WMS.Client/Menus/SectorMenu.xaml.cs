@@ -116,11 +116,8 @@ namespace WMS.Client.Menus
         /// <param name="id"></param>
         private void FindSender(int id)
         {
-            Execute(() => WarehousesService.GetWarehouse(new Request<int>(id)), t =>
-            {
-                int pId = t.Data.Id;
-                LoadNewMenu(new PartnerMenu(mainWindow, pId));
-            });
+            Execute(() => PartnersService.GetPartnerByWarehouse(new Request<int>(id)), 
+                t => LoadNewMenu(new PartnerMenu(mainWindow, t.Data.Id)));
         }
 
         /// <summary>
@@ -134,10 +131,13 @@ namespace WMS.Client.Menus
 
             GroupDto group = groups.FirstOrDefault(g => g.Id == int.Parse((sender as Button).Tag as string));
 
-            if (group.Internal)
-                LoadNewMenu(new WarehouseMenu(mainWindow, group.SenderId, group.SenderName));
-            else
-                FindSender(group.SenderId);
+            Execute(() => GroupService.IsSenderInternal(new Request<GroupDto>(group)).Data, t =>
+                {
+                    if (t)
+                        LoadNewMenu(new WarehouseMenu(mainWindow, group.SenderId, group.SenderName));
+                    else
+                        FindSender(group.SenderId);
+                });
         }
 
         /// <summary>

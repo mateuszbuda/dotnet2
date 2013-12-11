@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WMS.Client.Menus;
+using WMS.ServicesInterface;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.ServiceContracts;
@@ -30,7 +31,7 @@ namespace WMS.Client
         /// Przeładowywanie kontrolki i jej zawartości w oknie głównym
         /// </summary>
         public Action ReloadWindow { get; set; }
-        public int Permissions { get; set; }
+        public PermissionLevel Permissions { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 

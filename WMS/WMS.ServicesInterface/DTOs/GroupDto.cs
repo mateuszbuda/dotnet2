@@ -20,6 +20,7 @@ namespace WMS.ServicesInterface.DTOs
         public string WarehouseName { get; set; }
         public bool Internal { get; set; }
         public byte[] Version { get; set; }
+        //public Color 
     }
 
     public class GroupLocationDto // do użycia w oknie 5 jako info o grupie

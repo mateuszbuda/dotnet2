@@ -22,7 +22,7 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<List<GroupHistoryDto>> GetGroupHistory(Request<int> groupId);
+        Response<List<GroupDto>> GetGroupHistory(Request<int> groupId);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
@@ -35,5 +35,9 @@ namespace WMS.ServicesInterface.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
         Response<GroupDto> AddNew(Request<GroupDto> group);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<bool> IsSenderInternal(Request<GroupDto> group);
     }
 }
