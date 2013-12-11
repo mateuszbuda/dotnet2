@@ -55,11 +55,11 @@ namespace WMS.Client
             var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("SecureBinding_IAuthenticationService");
             authenticationChannelFactory.Credentials.UserName.UserName = user.Username;
             authenticationChannelFactory.Credentials.UserName.Password = user.Password;
-            IAuthenticationService AuthService = authenticationChannelFactory.CreateChannel();
+            IAuthenticationService authService = authenticationChannelFactory.CreateChannel();
 
 
             BaseMenu menu = new BaseMenu(this);
-            menu.Execute(() => AuthService.Authenticate(new Request<UserDto>(user)), t =>
+            menu.Execute(() => authService.Authenticate(new Request<UserDto>(user)), t =>
                 {
                     Username = t.Data.Username;
                     Password = user.Password;

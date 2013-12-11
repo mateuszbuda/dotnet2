@@ -11,6 +11,8 @@ using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services
 {
+    public delegate void CheckPermissionsDelegate(PermissionLevel permission);
+
     public class ServiceBase
     {
         protected ProductAssembler productAssembler;
@@ -20,7 +22,6 @@ namespace WMS.Services
         protected WarehouseAssembler warehouseAssembler;
         protected SectorAssembler sectorAssembler;
 
-
         public ServiceBase()
         {
             productAssembler = new ProductAssembler();
@@ -29,7 +30,11 @@ namespace WMS.Services
             groupAssembler = new GroupAssembler();
             warehouseAssembler = new WarehouseAssembler();
             sectorAssembler = new SectorAssembler();
+
+            CheckPermissions = DefaultPermissionChecker;
         }
+
+        public CheckPermissionsDelegate CheckPermissions { get; set; }
 
         protected T Transaction<T>(Func<TransactionContext, T> action)
         {
@@ -47,7 +52,7 @@ namespace WMS.Services
             }
         }
 
-        protected void CheckPermissions(PermissionLevel permission)
+        protected void DefaultPermissionChecker(PermissionLevel permission)
         {
             User u = null;
             Transaction(tc => u = tc.Entities.Users.
