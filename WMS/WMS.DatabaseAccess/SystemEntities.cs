@@ -45,7 +45,19 @@ namespace WMS.DatabaseAccess
         /// </summary>
         public DbSet<GroupDetails> GroupsDetails { get; set; }
 
+        /// <summary>
+        /// Użytkownicy
+        /// </summary>
         public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// Metoda do testów jednostkowych.
+        /// </summary>
+        /// <returns></returns>
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

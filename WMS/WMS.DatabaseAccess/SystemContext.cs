@@ -45,23 +45,23 @@ namespace WMS.DatabaseAccess
             }
         }
 
-        public void Transaction(Action<TransactionContext> action, Action success = null, Action<Exception> exception = null)
-        {
-            Transaction<bool>(tc => { action(tc); return false; }, success != null ? x => success() : (Action<bool>)null, exception);
-        }
+        //public void Transaction(Action<TransactionContext> action, Action success = null, Action<Exception> exception = null)
+        //{
+        //    Transaction<bool>(tc => { action(tc); return false; }, success != null ? x => success() : (Action<bool>)null, exception);
+        //}
 
-        public void Transaction<T>(Func<TransactionContext, T> action, Action<T> success = null, Action<Exception> exception = null)
-        {
-            Task<T> task = new Task<T>(() => TransactionSync(action));
+        //public void Transaction<T>(Func<TransactionContext, T> action, Action<T> success = null, Action<Exception> exception = null)
+        //{
+        //    Task<T> task = new Task<T>(() => TransactionSync(action));
 
-            if (success != null)
-                task.ContinueWith(t => success(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
+        //    if (success != null)
+        //        task.ContinueWith(t => success(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
 
-            if (exception != null)
-                task.ContinueWith(t => exception(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+        //    if (exception != null)
+        //        task.ContinueWith(t => exception(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
 
-            task.Start();
-        }
+        //    task.Start();
+        //}
 
         public void Dispose()
         {

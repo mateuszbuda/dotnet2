@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.Client", "WMS.Client\WM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.DatabaseAccess", "WMS.DatabaseAccess\WMS.DatabaseAccess.csproj", "{3F533C53-DDE5-4FF3-B53D-5B694D7CA488}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.DatabaseAccess.Tests", "WMS.DatabaseAccess.Tests\WMS.DatabaseAccess.Tests.csproj", "{5C761249-CB99-405F-83F3-47FE0C8EAB08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS.Services.Tests", "WMS.Services.Tests\WMS.Services.Tests.csproj", "{D6BE537D-F796-42B4-85F8-1D5D5EB7AC6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,14 @@ Global
 		{3F533C53-DDE5-4FF3-B53D-5B694D7CA488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F533C53-DDE5-4FF3-B53D-5B694D7CA488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F533C53-DDE5-4FF3-B53D-5B694D7CA488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C761249-CB99-405F-83F3-47FE0C8EAB08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C761249-CB99-405F-83F3-47FE0C8EAB08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C761249-CB99-405F-83F3-47FE0C8EAB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C761249-CB99-405F-83F3-47FE0C8EAB08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6BE537D-F796-42B4-85F8-1D5D5EB7AC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6BE537D-F796-42B4-85F8-1D5D5EB7AC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6BE537D-F796-42B4-85F8-1D5D5EB7AC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BE537D-F796-42B4-85F8-1D5D5EB7AC6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
