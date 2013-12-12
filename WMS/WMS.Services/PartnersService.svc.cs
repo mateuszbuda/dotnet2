@@ -10,6 +10,7 @@ using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.ServiceContracts;
 using WMS.DatabaseAccess.Entities;
+using WMS.ServicesInterface;
 
 namespace WMS.Services
 {
@@ -18,12 +19,14 @@ namespace WMS.Services
     {
         public Response<List<PartnerSimpleDto>> GetPartners(Request request)
         {
+            CheckPermissions(PermissionLevel.User);
             return new Response<List<PartnerSimpleDto>>(request.Id, Transaction(tc => tc.Entities.Partners.Include(x => x.Warehouse).
                 Select(partnerAssembler.ToSimpleDto).ToList()));
         }
 
         public Response<PartnerDto> GetPartner(Request<int> PartnerId)
         {
+            CheckPermissions(PermissionLevel.User);
             return new Response<PartnerDto>(PartnerId.Id, Transaction(tc =>
                 tc.Entities.Partners.Where(x => x.Id == PartnerId.Content).Include(x => x.Warehouse).
                 Select(partnerAssembler.ToDto).FirstOrDefault()));
@@ -31,6 +34,7 @@ namespace WMS.Services
 
         public Response<PartnerDto> GetPartnerByWarehouse(Request<int> warehouseId)
         {
+            CheckPermissions(PermissionLevel.User);
             return new Response<PartnerDto>(warehouseId.Id, Transaction(tc =>
                 tc.Entities.Partners.Where(x => x.WarehouseId == warehouseId.Content).Include(x => x.Warehouse).
                 Select(partnerAssembler.ToDto).FirstOrDefault()));
@@ -38,6 +42,7 @@ namespace WMS.Services
 
         public Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> PartnerId)
         {
+            CheckPermissions(PermissionLevel.Manager);
             return new Response<List<GroupHistoryDto>>(PartnerId.Id, Transaction(tc =>
                 {
                     int wId = tc.Entities.Partners.Where(x => x.Id == PartnerId.Content).Select(x => x.WarehouseId).FirstOrDefault();
@@ -48,6 +53,7 @@ namespace WMS.Services
 
         public Response<PartnerDto> AddNew(Request<PartnerDto> partner)
         {
+            CheckPermissions(PermissionLevel.Manager);
             Partner p = null;
             Transaction(tc => p = tc.Entities.Partners.Add(partnerAssembler.ToEntity(partner.Content)));
             return new Response<PartnerDto>(partner.Id, partnerAssembler.ToDto(p));
@@ -55,6 +61,7 @@ namespace WMS.Services
 
         public Response<PartnerDto> Update(Request<PartnerDto> partner)
         {
+            CheckPermissions(PermissionLevel.Manager);
             PartnerDto ret = null;
 
             Transaction(tc =>

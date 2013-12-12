@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
@@ -127,6 +128,12 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void PartnerHistoryMenuClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             LoadNewMenu(new PartnerHistoryMenu(mainWindow, (int)(sender as Button).Tag));
         }
 
@@ -137,8 +144,20 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void PartnerEditClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             PartnerDialog dlg = new PartnerDialog(mainWindow, (int)(sender as Button).Tag);
             dlg.Show();
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+                AddNewButton.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.DataContracts;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 
 namespace WMS.Client.Menus
 {
@@ -232,6 +233,15 @@ namespace WMS.Client.Menus
 
             content.Children.Remove(this);
             content.Children.Add(menu);
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(mainWindow.Permissions > PermissionLevel.Administrator)
+                DeleteButton.Visibility = System.Windows.Visibility.Hidden;
+
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+                EditButton.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
@@ -126,8 +127,20 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditProductClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             ProductDialog dlg = new ProductDialog(mainWindow, (int)(sender as Button).Tag);
             dlg.Show();
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+                AddNewButton.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

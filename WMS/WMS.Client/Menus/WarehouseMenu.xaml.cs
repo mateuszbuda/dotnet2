@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.DataContracts;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 
 namespace WMS.Client.Menus
 {
@@ -200,6 +201,12 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void DeleteClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Administrator)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
 
             if (MessageBox.Show("Czy chcesz usunąć ten sektor?", "Uwaga!",
@@ -214,6 +221,12 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
 
             SectorsDialog dlg = new SectorsDialog(mainWindow, warehouseId, id);
@@ -312,6 +325,18 @@ namespace WMS.Client.Menus
         private void MenuSizeChanged(object sender, SizeChangedEventArgs e)
         {
             ShowData();
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (mainWindow.Permissions > PermissionLevel.Administrator)
+            {
+                AddNewButton.Visibility = System.Windows.Visibility.Hidden;
+                DeleteButton.Visibility = System.Windows.Visibility.Hidden;
+            }
+
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+                EditButton.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

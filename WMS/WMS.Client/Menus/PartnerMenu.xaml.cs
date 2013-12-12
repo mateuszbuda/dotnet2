@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
@@ -127,6 +128,15 @@ namespace WMS.Client.Menus
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {
             LoadNewMenu(new PartnerHistoryMenu(mainWindow, partnerId));
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+            {
+                EditButton.Visibility = System.Windows.Visibility.Hidden;
+                HistoryButton.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ namespace WMS.Services
 
         public Response<bool> DeleteIfEmpty(Request<int> warehouseId)
         {
+            CheckPermissions(PermissionLevel.Administrator);
             bool ret = false;
 
             Transaction(tc =>
@@ -54,6 +55,7 @@ namespace WMS.Services
 
         public Response<bool> DeleteSectorIfEmpty(Request<int> sectorId)
         {
+            CheckPermissions(PermissionLevel.Administrator);
             bool ret = false;
 
             Transaction(tc =>
@@ -77,6 +79,7 @@ namespace WMS.Services
 
         public Response<StatisticsDto> GetStatistics(Request request)
         {
+            CheckPermissions(PermissionLevel.User);
             StatisticsDto stats = new StatisticsDto();
             Transaction(tc =>
                 {
@@ -109,6 +112,7 @@ namespace WMS.Services
 
         public Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId)
         {
+            CheckPermissions(PermissionLevel.User);
             return new Response<WarehouseDto>(WarehouseId.Id, Transaction(tc =>
                 tc.Entities.Warehouses.Where(x => x.Id == WarehouseId.Content).Include(x => x.Sectors).
                 Select(warehouseAssembler.ToDto).FirstOrDefault()));
@@ -116,6 +120,7 @@ namespace WMS.Services
 
         public Response<List<SectorDto>> GetSectors(Request<int> WarehouseId)
         {
+            CheckPermissions(PermissionLevel.User);
             return new Response<List<SectorDto>>(WarehouseId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s =>
                     (s.WarehouseId == WarehouseId.Content && s.Deleted == false)).
@@ -125,6 +130,7 @@ namespace WMS.Services
 
         public Response<SectorDto> GetSector(Request<int> SectorId)
         {
+            CheckPermissions(PermissionLevel.User);
             return new Response<SectorDto>(SectorId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s => s.Id == SectorId.Content).
                 Include(x => x.Groups).Include(x => x.Warehouse).
@@ -133,6 +139,7 @@ namespace WMS.Services
 
         public Response<SectorDto> AddSector(Request<SectorDto> sector)
         {
+            CheckPermissions(PermissionLevel.Administrator);
             Sector s = null;
             Transaction(tc =>
                 {
@@ -146,6 +153,7 @@ namespace WMS.Services
 
         public Response<WarehouseDto> AddNew(Request<WarehouseDto> warehouse)
         {
+            CheckPermissions(PermissionLevel.Administrator);
             Warehouse w = null;
             Transaction(tc => w = tc.Entities.Warehouses.Add(warehouseAssembler.ToEntity(warehouse.Content)));
             return new Response<WarehouseDto>(warehouse.Id, warehouseAssembler.ToDto(w));
@@ -153,6 +161,7 @@ namespace WMS.Services
 
         public Response<WarehouseDto> Edit(Request<WarehouseDto> warehouse)
         {
+            CheckPermissions(PermissionLevel.Manager);
             Warehouse w = null;
 
             Transaction(tc =>
@@ -167,8 +176,14 @@ namespace WMS.Services
             return new Response<WarehouseDto>(warehouse.Id, warehouseAssembler.ToDto(w));
         }
 
+        /// <summary>
+        /// Zwraca numer nowotworzonego sektora.
+        /// </summary>
+        /// <param name="warehouseId">ID magazynu</param>
+        /// <returns>ID sektora</returns>
         public Response<int> GetNextSectorNumber(Request<int> warehouseId)
         {
+            CheckPermissions(PermissionLevel.Administrator);
             int ret = 1;
 
             Transaction(tc => 
@@ -184,6 +199,7 @@ namespace WMS.Services
 
         public Response<SectorDto> EditSector(Request<SectorDto> sector)
         {
+            CheckPermissions(PermissionLevel.Manager);
             SectorDto ret = null;
 
             Transaction(tc =>

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.DataContracts;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 
 namespace WMS.Client.Menus
 {
@@ -144,6 +145,12 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         void DeleteClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Administrator)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
             string name = (from w in warehouses
                            where w.Id == id
@@ -161,6 +168,12 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void EditClick(object sender, RoutedEventArgs e)
         {
+            if (mainWindow.Permissions > PermissionLevel.Manager)
+            {
+                MessageBox.Show("Brak uprawnień!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             int id = (int)(((e.Source as MenuItem).Parent as ContextMenu).PlacementTarget as Button).Tag;
 
             WarehouseDialog dlg = new WarehouseDialog(mainWindow, id);
@@ -232,6 +245,12 @@ namespace WMS.Client.Menus
         private void MenuSizeChanged(object sender, SizeChangedEventArgs e)
         {
             ShowButtons();
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (mainWindow.Permissions > PermissionLevel.Administrator)
+                AddNewButton.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }
