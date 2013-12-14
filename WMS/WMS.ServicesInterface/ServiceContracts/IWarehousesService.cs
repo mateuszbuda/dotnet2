@@ -14,7 +14,7 @@ namespace WMS.ServicesInterface.ServiceContracts
     {
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<List<WarehouseSimpleDto>> GetWarehouses(Request request);
+        Response<List<WarehouseDetailsDto>> GetWarehouses(Request request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
@@ -30,7 +30,7 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<WarehouseDto> GetWarehouse(Request<int> warehouseId);
+        Response<WarehouseInfoDto> GetWarehouse(Request<int> warehouseId);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
@@ -46,11 +46,11 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<WarehouseDto> AddNew(Request<WarehouseDto> warehouse);
+        Response<WarehouseInfoDto> AddNew(Request<WarehouseInfoDto> warehouse);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<WarehouseDto> Edit(Request<WarehouseDto> warehouse);
+        Response<WarehouseInfoDto> Edit(Request<WarehouseInfoDto> warehouse);
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]

@@ -26,7 +26,7 @@ namespace WMS.Client.Menus
     public partial class WarehouseMenu : BaseMenu   // 3
     {
         private int warehouseId;
-        private WarehouseDto warehouse;
+        private WarehouseInfoDto warehouse;
         private List<SectorDto> sectors;
         private List<int> sectorsInfo;
         private bool isLoaded;

@@ -25,7 +25,7 @@ namespace WMS.Client.Menus
     {
         private int groupId;
         private MainWindow mainWindow;
-        private List<GroupDto> history;
+        private List<ShiftDto> history;
         private bool isLoaded;
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace WMS.Client.Menus
 
             HistoryGrid.Items.Clear();
 
-            foreach (GroupDto h in history)
+            foreach (ShiftDto h in history)
             {
                 HistoryGrid.Items.Add(h);
             }

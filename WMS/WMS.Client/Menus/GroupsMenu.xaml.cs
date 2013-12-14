@@ -24,7 +24,7 @@ namespace WMS.Client.Menus
     public partial class GroupsMenu : BaseMenu // 10
     {
         private MainWindow mainWindow;
-        private List<GroupDto> groups;
+        private List<ShiftDto> groups;
         private bool isLoaded;
         private bool showInternal = false;
         private bool showExternal = false;
@@ -48,7 +48,7 @@ namespace WMS.Client.Menus
         /// </summary>
         private void LoadData()
         {
-            Execute(() => GroupService.GetGroups(new Request()), t =>
+            Execute(() => GroupService.GetShifts(new Request()), t =>
                 {
                     groups = t.Data;
                     isLoaded = true;
@@ -66,7 +66,7 @@ namespace WMS.Client.Menus
 
             GroupsGrid.Items.Clear();
 
-            foreach (GroupDto g in groups)
+            foreach (ShiftDto g in groups)
             {
                 if ((showInternal && g.Internal) || (showExternal && !g.Internal))
                     GroupsGrid.Items.Add(g);
@@ -211,7 +211,7 @@ namespace WMS.Client.Menus
             int gid = (int)(sender as Button).Tag;
             var group = groups.Find(x => x.Id == gid);
 
-            //Execute(() => GroupService.IsSenderInternal(new Request<GroupDto>(group)).Data, t =>
+            //Execute(() => GroupService.IsSenderInternal(new Request<ShiftDto>(group)).Data, t =>
             //{
                 if (group.Internal)
                     LoadNewMenu(new WarehouseMenu(mainWindow, group.WarehouseId, group.WarehouseName));

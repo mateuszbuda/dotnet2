@@ -24,7 +24,7 @@ namespace WMS.Client.Menus
     {
         private int partnerId;
         private PartnerDto partner;
-        private List<GroupHistoryDto> shifts;
+        private List<ShiftHistoryDto> shifts;
         private MainWindow mainWindow;
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace WMS.Client.Menus
 
             PartnerNameLabel.Content = String.Format("Partner '{0}' - Historia", partner.Warehouse.Name);
 
-            foreach (GroupHistoryDto s in shifts)
+            foreach (ShiftHistoryDto s in shifts)
                 ShiftsGrid.Items.Add(s);
 
             LoadingLabel.Visibility = System.Windows.Visibility.Hidden;

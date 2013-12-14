@@ -9,6 +9,9 @@ using WMS.ServicesInterface.DTOs;
 
 namespace WMS.ServicesInterface.ServiceContracts
 {
+    /// <summary>
+    /// Interfejs do wymiany informacji o partnerach
+    /// </summary>
     [ServiceContract]
     public interface IPartnersService
     {
@@ -22,10 +25,10 @@ namespace WMS.ServicesInterface.ServiceContracts
 
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<List<GroupHistoryDto>> GetPartnerHistory(Request<int> PartnerId);
+        Response<List<ShiftHistoryDto>> GetPartnerHistory(Request<int> PartnerId);
 
         [OperationContract]
-		[FaultContract(typeof(ServiceException))]
+        [FaultContract(typeof(ServiceException))]
         Response<PartnerDto> GetPartnerByWarehouse(Request<int> warehouseId);
 
         [OperationContract]

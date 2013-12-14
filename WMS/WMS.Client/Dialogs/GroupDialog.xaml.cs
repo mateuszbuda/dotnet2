@@ -25,8 +25,8 @@ namespace WMS.Client.Dialogs
     {
         private MainWindow mainWindow;
         private List<ProductDto> products;
-        private List<WarehouseSimpleDto> internalOnes;
-        private List<WarehouseSimpleDto> externalOnes;
+        private List<WarehouseDetailsDto> internalOnes;
+        private List<WarehouseDetailsDto> externalOnes;
         private List<SectorDto> secotrs;
         private bool isLoaded;
 
@@ -51,7 +51,7 @@ namespace WMS.Client.Dialogs
                     products = t.Data;
                     Execute(() => WarehousesService.GetWarehouses(new Request()), x =>
                         {
-                            foreach (WarehouseSimpleDto w in x.Data)
+                            foreach (WarehouseDetailsDto w in x.Data)
                             {
                                 if (w.Internal)
                                     this.internalOnes.Add(w);
@@ -66,7 +66,7 @@ namespace WMS.Client.Dialogs
 
         private void WarehousesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            WarehouseSimpleDto selectedW = ((WarehouseSimpleDto)((sender as ComboBox).SelectedItem));
+            WarehouseDetailsDto selectedW = ((WarehouseDetailsDto)((sender as ComboBox).SelectedItem));
             int wId = selectedW != null ? selectedW.Id : -1;
             if (wId == -1)
                 return;
@@ -98,10 +98,10 @@ namespace WMS.Client.Dialogs
             if (!isLoaded)
                 return;
 
-            foreach (WarehouseSimpleDto w in externalOnes)
+            foreach (WarehouseDetailsDto w in externalOnes)
                 PartnersComboBox.Items.Add(w);
 
-            foreach (WarehouseSimpleDto w in internalOnes)
+            foreach (WarehouseDetailsDto w in internalOnes)
                 if ((w.Internal == true && w.FreeSectorsCount > 0) || w.Internal == false)
                     WarehousesComboBox.Items.Add(w);
 
@@ -134,14 +134,14 @@ namespace WMS.Client.Dialogs
         /// <param name="e"></param>
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            //(sender as Button).IsEnabled = false;
+            (sender as Button).IsEnabled = false;
 
-            //if (PartnersComboBox.SelectedIndex < 0 || WarehousesComboBox.SelectedIndex < 0)
-            //{
-            //    MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
-            //    (sender as Button).IsEnabled = true;
-            //    return;
-            //}
+            if (PartnersComboBox.SelectedIndex < 0 || WarehousesComboBox.SelectedIndex < 0)
+            {
+                MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
+                (sender as Button).IsEnabled = true;
+                return;
+            }
             //DatabaseAccess.Warehouse senderW =
             //    (DatabaseAccess.Warehouse)PartnersComboBox.Items[PartnersComboBox.SelectedIndex];
 

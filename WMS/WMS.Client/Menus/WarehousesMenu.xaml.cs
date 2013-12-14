@@ -28,7 +28,7 @@ namespace WMS.Client.Menus
         private MainWindow mainWindow;
 
         private List<Button> buttons;
-        private List<WarehouseSimpleDto> warehouses;
+        private List<WarehouseDetailsDto> warehouses;
         private bool isLoaded;
         private ContextMenu contextMenu;
 
@@ -70,7 +70,7 @@ namespace WMS.Client.Menus
         {
             buttons = new List<Button>();
 
-            foreach (WarehouseSimpleDto w in warehouses)
+            foreach (WarehouseDetailsDto w in warehouses)
             {
                 Button b = new Button();
                 b.Content = String.Format("{0}\n{1} / {2}", w.Name, w.FreeSectorsCount, w.SectorsCount);
@@ -115,7 +115,7 @@ namespace WMS.Client.Menus
             contextMenu.Items.Add(item1);
             contextMenu.Items.Add(item2);
 
-            warehouses = new List<WarehouseSimpleDto>();
+            warehouses = new List<WarehouseDetailsDto>();
 
             LoadWarehouses();
         }

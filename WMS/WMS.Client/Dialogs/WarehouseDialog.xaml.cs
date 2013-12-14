@@ -25,7 +25,7 @@ namespace WMS.Client.Dialogs
     {
         private MainWindow mainWindow;
         private int warehouseId = -1;
-        private WarehouseDto warehouse;
+        private WarehouseInfoDto warehouse;
 
         /// <summary>
         /// Konstruktor uzywany przy edycji magazynu
@@ -93,7 +93,7 @@ namespace WMS.Client.Dialogs
         /// <param name="e"></param>
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            WarehouseDto data = new WarehouseDto()
+            WarehouseInfoDto data = new WarehouseInfoDto()
             {
                 Name = NameTB.Text,
                 City = CityTB.Text,
@@ -108,7 +108,7 @@ namespace WMS.Client.Dialogs
 
             if (warehouseId == -1)
             {
-                Execute(() => WarehousesService.AddNew(new Request<WarehouseDto>(data)), t =>
+                Execute(() => WarehousesService.AddNew(new Request<WarehouseInfoDto>(data)), t =>
                     {
                         mainWindow.ReloadWindow();
                         this.Close();
@@ -124,7 +124,7 @@ namespace WMS.Client.Dialogs
                 data.Id = warehouseId;
                 data.Version = warehouse.Version;
 
-                Execute(() => WarehousesService.Edit(new Request<WarehouseDto>(data)), t =>
+                Execute(() => WarehousesService.Edit(new Request<WarehouseInfoDto>(data)), t =>
                 {
                     mainWindow.ReloadWindow();
                     this.Close();

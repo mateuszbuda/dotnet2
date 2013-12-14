@@ -27,7 +27,7 @@ namespace WMS.Client.Dialogs
         private int sectorId = -1;
         private int warehouseId = -1;
         private SectorDto sector;
-        private WarehouseDto warehouse;
+        private WarehouseInfoDto warehouse;
         private int nextSectorNumber = 1;
 
         /// <summary>

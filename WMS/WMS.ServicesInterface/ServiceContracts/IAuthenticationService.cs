@@ -9,9 +9,17 @@ using WMS.ServicesInterface.DTOs;
 
 namespace WMS.ServicesInterface.ServiceContracts
 {
+    /// <summary>
+    /// Interfejs do uwierzytelniania użytkowników przy logowaniu
+    /// </summary>
     [ServiceContract]
     public interface IAuthenticationService
     {
+        /// <summary>
+        /// Uwierzytelnia zadanego użytkownika lub rzuca wyjątek w razie niepowodzenia
+        /// </summary>
+        /// <param name="user">Zapytanie z uwierzytelnianym użytkownikiem</param>
+        /// <returns>Uwierzytnienionego użytkownika wraz z jego uprawnieniami</returns>
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
         Response<UserDto> Authenticate(Request<UserDto> user);

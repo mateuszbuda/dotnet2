@@ -11,9 +11,17 @@ using WMS.ServicesInterface.ServiceContracts;
 
 namespace WMS.Services
 {
+    /// <summary>
+    /// Serwis służącydo uwierzytelniania uzytkowników
+    /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class AuthenticationService : ServiceBase, IAuthenticationService
     {
+        /// <summary>
+        /// Uwierzytelnia zadanego użytkownika lub rzuca wyjątek w razie niepowodzenia
+        /// </summary>
+        /// <param name="user">Zapytanie z uwierzytelnianym użytkownikiem</param>
+        /// <returns>Uwierzytnienionego użytkownika wraz z jego uprawnieniami</returns>
         public Response<UserDto> Authenticate(Request<UserDto> user)
         {
             var u = userAssembler.ToEntity(user.Content);

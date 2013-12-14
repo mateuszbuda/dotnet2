@@ -26,7 +26,7 @@ namespace WMS.Client.Menus
         private MainWindow mainWindow;
         private int groupId;
         private bool isLoaded;
-        private GroupLocationDto group;
+        private GroupDto group;
         private bool isInternal;
 
         private List<ProductDetailsDto> products;

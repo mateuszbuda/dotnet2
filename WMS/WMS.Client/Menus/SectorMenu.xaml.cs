@@ -26,7 +26,7 @@ namespace WMS.Client.Menus
     {
         private int sectorId;
         private SectorDto sector;
-        private List<GroupDto> groups;
+        private List<ShiftDto> groups;
         private bool isLoaded;
         private MainWindow mainWindow;
 
@@ -81,7 +81,7 @@ namespace WMS.Client.Menus
 
             GroupsGrid.Items.Clear();
 
-            foreach (GroupDto g in groups)
+            foreach (ShiftDto g in groups)
             {
                 GroupsGrid.Items.Add(new
                 {
@@ -130,9 +130,9 @@ namespace WMS.Client.Menus
         {
             (sender as Button).IsEnabled = false;
 
-            GroupDto group = groups.FirstOrDefault(g => g.Id == int.Parse((sender as Button).Tag as string));
+            ShiftDto group = groups.FirstOrDefault(g => g.Id == int.Parse((sender as Button).Tag as string));
 
-            Execute(() => GroupService.IsSenderInternal(new Request<GroupDto>(group)).Data, t =>
+            Execute(() => GroupService.IsSenderInternal(new Request<ShiftDto>(group)).Data, t =>
                 {
                     if (t)
                         LoadNewMenu(new WarehouseMenu(mainWindow, group.SenderId, group.SenderName));

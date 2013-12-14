@@ -15,17 +15,30 @@ using WMS.DatabaseAccess.Entities;
 
 namespace WMS.Services
 {
+    /// <summary>
+    /// Serwis obsługujący zapytania związane z magazynami i sektorami
+    /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, IncludeExceptionDetailInFaults = true)]
     public class WarehousesService : ServiceBase, IWarehousesService
     {
-        public Response<List<WarehouseSimpleDto>> GetWarehouses(Request request)
+        /// <summary>
+        /// Zwraza listę wszystkich wewnętrznych i nieusuniętych magazynów
+        /// </summary>
+        /// <param name="request">Puste zapytanie</param>
+        /// <returns>Odpowiedź z listą żądanych magazynów</returns>
+        public Response<List<WarehouseDetailsDto>> GetWarehouses(Request request)
         {
             CheckPermissions(PermissionLevel.User);
-            return new Response<List<WarehouseSimpleDto>>(request.Id,
+            return new Response<List<WarehouseDetailsDto>>(request.Id,
                 Transaction(tc => tc.Entities.Warehouses.Where(x => x.Internal && !x.Deleted).ToList().
                     Select(warehouseAssembler.ToSimpleDto).ToList()));
         }
 
+        /// <summary>
+        /// Usuwa magazyn jeśli jest pusty
+        /// </summary>
+        /// <param name="warehouseId">Zapytanie z id magazynu do usunięcia</param>
+        /// <returns>Odpowiedź z informację czy operacja się powiodła (czy magazyn był pusty)</returns>
         public Response<bool> DeleteIfEmpty(Request<int> warehouseId)
         {
             CheckPermissions(PermissionLevel.Administrator);
@@ -53,6 +66,11 @@ namespace WMS.Services
             return new Response<bool>(warehouseId.Id, ret);
         }
 
+        /// <summary>
+        /// Usuwa sektor jeśli jest pusty
+        /// </summary>
+        /// <param name="sectorId">Zapytanie z id sektora do usunięcia</param>
+        /// <returns>Odpowiedź z informację czy operacja się powiodła (czy sektor był pusty)</returns>
         public Response<bool> DeleteSectorIfEmpty(Request<int> sectorId)
         {
             CheckPermissions(PermissionLevel.Administrator);
@@ -77,6 +95,11 @@ namespace WMS.Services
             return new Response<bool>(sectorId.Id, ret);
         }
 
+        /// <summary>
+        /// Pobiera statyski związane z systemem
+        /// </summary>
+        /// <param name="request">Puste zapytanie</param>
+        /// <returns>Odpowiedź ze statysykami</returns>
         public Response<StatisticsDto> GetStatistics(Request request)
         {
             CheckPermissions(PermissionLevel.User);
@@ -110,33 +133,53 @@ namespace WMS.Services
             return new Response<StatisticsDto>(request.Id, stats);
         }
 
-        public Response<WarehouseDto> GetWarehouse(Request<int> WarehouseId)
+        /// <summary>
+        /// Pobiera informacjie o zadanym przez id magazynie
+        /// </summary>
+        /// <param name="warehouseId">Zapytanie z id magazynu</param>
+        /// <returns>Odpowiedź z żądanym magazynem</returns>
+        public Response<WarehouseInfoDto> GetWarehouse(Request<int> warehouseId)
         {
             CheckPermissions(PermissionLevel.User);
-            return new Response<WarehouseDto>(WarehouseId.Id, Transaction(tc =>
-                tc.Entities.Warehouses.Where(x => x.Id == WarehouseId.Content).Include(x => x.Sectors).
+            return new Response<WarehouseInfoDto>(warehouseId.Id, Transaction(tc =>
+                tc.Entities.Warehouses.Where(x => x.Id == warehouseId.Content).Include(x => x.Sectors).
                 Select(warehouseAssembler.ToDto).FirstOrDefault()));
         }
 
-        public Response<List<SectorDto>> GetSectors(Request<int> WarehouseId)
+        /// <summary>
+        /// Pobiera sektory dla zadanego magazynu
+        /// </summary>
+        /// <param name="warehouseId">Zapytanie z id magazynu</param>
+        /// <returns>Odpowiedź z listą sektorów</returns>
+        public Response<List<SectorDto>> GetSectors(Request<int> warehouseId)
         {
             CheckPermissions(PermissionLevel.User);
-            return new Response<List<SectorDto>>(WarehouseId.Id, Transaction(tc =>
+            return new Response<List<SectorDto>>(warehouseId.Id, Transaction(tc =>
                 tc.Entities.Sectors.Where(s =>
-                    (s.WarehouseId == WarehouseId.Content && s.Deleted == false)).
+                    (s.WarehouseId == warehouseId.Content && s.Deleted == false)).
                 Include(x => x.Groups).Include(x => x.Warehouse).
                 Select(sectorAssembler.ToDto).ToList()));
         }
 
-        public Response<SectorDto> GetSector(Request<int> SectorId)
+        /// <summary>
+        /// Pobiera informacje o zadanym sektorze
+        /// </summary>
+        /// <param name="sectorId">apytanie z id sektora</param>
+        /// <returns>Odpowiedź z żądanym sektorem</returns>
+        public Response<SectorDto> GetSector(Request<int> sectorId)
         {
             CheckPermissions(PermissionLevel.User);
-            return new Response<SectorDto>(SectorId.Id, Transaction(tc =>
-                tc.Entities.Sectors.Where(s => s.Id == SectorId.Content).
+            return new Response<SectorDto>(sectorId.Id, Transaction(tc =>
+                tc.Entities.Sectors.Where(s => s.Id == sectorId.Content).
                 Include(x => x.Groups).Include(x => x.Warehouse).
                 Select(sectorAssembler.ToDto).FirstOrDefault()));
         }
 
+        /// <summary>
+        /// Dodaje nowy sektor
+        /// </summary>
+        /// <param name="sector">Zapytanie z sektorem do dodania</param>
+        /// <returns>Odpowiedź z dodanym sektorem</returns>
         public Response<SectorDto> AddSector(Request<SectorDto> sector)
         {
             CheckPermissions(PermissionLevel.Administrator);
@@ -147,19 +190,29 @@ namespace WMS.Services
                     if (s.Warehouse == null)
                         s.Warehouse = tc.Entities.Warehouses.Find(s.WarehouseId);
                 });
-                            
+
             return new Response<SectorDto>(sector.Id, sectorAssembler.ToDto(s));
         }
 
-        public Response<WarehouseDto> AddNew(Request<WarehouseDto> warehouse)
+        /// <summary>
+        /// Dodaje nowy magazyn
+        /// </summary>
+        /// <param name="warehouse">Zapytanie z magazynem do dodania</param>
+        /// <returns>Odpowiedź z dodanym magazynem</returns>
+        public Response<WarehouseInfoDto> AddNew(Request<WarehouseInfoDto> warehouse)
         {
             CheckPermissions(PermissionLevel.Administrator);
             Warehouse w = null;
             Transaction(tc => w = tc.Entities.Warehouses.Add(warehouseAssembler.ToEntity(warehouse.Content)));
-            return new Response<WarehouseDto>(warehouse.Id, warehouseAssembler.ToDto(w));
+            return new Response<WarehouseInfoDto>(warehouse.Id, warehouseAssembler.ToDto(w));
         }
 
-        public Response<WarehouseDto> Edit(Request<WarehouseDto> warehouse)
+        /// <summary>
+        /// Edycja danych o magazynie
+        /// </summary>
+        /// <param name="warehouse">Zapytanie z wyedytowanym magazynem</param>
+        /// <returns>Odpowiedź z wyedytowanym magazynem</returns>
+        public Response<WarehouseInfoDto> Edit(Request<WarehouseInfoDto> warehouse)
         {
             CheckPermissions(PermissionLevel.Manager);
             Warehouse w = null;
@@ -173,20 +226,20 @@ namespace WMS.Services
                     warehouseAssembler.ToEntity(warehouse.Content, w);
                 });
 
-            return new Response<WarehouseDto>(warehouse.Id, warehouseAssembler.ToDto(w));
+            return new Response<WarehouseInfoDto>(warehouse.Id, warehouseAssembler.ToDto(w));
         }
 
         /// <summary>
-        /// Zwraca numer nowotworzonego sektora.
+        /// Zwraca numer kolejnego wolnego numeru sektora dla zadanego magazynu
         /// </summary>
-        /// <param name="warehouseId">ID magazynu</param>
-        /// <returns>ID sektora</returns>
+        /// <param name="warehouseId">Zapytanie z id magazynu</param>
+        /// <returns>Odpowiedź z kolejnym numerem wolnego sektora</returns>
         public Response<int> GetNextSectorNumber(Request<int> warehouseId)
         {
             CheckPermissions(PermissionLevel.Administrator);
             int ret = 1;
 
-            Transaction(tc => 
+            Transaction(tc =>
                 {
                     var w = tc.Entities.Warehouses.Find(warehouseId.Content);
 
@@ -197,6 +250,11 @@ namespace WMS.Services
             return new Response<int>(warehouseId.Id, ret);
         }
 
+        /// <summary>
+        /// Edycja istniejącego sektora
+        /// </summary>
+        /// <param name="sector">Zapytanie z wyedytowanym sektorem</param>
+        /// <returns>Odpowiedź z wyedytowanym sektorem</returns>
         public Response<SectorDto> EditSector(Request<SectorDto> sector)
         {
             CheckPermissions(PermissionLevel.Manager);
@@ -210,7 +268,7 @@ namespace WMS.Services
 
                 sectorAssembler.ToEntity(sector.Content, s);
 
-                if(s.Warehouse == null)
+                if (s.Warehouse == null)
                     s.Warehouse = tc.Entities.Warehouses.Find(s.WarehouseId);
 
                 ret = sectorAssembler.ToDto(s);

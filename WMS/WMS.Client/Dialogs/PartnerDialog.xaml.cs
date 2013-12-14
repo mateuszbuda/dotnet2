@@ -108,7 +108,7 @@ namespace WMS.Client.Dialogs
 
             if (partnerId == -1)
             {
-                WarehouseDto w = new WarehouseDto()
+                WarehouseInfoDto w = new WarehouseInfoDto()
                 {
                     Name = data.Name,
                     City = data.City,

@@ -24,8 +24,8 @@ namespace WMS.Client.Dialogs
     public partial class ShiftDialog : BaseDialog
     {
         private MainWindow mainWindow;
-        private GroupLocationDto group;
-        private List<WarehouseSimpleDto> warehouses;
+        private GroupDto group;
+        private List<WarehouseDetailsDto> warehouses;
         private List<SectorDto> secotrs;
         private bool isLoaded;
         private int groupId;
@@ -69,14 +69,14 @@ namespace WMS.Client.Dialogs
 
             Header.Content = "Przesuwanie partii " + groupId.ToString();
 
-            foreach (WarehouseSimpleDto w in warehouses)
+            foreach (WarehouseDetailsDto w in warehouses)
                 if ((w.Internal == true && w.FreeSectorsCount > 0) || w.Internal == false)
                     WarehousesComboBox.Items.Add(w);
         }
 
         private void WarehousesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            WarehouseSimpleDto selectedW = ((WarehouseSimpleDto)((sender as ComboBox).SelectedItem));
+            WarehouseDetailsDto selectedW = ((WarehouseDetailsDto)((sender as ComboBox).SelectedItem));
             int wId = selectedW != null ? selectedW.Id : -1;
             if (wId == -1)
                 return;
