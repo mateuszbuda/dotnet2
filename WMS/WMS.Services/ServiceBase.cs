@@ -22,6 +22,8 @@ namespace WMS.Services
         protected WarehouseAssembler warehouseAssembler;
         protected SectorAssembler sectorAssembler;
 
+        public bool Rollback { get; set; }
+
         public ServiceBase()
         {
             productAssembler = new ProductAssembler();
@@ -32,6 +34,7 @@ namespace WMS.Services
             sectorAssembler = new SectorAssembler();
 
             CheckPermissions = DefaultPermissionChecker;
+            Rollback = false;
         }
 
         public CheckPermissionsDelegate CheckPermissions { get; set; }
@@ -40,7 +43,12 @@ namespace WMS.Services
         {
             using (var context = new SystemContext())
             {
-                return context.TransactionSync(action);
+                return context.TransactionSync(tc =>
+                    {
+                        if (Rollback)
+                            tc.Rollback = true;
+                        return action(tc);
+                    });
             }
         }
 
@@ -48,7 +56,12 @@ namespace WMS.Services
         {
             using (var context = new SystemContext())
             {
-                context.TransactionSync(action);
+                context.TransactionSync(tc =>
+                    {
+                        if (Rollback)
+                            tc.Rollback = true;
+                        action(tc);
+                    });
             }
         }
 

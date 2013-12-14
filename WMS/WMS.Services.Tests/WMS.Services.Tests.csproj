@@ -35,7 +35,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects">
+      <HintPath>..\packages\CompareNETObjects.1.7.4.0\lib\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -50,8 +62,30 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="AssemblersTests.cs" />
+    <Compile Include="PermissionsTest.cs" />
+    <Compile Include="ServicesProvider.cs" />
+    <Compile Include="ServicesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BadDataTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WMS.DatabaseAccess\WMS.DatabaseAccess.csproj">
+      <Project>{3f533c53-dde5-4ff3-b53d-5b694d7ca488}</Project>
+      <Name>WMS.DatabaseAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WMS.ServicesInterface\WMS.ServicesInterface.csproj">
+      <Project>{69e0d959-e43e-42f0-8e48-998700a21a98}</Project>
+      <Name>WMS.ServicesInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WMS.Services\WMS.Services.csproj">
+      <Project>{0cbced2c-e8fa-48b5-9b3f-7142e16f9a51}</Project>
+      <Name>WMS.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
