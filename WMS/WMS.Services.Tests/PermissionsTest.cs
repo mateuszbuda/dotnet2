@@ -24,7 +24,7 @@ namespace WMS.Services.Tests
         public void WarehouseAddPermissionTest()
         {
             var w = CreateWarehouse();
-            warehousesService.AddNew(new Request<WarehouseDto>(new WarehouseAssembler().ToDto(w)));
+            warehousesService.AddNew(new Request<WarehouseInfoDto>(new WarehouseAssembler().ToDto(w)));
         }
 
         [TestMethod, ExpectedException(typeof(FaultException<ServiceException>))]

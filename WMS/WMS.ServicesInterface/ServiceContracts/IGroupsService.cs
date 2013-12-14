@@ -80,7 +80,7 @@ namespace WMS.ServicesInterface.ServiceContracts
         /// <returns>Odpowiedź z dodaną grupą</returns>
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        public Response<GroupDto> AddNew(Request<GroupDto> group)
+        Response<GroupDto> AddNew(Request<GroupDto> group);
 
         /// <summary>
         /// Sprawdzenie, czy nadawca przesunięcia jest magazynem wewnętrznym.

@@ -83,7 +83,7 @@ namespace WMS.Services.Tests
                         warehousesService.Rollback = false;
 
                         var x = CreateWarehouse();
-                        int id = warehousesService.AddNew(new Request<ServicesInterface.DTOs.WarehouseDto>(new WarehouseAssembler().ToDto(x))).Data.Id;
+                        int id = warehousesService.AddNew(new Request<ServicesInterface.DTOs.WarehouseInfoDto>(new WarehouseAssembler().ToDto(x))).Data.Id;
 
                         var z = warehousesService.GetWarehouses(new Request()).Data.Find(t => t.Id == id);
                         Assert.IsNotNull(z);
@@ -108,11 +108,11 @@ namespace WMS.Services.Tests
 
                             warehousesService.Rollback = false;
                             var x = CreateWarehouse();
-                            int id = warehousesService.AddNew(new Request<ServicesInterface.DTOs.WarehouseDto>(new WarehouseAssembler().ToDto(x))).Data.Id;
+                            int id = warehousesService.AddNew(new Request<ServicesInterface.DTOs.WarehouseInfoDto>(new WarehouseAssembler().ToDto(x))).Data.Id;
                             var w = warehousesService.GetWarehouse(new Request<int>(id));
                             w.Data.Name = "Warehouse2";
 
-                            warehousesService.Edit(new Request<ServicesInterface.DTOs.WarehouseDto>(w.Data));
+                            warehousesService.Edit(new Request<ServicesInterface.DTOs.WarehouseInfoDto>(w.Data));
                             var z = warehousesService.GetWarehouse(new Request<int>(id));
 
                             Assert.IsTrue(z.Data.Name == w.Data.Name);

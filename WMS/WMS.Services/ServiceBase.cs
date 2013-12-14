@@ -11,19 +11,49 @@ using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services
 {
+    // TODO - dopisać dokumentację, bo ja nie bardzo wiem jak tutaj ją napisać
+
+
     public delegate void CheckPermissionsDelegate(PermissionLevel permission);
 
+    /// <summary>
+    /// Bazowa klasa dla serwisów
+    /// </summary>
     public class ServiceBase
     {
+        /// <summary>
+        /// Konwerer danych produktu
+        /// </summary>
         protected ProductAssembler productAssembler;
+        /// <summary>
+        /// Konwerter danych uzytkownika
+        /// </summary>
         protected UserAssembler userAssembler;
+        /// <summary>
+        /// Konwerter danych partnera
+        /// </summary>
         protected PartnerAssembler partnerAssembler;
+        /// <summary>
+        /// Konwerter danych partii
+        /// </summary>
         protected GroupAssembler groupAssembler;
+        /// <summary>
+        /// Konwerter danych magazynu
+        /// </summary>
         protected WarehouseAssembler warehouseAssembler;
+        /// <summary>
+        /// Konwerter danych sektora
+        /// </summary>
         protected SectorAssembler sectorAssembler;
 
+        /// <summary>
+        /// Do testów, czy wycofać transakcję
+        /// </summary>
         public bool Rollback { get; set; }
 
+        /// <summary>
+        /// Konstruktor inicjalizujące pola
+        /// </summary>
         public ServiceBase()
         {
             productAssembler = new ProductAssembler();
@@ -37,6 +67,9 @@ namespace WMS.Services
             Rollback = false;
         }
 
+        /// <summary>
+        /// Delegat sprawdzający uprawnienia użytkowników
+        /// </summary>
         public CheckPermissionsDelegate CheckPermissions { get; set; }
 
         protected T Transaction<T>(Func<TransactionContext, T> action)

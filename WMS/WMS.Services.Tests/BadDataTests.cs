@@ -27,7 +27,7 @@ namespace WMS.Services.Tests
                         var w = CreateWarehouse();
                         w.Name = longString;
 
-                        warehousesService.AddNew(new Request<WarehouseDto>(new WarehouseAssembler().ToDto(w)));
+                        warehousesService.AddNew(new Request<WarehouseInfoDto>(new WarehouseAssembler().ToDto(w)));
 
                         warehousesService.Rollback = true;
                     });
