@@ -11,9 +11,6 @@ using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services
 {
-    // TODO - dopisać dokumentację, bo ja nie bardzo wiem jak tutaj ją napisać
-
-
     public delegate void CheckPermissionsDelegate(PermissionLevel permission);
 
     /// <summary>
@@ -72,6 +69,12 @@ namespace WMS.Services
         /// </summary>
         public CheckPermissionsDelegate CheckPermissions { get; set; }
 
+        /// <summary>
+        /// Metdoda opakowująca, wywokonująca akcję w transakcji.
+        /// </summary>
+        /// <typeparam name="T">Typ zwracanej wartości</typeparam>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <returns></returns>
         protected T Transaction<T>(Func<TransactionContext, T> action)
         {
             using (var context = new SystemContext())
@@ -85,6 +88,10 @@ namespace WMS.Services
             }
         }
 
+        /// <summary>
+        /// Metdoda opakowująca, wywokonująca akcję w transakcji.
+        /// </summary>
+        /// <param name="action">Akcja do wykonania</param>
         protected void Transaction(Action<TransactionContext> action)
         {
             using (var context = new SystemContext())
@@ -98,6 +105,10 @@ namespace WMS.Services
             }
         }
 
+        /// <summary>
+        /// Domyślna metoda testująca uprawnienia.
+        /// </summary>
+        /// <param name="permission">Wymagany poziom uprawnień</param>
         protected void DefaultPermissionChecker(PermissionLevel permission)
         {
             User u = null;

@@ -31,8 +31,9 @@ namespace WMS.Client.Misc
         /// Cena produktu
         /// </summary>
         private string patternPrice;
+
         /// <summary>
-        /// Wyrażenie rekularne, któremu ma odpowiadać Cena
+        /// Wyrażenie regularne, któremu ma odpowiadać Cena
         /// </summary>
         private Regex regexPrice;
 

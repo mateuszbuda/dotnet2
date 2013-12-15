@@ -24,25 +24,32 @@ namespace WMS.Client.Menus
 
         public BaseMenu(MainWindow mainWindow)
         {
-            var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("SecureBinding_IWarehousesService");
-            warehouseChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            warehouseChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            WarehousesService = warehouseChannelFactory.CreateChannel();
+            try
+            {
+                var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("SecureBinding_IWarehousesService");
+                warehouseChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                warehouseChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                WarehousesService = warehouseChannelFactory.CreateChannel();
 
-            var partnersChannelFactory = new ChannelFactory<IPartnersService>("SecureBinding_IPartnersService");
-            partnersChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            partnersChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            PartnersService = partnersChannelFactory.CreateChannel();
+                var partnersChannelFactory = new ChannelFactory<IPartnersService>("SecureBinding_IPartnersService");
+                partnersChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                partnersChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                PartnersService = partnersChannelFactory.CreateChannel();
 
-            var productsChannelFactory = new ChannelFactory<IProductsService>("SecureBinding_IProductsService");
-            productsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            productsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            ProductsService = productsChannelFactory.CreateChannel();
+                var productsChannelFactory = new ChannelFactory<IProductsService>("SecureBinding_IProductsService");
+                productsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                productsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                ProductsService = productsChannelFactory.CreateChannel();
 
-            var groupsChannelFactory = new ChannelFactory<IGroupsService>("SecureBinding_IGroupsService");
-            groupsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            groupsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            GroupService = groupsChannelFactory.CreateChannel();
+                var groupsChannelFactory = new ChannelFactory<IGroupsService>("SecureBinding_IGroupsService");
+                groupsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                groupsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                GroupService = groupsChannelFactory.CreateChannel();
+            }
+            catch
+            {
+                MessageBox.Show("Nie można połączyć się z serwerem.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
@@ -65,8 +72,6 @@ namespace WMS.Client.Menus
                 MessageBox.Show((e.InnerException as FaultException<ServiceException>).Detail.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             else
                 MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-            
-            //MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException)), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public void Execute(Action action, Action success = null, Action<Exception> exception = null)

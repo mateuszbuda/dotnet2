@@ -26,7 +26,7 @@ namespace WMS.ServicesInterface.DataContracts
     }
 
     /// <summary>
-    /// Generyczny kontrakt zapytania z danymi to przekazania
+    /// Generyczny kontrakt zapytania z danymi do przekazania
     /// </summary>
     /// <typeparam name="T">Typ danych przesyłanych w zapytaniu</typeparam>
     [DataContract]

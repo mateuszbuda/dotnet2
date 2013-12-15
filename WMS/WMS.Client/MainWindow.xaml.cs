@@ -52,11 +52,19 @@ namespace WMS.Client
                 Password = PasswordTextBox.Password,
             };
 
-            var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("SecureBinding_IAuthenticationService");
-            authenticationChannelFactory.Credentials.UserName.UserName = user.Username;
-            authenticationChannelFactory.Credentials.UserName.Password = user.Password;
-            IAuthenticationService authService = authenticationChannelFactory.CreateChannel();
+            IAuthenticationService authService = null;
 
+            try
+            {
+                var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("SecureBinding_IAuthenticationService");
+                authenticationChannelFactory.Credentials.UserName.UserName = user.Username;
+                authenticationChannelFactory.Credentials.UserName.Password = user.Password;
+                authService = authenticationChannelFactory.CreateChannel();
+            }
+            catch
+            {
+                MessageBox.Show("Nie można połączyć się z serwerem.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             BaseMenu menu = new BaseMenu(this);
             menu.Execute(() => authService.Authenticate(new Request<UserDto>(user)), t =>

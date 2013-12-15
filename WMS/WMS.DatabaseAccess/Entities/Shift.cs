@@ -49,12 +49,6 @@ namespace WMS.DatabaseAccess.Entities
         [ForeignKey("SenderId")]
         public Warehouse Sender { get; set; }
 
-        ///// <summary>
-        ///// Odbiorca
-        ///// </summary>
-        //[ForeignKey("RecipientId")]
-        //public Warehouse Recipient { get; set; }
-
         /// <summary>
         /// Grupa
         /// </summary>
