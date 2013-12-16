@@ -5,11 +5,17 @@ using WMS.DatabaseAccess.Entities;
 
 namespace WMS.DatabaseAccess.Tests
 {
+    /// <summary>
+    /// Testy niepoprawnych danych
+    /// </summary>
     [TestClass]
     public class IncorrectDataTests : DatabaseAccessProvider
     {
         private readonly string longString = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
+        /// <summary>
+        /// Niepoprawne dane magazynu
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void Warehouse_TooLongTest()
         {
@@ -23,6 +29,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Niepoprawne dane produktu
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void Product_TooLongTest()
         {
@@ -36,6 +45,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Niepoprawne dane partnera
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void Partner_TooLongTest()
         {

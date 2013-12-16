@@ -41,6 +41,11 @@ namespace WMS.Client
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Kliknięcie przycisku Zaloguj
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             LoginButton.Content = "Logowanie...";
@@ -87,11 +92,21 @@ namespace WMS.Client
                 });
         }
 
+        /// <summary>
+        /// Wyczyszczenie loginu po kliknięciu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoginTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             LoginTextBox.Text = "";
         }
 
+        /// <summary>
+        /// Wyczyszczenie hasła po kliknięciu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PasswordTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Password = "";

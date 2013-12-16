@@ -8,11 +8,17 @@ using System.Data.Entity.Infrastructure;
 
 namespace WMS.Services.Tests
 {
+    /// <summary>
+    /// Test przekazywania błędnych danych.
+    /// </summary>
     [TestClass]
     public class BadDataTests : ServicesProvider
     {
         private readonly string longString = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
+        /// <summary>
+        /// Błędne dane magazynu.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void WarehouseBadDataTest()
         {
@@ -34,6 +40,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Błędne dane produktu.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void ProductBadDataTest()
         {
@@ -55,6 +64,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Błędne dane partnera.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void PartnerBadDataTest()
         {

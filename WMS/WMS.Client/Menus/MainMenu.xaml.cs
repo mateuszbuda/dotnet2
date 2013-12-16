@@ -39,6 +39,10 @@ namespace WMS.Client.Menus
                 });
         }
 
+
+        /// <summary>
+        /// Wyświetlenie statystyk
+        /// </summary>
         private void ShowStats()
         {
             if (!isLoaded)

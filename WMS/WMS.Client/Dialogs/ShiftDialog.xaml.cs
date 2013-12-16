@@ -74,6 +74,11 @@ namespace WMS.Client.Dialogs
                     WarehousesComboBox.Items.Add(w);
         }
 
+        /// <summary>
+        /// Zmiana magazynu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WarehousesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             WarehouseDetailsDto selectedW = ((WarehouseDetailsDto)((sender as ComboBox).SelectedItem));
@@ -88,6 +93,9 @@ namespace WMS.Client.Dialogs
                 });
         }
 
+        /// <summary>
+        /// Ładowanie sektora
+        /// </summary>
         private void LoadSectorsForChosenWarehouse()
         {
             if (secotrs == null)
@@ -100,6 +108,11 @@ namespace WMS.Client.Dialogs
                     SectorsComboBox.Items.Add(s);
         }
 
+        /// <summary>
+        /// Zapis zmian
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             (sender as Button).IsEnabled = false;
@@ -153,6 +166,11 @@ namespace WMS.Client.Dialogs
             this.Close();
         }
 
+        /// <summary>
+        /// Wyjście
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();

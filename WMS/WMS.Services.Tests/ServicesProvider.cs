@@ -11,6 +11,9 @@ using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services.Tests
 {
+    /// <summary>
+    /// Klasa bazowa udostępniająca usługi i metody ułatwiające tworzenie testowych encji.
+    /// </summary>
     [TestClass]
     public class ServicesProvider
     {
@@ -22,6 +25,10 @@ namespace WMS.Services.Tests
 
         protected PermissionLevel Level { get; set; }
 
+        /// <summary>
+        /// Metoda testująca uprawnienia. Używana w testach.
+        /// </summary>
+        /// <param name="level">Poziom uprawnień</param>
         private void PermissionChecker(PermissionLevel level)
         {
             if (Level > level)
@@ -51,7 +58,10 @@ namespace WMS.Services.Tests
             Level = PermissionLevel.Administrator;
         }
 
-
+        /// <summary>
+        /// Tworzenie magazynu.
+        /// </summary>
+        /// <returns>Magazyn</returns>
         protected Warehouse CreateWarehouse()
         {
             return new Warehouse()
@@ -68,6 +78,11 @@ namespace WMS.Services.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie sektora i magazynu
+        /// </summary>
+        /// <param name="limit">Limit sektora</param>
+        /// <returns>Sektor</returns>
         protected Sector CreateSector(int limit = 1)
         {
             return new Sector()
@@ -79,6 +94,10 @@ namespace WMS.Services.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzy testowy produkt.
+        /// </summary>
+        /// <returns>Testowy produkt</returns>
         protected Product CreateProduct()
         {
             return new Product()
@@ -89,6 +108,10 @@ namespace WMS.Services.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie testowej grupy
+        /// </summary>
+        /// <returns>Grupa</returns>
         protected Group CreateGroup()
         {
             return new Group()
@@ -97,6 +120,10 @@ namespace WMS.Services.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie partii i produktów.
+        /// </summary>
+        /// <returns>Szczegóły partii</returns>
         protected GroupDetails CreateGroupDetails()
         {
             return new GroupDetails()
@@ -107,6 +134,10 @@ namespace WMS.Services.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie testowego partnera.
+        /// </summary>
+        /// <returns>Partner</returns>
         protected Partner CreatePartner()
         {
             Partner p = new Partner()
@@ -128,6 +159,10 @@ namespace WMS.Services.Tests
             return p;
         }
 
+        /// <summary>
+        /// Nowe przesunięcie.
+        /// </summary>
+        /// <returns>Przesunięcie</returns>
         protected Shift CreateShift()
         {
             return new Shift()

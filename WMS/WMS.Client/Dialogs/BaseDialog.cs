@@ -11,6 +11,10 @@ using WMS.ServicesInterface.ServiceContracts;
 
 namespace WMS.Client.Dialogs
 {
+    /// <summary>
+    /// Klasa bazowa okien.
+    /// Tworzy dostęp do usług.
+    /// </summary>
     public class BaseDialog : Window
     {
         protected IWarehousesService WarehousesService { get; private set; }
@@ -48,6 +52,13 @@ namespace WMS.Client.Dialogs
             }
         }
 
+        /// <summary>
+        /// Wykonanie zapytania do usługi w wątku
+        /// </summary>
+        /// <typeparam name="T">Typ zwracanej wartości</typeparam>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <param name="success">Akcja do wykonania w przypadku sukcesu</param>
+        /// <param name="exception">Akcja do wykonania w przypadku wyjątku</param>
         protected void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
         {
             var ts = TaskScheduler.FromCurrentSynchronizationContext();
@@ -62,15 +73,24 @@ namespace WMS.Client.Dialogs
             task.Start();
         }
 
+        /// <summary>
+        /// Domyślna obsługa wyjątków.
+        /// </summary>
+        /// <param name="e"></param>
         protected void DefaultExceptionHandler(Exception e)
         {
             if (e.InnerException != null && e.InnerException.GetType() == typeof(FaultException<ServiceException>))
                 MessageBox.Show((e.InnerException as FaultException<ServiceException>).Detail.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             else
                 MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-            //MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.Message + (e.InnerException.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.InnerException.Message))), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        /// <summary>
+        /// Wykonanie zapytania do usługi w wątku
+        /// </summary>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <param name="success">Akcja do wykonania w przypadku sukcesu</param>
+        /// <param name="exception">Akcja do wykonania w przypadku wyjątku</param>
         protected void Execute(Action action, Action success = null, Action<Exception> exception = null)
         {
             Execute(() => { action(); return false; }, success != null ? (x => success()) : (Action<bool>)null, exception);

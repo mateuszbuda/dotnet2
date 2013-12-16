@@ -6,9 +6,15 @@ using WMS.DatabaseAccess.Entities;
 
 namespace WMS.DatabaseAccess.Tests
 {
+    /// <summary>
+    /// Testy Relacji
+    /// </summary>
     [TestClass]
     public class RelationshipTests : DatabaseAccessProvider
     {
+        /// <summary>
+        /// Test relacji partnera i jego magazynu.
+        /// </summary>
         [TestMethod]
         public void Partner_Warehouse_RelationshipTest()
         {
@@ -32,6 +38,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Test relacji produktu i partii
+        /// </summary>
         [TestMethod]
         public void Group_Product_RelationshipTest()
         {
@@ -54,6 +63,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Test relacji przesunięcia i  magazynu
+        /// </summary>
         [TestMethod]
         public void Shift_Group_Sector_Warehouse_RelationshipTest()
         {

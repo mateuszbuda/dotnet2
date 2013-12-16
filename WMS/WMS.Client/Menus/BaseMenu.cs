@@ -15,6 +15,10 @@ using WMS.ServicesInterface.ServiceContracts;
 
 namespace WMS.Client.Menus
 {
+    /// <summary>
+    /// Klasa bazowa Menu
+    /// Tworzy dostęp do usług
+    /// </summary>
     public class BaseMenu : UserControl
     {
         protected IWarehousesService WarehousesService { get; private set; }
@@ -52,6 +56,13 @@ namespace WMS.Client.Menus
             }
         }
 
+        /// <summary>
+        /// Wykonanie zapytania do usługi w wątku
+        /// </summary>
+        /// <typeparam name="T">Typ zwracanej wartości</typeparam>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <param name="success">Akcja do wykonania w przypadku sukcesu</param>
+        /// <param name="exception">Akcja do wykonania w przypadku wyjątku</param>
         public void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
         {
             var ts = TaskScheduler.FromCurrentSynchronizationContext();
@@ -66,6 +77,10 @@ namespace WMS.Client.Menus
             task.Start();
         }
 
+        /// <summary>
+        /// Domyślna obsługa wyjątków
+        /// </summary>
+        /// <param name="e"></param>
         protected void DefaultExceptionHandler(Exception e)
         {
             if (e.InnerException != null && e.InnerException.GetType() == typeof(FaultException<ServiceException>))
@@ -74,6 +89,12 @@ namespace WMS.Client.Menus
                 MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        /// <summary>
+        /// Wykonanie zapytania do usługi w wątku
+        /// </summary>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <param name="success">Akcja do wykonania w przypadku sukcesu</param>
+        /// <param name="exception">Akcja do wykonania w przypadku wyjątku</param>
         public void Execute(Action action, Action success = null, Action<Exception> exception = null)
         {
             Execute(() => { action(); return false; }, success != null ? (x => success()) : (Action<bool>)null, exception);

@@ -235,6 +235,11 @@ namespace WMS.Client.Menus
             content.Children.Add(menu);
         }
 
+        /// <summary>
+        /// Zablokowanie niektórych funkcji w zależności od uprawnień.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
         {
             if(mainWindow.Permissions > PermissionLevel.Administrator)

@@ -137,6 +137,11 @@ namespace WMS.Client.Menus
             dlg.Show();
         }
 
+        /// <summary>
+        /// Zablokowanie niektórych funkcji w zależności od uprawnień.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
         {
             if (mainWindow.Permissions > PermissionLevel.Manager)

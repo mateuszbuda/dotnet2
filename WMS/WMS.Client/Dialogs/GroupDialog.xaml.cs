@@ -19,7 +19,7 @@ using WMS.ServicesInterface.DTOs;
 namespace WMS.Client.Dialogs
 {
     /// <summary>
-    /// Interaction logic for GroupDialog.xaml
+    /// Okno dialogowe dodawnia partii.
     /// </summary>
     public partial class GroupDialog : BaseDialog
     {
@@ -64,6 +64,11 @@ namespace WMS.Client.Dialogs
                 });
         }
 
+        /// <summary>
+        /// Zmiana magazynu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WarehousesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             WarehouseDetailsDto selectedW = ((WarehouseDetailsDto)((sender as ComboBox).SelectedItem));
@@ -78,6 +83,9 @@ namespace WMS.Client.Dialogs
             });
         }
 
+        /// <summary>
+        /// Ładowanie sektora
+        /// </summary>
         private void LoadSectorsForChosenWarehouse()
         {
             if (secotrs == null)

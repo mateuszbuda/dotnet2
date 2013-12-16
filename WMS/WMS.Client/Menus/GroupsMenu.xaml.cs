@@ -43,6 +43,7 @@ namespace WMS.Client.Menus
 
             LoadData();
         }
+
         /// <summary>
         /// Ładowanie danych
         /// </summary>

@@ -7,6 +7,9 @@ using System.Windows.Data;
 
 namespace WMS.Client.Misc
 {
+    /// <summary>
+    /// Konwersja ceny produktu
+    /// </summary>
     class PriceConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
