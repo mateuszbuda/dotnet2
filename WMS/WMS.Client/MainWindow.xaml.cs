@@ -41,6 +41,11 @@ namespace WMS.Client
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Kliknięcie przycisku Zaloguj
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             LoginButton.Content = "Logowanie...";
@@ -52,11 +57,19 @@ namespace WMS.Client
                 Password = PasswordTextBox.Password,
             };
 
-            var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("SecureBinding_IAuthenticationService");
-            authenticationChannelFactory.Credentials.UserName.UserName = user.Username;
-            authenticationChannelFactory.Credentials.UserName.Password = user.Password;
-            IAuthenticationService authService = authenticationChannelFactory.CreateChannel();
+            IAuthenticationService authService = null;
 
+            try
+            {
+                var authenticationChannelFactory = new ChannelFactory<IAuthenticationService>("SecureBinding_IAuthenticationService");
+                authenticationChannelFactory.Credentials.UserName.UserName = user.Username;
+                authenticationChannelFactory.Credentials.UserName.Password = user.Password;
+                authService = authenticationChannelFactory.CreateChannel();
+            }
+            catch
+            {
+                MessageBox.Show("Nie można połączyć się z serwerem.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             BaseMenu menu = new BaseMenu(this);
             menu.Execute(() => authService.Authenticate(new Request<UserDto>(user)), t =>
@@ -79,11 +92,21 @@ namespace WMS.Client
                 });
         }
 
+        /// <summary>
+        /// Wyczyszczenie loginu po kliknięciu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoginTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             LoginTextBox.Text = "";
         }
 
+        /// <summary>
+        /// Wyczyszczenie hasła po kliknięciu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PasswordTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Password = "";

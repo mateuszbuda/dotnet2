@@ -132,7 +132,7 @@ namespace WMS.Client.Menus
         }
 
         /// <summary>
-        /// Sektor
+        /// Kliknięcie sektora
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -327,6 +327,11 @@ namespace WMS.Client.Menus
             ShowData();
         }
 
+        /// <summary>
+        /// Zablokowanie niektórych funkcji w zależności od uprawnień.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
         {
             if (mainWindow.Permissions > PermissionLevel.Administrator)

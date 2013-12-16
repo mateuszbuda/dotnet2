@@ -10,7 +10,7 @@ using System.ServiceModel;
 namespace WMS.Services.Tests
 {
     /// <summary>
-    /// Summary description for PermissionsTest
+    /// Testy uprawnień.
     /// </summary>
     [TestClass]
     public class PermissionsTest : ServicesProvider
@@ -20,6 +20,9 @@ namespace WMS.Services.Tests
             Level = ServicesInterface.PermissionLevel.User;
         }
 
+        /// <summary>
+        /// Test uprawnień potrzebnych do dodawania magazynu.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(FaultException<ServiceException>))]
         public void WarehouseAddPermissionTest()
         {
@@ -27,6 +30,9 @@ namespace WMS.Services.Tests
             warehousesService.AddNew(new Request<WarehouseInfoDto>(new WarehouseAssembler().ToDto(w)));
         }
 
+        /// <summary>
+        /// Test uprawnień potrzebnych do dodawania sektorów.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(FaultException<ServiceException>))]
         public void SectorAddPermissionTest()
         {
@@ -34,6 +40,9 @@ namespace WMS.Services.Tests
             warehousesService.AddSector(new Request<SectorDto>(new SectorAssembler().ToDto(w)));
         }
 
+        /// <summary>
+        /// Test uprawnień potrzebnych do dodawania produktów.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(FaultException<ServiceException>))]
         public void ProductAddPermissionTest()
         {
@@ -41,6 +50,9 @@ namespace WMS.Services.Tests
             productsService.AddNew(new Request<ProductDto>(new ProductAssembler().ToDto(w)));
         }
 
+        /// <summary>
+        /// Test uprawnień potrzebnych do  dodawania partnera.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(FaultException<ServiceException>))]
         public void PartnerAddPermissionTest()
         {

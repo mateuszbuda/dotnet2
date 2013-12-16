@@ -6,9 +6,15 @@ using WMS.DatabaseAccess.Entities;
 
 namespace WMS.DatabaseAccess.Tests
 {
+    /// <summary>
+    /// Testy pustych danych
+    /// </summary>
     [TestClass]
     public class NullDataTests : DatabaseAccessProvider
     {
+        /// <summary>
+        /// Puste pola magazynu
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbEntityValidationException))]
         public void Warehouse_EmptyTest()
         {
@@ -22,6 +28,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Puste pola sektora
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void Sector_EmptyTest()
         {
@@ -35,6 +44,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Puste pola produktu
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbEntityValidationException))]
         public void Product_EmptyTest()
         {
@@ -48,6 +60,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Puste pola partii
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void Group_EmptyTest()
         {
@@ -61,6 +76,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Puste pola partnera
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbEntityValidationException))]
         public void Partner_EmptyTest()
         {
@@ -74,6 +92,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Puste pola przesuniecia
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void Shift_EmptyTest()
         {
@@ -87,6 +108,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Puste pola szczegółów partii
+        /// </summary>
         [TestMethod, ExpectedException(typeof(DbUpdateException))]
         public void GroupDetails_EmptyTest()
         {

@@ -8,11 +8,14 @@ using KellermanSoftware.CompareNetObjects;
 namespace WMS.Services.Tests
 {
     /// <summary>
-    /// Summary description for AssemblersTests
+    /// Testy konwersji pomiędzy DTO a encjami.
     /// </summary>
     [TestClass]
     public class AssemblersTests : ServicesProvider
     {
+        /// <summary>
+        /// Test WarehouseAssembler
+        /// </summary>
         [TestMethod]
         public void WarehouseAssemblerTest()
         {
@@ -28,6 +31,9 @@ namespace WMS.Services.Tests
             Assert.IsTrue(compare.Compare(x, w));
         }
 
+        /// <summary>
+        /// Test PartnerAssembler
+        /// </summary>
         [TestMethod]
         public void PartnerAssemblerTest()
         {
@@ -44,6 +50,9 @@ namespace WMS.Services.Tests
             Assert.IsTrue(compare.Compare(x, w));
         }
 
+        /// <summary>
+        /// Test ProductAssembler
+        /// </summary>
         [TestMethod]
         public void ProductAssemblerTest()
         {
@@ -59,6 +68,9 @@ namespace WMS.Services.Tests
             Assert.IsTrue(compare.Compare(x, w));
         }
 
+        /// <summary>
+        /// Test SectorAssembler
+        /// </summary>
         [TestMethod]
         public void SectorAssemblerTest()
         {

@@ -5,9 +5,15 @@ using WMS.DatabaseAccess.Entities;
 
 namespace WMS.DatabaseAccess.Tests
 {
+    /// <summary>
+    /// Podstawowe testy bazy danych
+    /// </summary>
     [TestClass]
     public class DatabaseBasicTests : DatabaseAccessProvider
     {
+        /// <summary>
+        /// Podstawowy test magazynów
+        /// </summary>
         [TestMethod]
         public void Warehouse_BasicTest()
         {
@@ -44,6 +50,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Podstawowy test sektorów
+        /// </summary>
         [TestMethod]
         public void Sector_BasicTest()
         {
@@ -81,6 +90,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Podstawowy test produktów
+        /// </summary>
         [TestMethod]
         public void Product_BasicTest()
         {
@@ -118,6 +130,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Podstawowy test partnerów
+        /// </summary>
         [TestMethod]
         public void Partner_BasicTest()
         {
@@ -155,6 +170,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Podstawowy test partii
+        /// </summary>
         [TestMethod]
         public void Group_BasicTest()
         {
@@ -185,6 +203,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Podstawowy test szczegółów partii
+        /// </summary>
         [TestMethod]
         public void GroupDetails_BasicTest()
         {
@@ -222,6 +243,9 @@ namespace WMS.DatabaseAccess.Tests
             });
         }
 
+        /// <summary>
+        /// Podstawowy test przesunięć
+        /// </summary>
         [TestMethod]
         public void Shift_BasicTest()
         {

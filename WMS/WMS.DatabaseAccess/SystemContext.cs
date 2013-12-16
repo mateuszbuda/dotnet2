@@ -7,6 +7,9 @@ using System.Transactions;
 
 namespace WMS.DatabaseAccess
 {
+    /// <summary>
+    /// Kontekst
+    /// </summary>
     public class SystemContext : IDisposable
     {
         private SystemEntities entities;
@@ -18,11 +21,21 @@ namespace WMS.DatabaseAccess
             syncObj = new object();
         }
 
+        /// <summary>
+        /// Metoda wykonująca akcje w transakcji.
+        /// </summary>
+        /// <param name="action">Akcja do wykonania</param>
         public void TransactionSync(Action<TransactionContext> action)
         {
             TransactionSync<bool>(tc => { action(tc); return false; });
         }
 
+        /// <summary>
+        /// Metoda wykonująca akcje w transakcji.
+        /// </summary>
+        /// <typeparam name="T">Typ zwracanej wartości</typeparam>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <returns></returns>
         public T TransactionSync<T>(Func<TransactionContext, T> action)
         {
             lock (syncObj)
@@ -44,24 +57,6 @@ namespace WMS.DatabaseAccess
                 }
             }
         }
-
-        //public void Transaction(Action<TransactionContext> action, Action success = null, Action<Exception> exception = null)
-        //{
-        //    Transaction<bool>(tc => { action(tc); return false; }, success != null ? x => success() : (Action<bool>)null, exception);
-        //}
-
-        //public void Transaction<T>(Func<TransactionContext, T> action, Action<T> success = null, Action<Exception> exception = null)
-        //{
-        //    Task<T> task = new Task<T>(() => TransactionSync(action));
-
-        //    if (success != null)
-        //        task.ContinueWith(t => success(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
-
-        //    if (exception != null)
-        //        task.ContinueWith(t => exception(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
-
-        //    task.Start();
-        //}
 
         public void Dispose()
         {

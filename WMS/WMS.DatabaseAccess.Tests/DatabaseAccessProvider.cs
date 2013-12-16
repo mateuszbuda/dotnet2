@@ -8,9 +8,16 @@ using WMS.DatabaseAccess.Entities;
 
 namespace WMS.DatabaseAccess.Tests
 {
+    /// <summary>
+    /// Klasa opakowująca dostęp do bazy danych
+    /// </summary>
     [TestClass]
     public class DatabaseAccessProvider
     {
+        /// <summary>
+        /// Transakcja z wycofaniem
+        /// </summary>
+        /// <param name="action"></param>
         protected void Transaction(Action<TransactionContext> action)
         {
             using (var context = new SystemContext())
@@ -23,6 +30,10 @@ namespace WMS.DatabaseAccess.Tests
             }
         }
 
+        /// <summary>
+        /// Tworzenie magazynu
+        /// </summary>
+        /// <returns>Magazyn</returns>
         protected Warehouse CreateWarehouse()
         {
             return new Warehouse()
@@ -39,6 +50,11 @@ namespace WMS.DatabaseAccess.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie sektora
+        /// </summary>
+        /// <param name="limit">Limit</param>
+        /// <returns>Sektor</returns>
         protected Sector CreateSector(int limit = 1)
         {
             return new Sector()
@@ -50,6 +66,10 @@ namespace WMS.DatabaseAccess.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie produktu
+        /// </summary>
+        /// <returns>Produkt</returns>
         protected Product CreateProduct()
         {
             return new Product()
@@ -60,6 +80,10 @@ namespace WMS.DatabaseAccess.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie partii
+        /// </summary>
+        /// <returns>Partia</returns>
         protected Group CreateGroup()
         {
             return new Group()
@@ -68,6 +92,10 @@ namespace WMS.DatabaseAccess.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie szczegółów partii
+        /// </summary>
+        /// <returns>Szczegóły partii</returns>
         protected GroupDetails CreateGroupDetails()
         {
             return new GroupDetails()
@@ -78,6 +106,10 @@ namespace WMS.DatabaseAccess.Tests
             };
         }
 
+        /// <summary>
+        /// Tworzenie partnera
+        /// </summary>
+        /// <returns>Partner</returns>
         protected Partner CreatePartner()
         {
             Partner p = new Partner()
@@ -99,6 +131,10 @@ namespace WMS.DatabaseAccess.Tests
             return p;
         }
 
+        /// <summary>
+        /// Tworzenie przesunieć
+        /// </summary>
+        /// <returns>Przesunięcie</returns>
         protected Shift CreateShift()
         {
             return new Shift()

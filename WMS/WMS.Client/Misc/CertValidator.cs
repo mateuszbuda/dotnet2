@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace WMS.Client.Misc
 {
+    /// <summary>
+    /// Validator certyfikatów
+    /// </summary>
     public class CertValidator : X509CertificateValidator
     {
         public override void Validate(X509Certificate2 certificate)

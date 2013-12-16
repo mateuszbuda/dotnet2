@@ -11,6 +11,10 @@ using WMS.ServicesInterface.ServiceContracts;
 
 namespace WMS.Client.Dialogs
 {
+    /// <summary>
+    /// Klasa bazowa okien.
+    /// Tworzy dostęp do usług.
+    /// </summary>
     public class BaseDialog : Window
     {
         protected IWarehousesService WarehousesService { get; private set; }
@@ -20,27 +24,41 @@ namespace WMS.Client.Dialogs
 
         public BaseDialog(MainWindow mainWindow)
         {
-            var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("SecureBinding_IWarehousesService");
-            warehouseChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            warehouseChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            WarehousesService = warehouseChannelFactory.CreateChannel();
+            try
+            {
+                var warehouseChannelFactory = new ChannelFactory<IWarehousesService>("SecureBinding_IWarehousesService");
+                warehouseChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                warehouseChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                WarehousesService = warehouseChannelFactory.CreateChannel();
 
-            var partnersChannelFactory = new ChannelFactory<IPartnersService>("SecureBinding_IPartnersService");
-            partnersChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            partnersChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            PartnersService = partnersChannelFactory.CreateChannel();
+                var partnersChannelFactory = new ChannelFactory<IPartnersService>("SecureBinding_IPartnersService");
+                partnersChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                partnersChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                PartnersService = partnersChannelFactory.CreateChannel();
 
-            var productsChannelFactory = new ChannelFactory<IProductsService>("SecureBinding_IProductsService");
-            productsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            productsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            ProductsService = productsChannelFactory.CreateChannel();
+                var productsChannelFactory = new ChannelFactory<IProductsService>("SecureBinding_IProductsService");
+                productsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                productsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                ProductsService = productsChannelFactory.CreateChannel();
 
-            var groupsChannelFactory = new ChannelFactory<IGroupsService>("SecureBinding_IGroupsService");
-            groupsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
-            groupsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
-            GroupsService = groupsChannelFactory.CreateChannel();
+                var groupsChannelFactory = new ChannelFactory<IGroupsService>("SecureBinding_IGroupsService");
+                groupsChannelFactory.Credentials.UserName.UserName = mainWindow.Username;
+                groupsChannelFactory.Credentials.UserName.Password = mainWindow.Password;
+                GroupsService = groupsChannelFactory.CreateChannel();
+            }
+            catch
+            {
+                MessageBox.Show("Nie można połączyć się z serwerem.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
+        /// <summary>
+        /// Wykonanie zapytania do usługi w wątku
+        /// </summary>
+        /// <typeparam name="T">Typ zwracanej wartości</typeparam>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <param name="success">Akcja do wykonania w przypadku sukcesu</param>
+        /// <param name="exception">Akcja do wykonania w przypadku wyjątku</param>
         protected void Execute<T>(Func<T> action, Action<T> success = null, Action<Exception> exception = null)
         {
             var ts = TaskScheduler.FromCurrentSynchronizationContext();
@@ -55,15 +73,24 @@ namespace WMS.Client.Dialogs
             task.Start();
         }
 
+        /// <summary>
+        /// Domyślna obsługa wyjątków.
+        /// </summary>
+        /// <param name="e"></param>
         protected void DefaultExceptionHandler(Exception e)
         {
             if (e.InnerException != null && e.InnerException.GetType() == typeof(FaultException<ServiceException>))
                 MessageBox.Show((e.InnerException as FaultException<ServiceException>).Detail.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             else
                 MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-            //MessageBox.Show("Wystąpił błąd podczas komunikacji z serwerem.\n\n" + e.Message + (e.InnerException == null ? "" : "\n\n" + e.InnerException.Message + (e.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.Message + (e.InnerException.InnerException.InnerException == null ? "" : "\n\n" + e.InnerException.InnerException.InnerException.Message))), "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        /// <summary>
+        /// Wykonanie zapytania do usługi w wątku
+        /// </summary>
+        /// <param name="action">Akcja do wykonania</param>
+        /// <param name="success">Akcja do wykonania w przypadku sukcesu</param>
+        /// <param name="exception">Akcja do wykonania w przypadku wyjątku</param>
         protected void Execute(Action action, Action success = null, Action<Exception> exception = null)
         {
             Execute(() => { action(); return false; }, success != null ? (x => success()) : (Action<bool>)null, exception);

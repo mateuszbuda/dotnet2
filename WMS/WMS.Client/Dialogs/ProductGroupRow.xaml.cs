@@ -17,7 +17,7 @@ using WMS.Client.Misc;
 namespace WMS.Client.Dialogs
 {
     /// <summary>
-    /// Interaction logic for ProductGroupRow.xaml
+    /// Klasa pomocnicza reprezentująca produkt w grupie
     /// </summary>
     public partial class ProductGroupRow : UserControl
     {

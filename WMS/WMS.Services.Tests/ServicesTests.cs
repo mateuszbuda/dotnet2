@@ -8,9 +8,15 @@ using System.Linq;
 
 namespace WMS.Services.Tests
 {
+    /// <summary>
+    /// Testy usług.
+    /// </summary>
     [TestClass]
     public class ServicesTests : ServicesProvider
     {
+        /// <summary>
+        /// Test pobierania magazynów.
+        /// </summary>
         [TestMethod]
         public void GetWarehousesTest()
         {
@@ -36,6 +42,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Test pobierania określonego magazynu.
+        /// </summary>
         [TestMethod]
         public void GetWarehouseTest()
         {
@@ -71,6 +80,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Test dodawania i usuwania magazynu.
+        /// </summary>
         [TestMethod]
         public void WarehouseAddDeleteTest()
         {
@@ -97,6 +109,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Test edycji magazynu.
+        /// </summary>
         [TestMethod]
         public void WarehouseEditTest()
         {
@@ -123,6 +138,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Test pobierania produktu.
+        /// </summary>
         [TestMethod]
         public void GetProductTest()
         {
@@ -151,6 +169,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Test pobierania partnera.
+        /// </summary>
         [TestMethod]
         public void GetPartnerTest()
         {
@@ -184,6 +205,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Test dodawania i aktualizacji partnera.
+        /// </summary>
         [TestMethod]
         public void AddUpdatePartner()
         {
@@ -211,6 +235,9 @@ namespace WMS.Services.Tests
             }
         }
 
+        /// <summary>
+        /// Pobieranie partnera na podstawie jego magazynu.
+        /// </summary>
         [TestMethod]
         public void GetPartnerByWarehouse()
         {
@@ -249,51 +276,5 @@ namespace WMS.Services.Tests
                 });
             }
         }
-
-        //[TestMethod]
-        //public void AddGetGroupTest()
-        //{
-        //    using (var ctx = new SystemContext())
-        //    {
-        //        ctx.TransactionSync(tc =>
-        //        {
-        //            tc.Rollback = true;
-
-        //            groupsService.Rollback = false;
-
-        //            var g = CreateShift();
-        //            int id = groupsService.AddNew(new Request<ServicesInterface.DTOs.GroupDto>(new GroupAssembler().ToDto(g))).Data.Id;
-
-        //            var w = groupsService.GetGroups(new Request()).Data.Find(x => x.Id == id);
-
-        //            Assert.IsNotNull(w);
-
-        //            groupsService.Rollback = true;
-        //        });
-        //    }
-        //}
-
-        //[TestMethod]
-        //public void IsSenderInternalGroupTest()
-        //{
-        //    using (var ctx = new SystemContext())
-        //    {
-        //        ctx.TransactionSync(tc =>
-        //        {
-        //            tc.Rollback = true;
-
-        //            groupsService.Rollback = false;
-
-        //            var g = CreateShift();
-        //            var x = groupsService.AddNew(new Request<ServicesInterface.DTOs.GroupDto>(new GroupAssembler().ToDto(g))).Data;
-
-        //            var w = groupsService.IsSenderInternal(new Request<ServicesInterface.DTOs.GroupDto>(x));
-
-        //            Assert.IsTrue(w.Data);
-
-        //            groupsService.Rollback = true;
-        //        });
-        //    }
-        //}
     }
 }

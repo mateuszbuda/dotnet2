@@ -13,6 +13,9 @@ using WMS.ServicesInterface.DataContracts;
 
 namespace WMS.Services.Authentication
 {
+    /// <summary>
+    /// Klasa odpowiadająca za walidację użytkownika.
+    /// </summary>
     public class UserValidator : UserNamePasswordValidator
     {
         public override void Validate(string userName, string password)
