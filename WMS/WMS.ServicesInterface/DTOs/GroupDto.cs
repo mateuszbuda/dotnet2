@@ -16,6 +16,10 @@ namespace WMS.ServicesInterface.DTOs
         /// </summary>
         public int Id { get; set; }
         /// <summary>
+        /// Id orzesuwanej partii
+        /// </summary>
+        public int GroupId { get; set; }
+        /// <summary>
         /// Id magazynu nadawcy
         /// </summary>
         public int SenderId { get; set; }
@@ -35,6 +39,10 @@ namespace WMS.ServicesInterface.DTOs
         /// Nazwa magazynu odbiorcy
         /// </summary>
         public string WarehouseName { get; set; }
+        /// <summary>
+        /// Id docelowego sektora
+        /// </summary>
+        public int RecipientSectorId { get; set; }
         /// <summary>
         /// Czy docelowy magazyn jest magazynem wewnętrznym czy partnera
         /// </summary>

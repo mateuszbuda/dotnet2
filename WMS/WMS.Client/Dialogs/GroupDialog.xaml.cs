@@ -25,8 +25,8 @@ namespace WMS.Client.Dialogs
     {
         private MainWindow mainWindow;
         private List<ProductDto> products;
-        private List<WarehouseDetailsDto> internalOnes;
-        private List<WarehouseDetailsDto> externalOnes;
+        private List<WarehouseDetailsDto> internalOnes = new List<WarehouseDetailsDto>();
+        private List<WarehouseDetailsDto> externalOnes = new List<WarehouseDetailsDto>();
         private List<SectorDto> secotrs;
         private bool isLoaded;
 
@@ -136,109 +136,39 @@ namespace WMS.Client.Dialogs
         {
             (sender as Button).IsEnabled = false;
 
-            if (PartnersComboBox.SelectedIndex < 0 || WarehousesComboBox.SelectedIndex < 0)
+            if (PartnersComboBox.SelectedIndex < 0 || WarehousesComboBox.SelectedIndex < 0 || SectorsComboBox.SelectedIndex < 0)
             {
                 MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
                 (sender as Button).IsEnabled = true;
                 return;
             }
-            //DatabaseAccess.Warehouse senderW =
-            //    (DatabaseAccess.Warehouse)PartnersComboBox.Items[PartnersComboBox.SelectedIndex];
 
-            //DatabaseAccess.Warehouse recipientW =
-            //    ((DatabaseAccess.Sector)WarehousesComboBox.Items[WarehousesComboBox.SelectedIndex]).Warehouse;
+            GroupDetailsDto group = new GroupDetailsDto()
+            {
+                Internal = true,
+                SectorId = ((SectorDto)SectorsComboBox.SelectedItem).Id,
+                SectorNumber = ((SectorDto)SectorsComboBox.SelectedItem).Number,
+                WarehouseName = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Name,
+            };
+            group.Products = new List<ProductDetailsDto>(Products.Items.Count);
+            foreach (ProductGroupRow productRow in Products.Items)
+            {
+                if (productRow.ProductsComboBox.SelectedIndex < 0)
+                {
+                    MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
+                    return;
+                }
+                ProductDetailsDto p = (ProductDetailsDto)productRow.ProductsComboBox.SelectedItem;
+                group.Products.Add(new ProductDetailsDto()
+                {
+                    Count = int.Parse(productRow.Quantity.Text),
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ProductionDate = p.ProductionDate,
+                });
+            }
 
-            //DatabaseAccess.Sector sector = (DatabaseAccess.Sector)WarehousesComboBox.SelectedItem;
-
-            //int productsCount = Products.Items.Count;
-            //List<Tuple<string, int>> productsInfo = new List<Tuple<string, int>>();
-            //// productsInfo[0,*] - name
-            //// productsInfo[1,*] - quantity
-            //foreach (ProductGroupRow p in Products.Items)
-            //{
-            //    if (p.ProductsComboBox.SelectedIndex < 0)
-            //    {
-            //        MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
-            //        (sender as Button).IsEnabled = true;
-            //        return;
-            //    }
-            //    var pp = productsInfo.Find(q => q.Item1 == (string)p.ProductsComboBox.Text);
-            //    try
-            //    {
-            //        int count = 0;
-            //        if (pp == null)
-            //            productsInfo.Add(new Tuple<string, int>((string)p.ProductsComboBox.Text, count = int.Parse(p.Quantity.Text)));
-            //        else
-            //        {
-            //            productsInfo.Remove(pp);
-            //            productsInfo.Add(new Tuple<string, int>((string)p.ProductsComboBox.Text, count = pp.Item2 + int.Parse(p.Quantity.Text)));
-            //        }
-            //        if (count < 0)
-            //            throw new InvalidOperationException();
-            //    }
-            //    catch
-            //    {
-            //        MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
-            //        (sender as Button).IsEnabled = true;
-            //        return;
-            //    }
-            //}
-
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    DatabaseAccess.Shift s = new DatabaseAccess.Shift();
-
-            //    s.Sender = senderW;
-            //    s.Recipient = recipientW;
-            //    context.Warehouses.Attach(s.Recipient);
-            //    context.Warehouses.Attach(s.Sender);
-            //    s.Date = new DateTime(DateTime.Now.Ticks);
-            //    s.Latest = true;
-
-            //    s.Group = new DatabaseAccess.Group()
-            //    {
-            //        Sector = sector,
-            //        GroupDetails = new List<DatabaseAccess.GroupDetails>()
-            //    };
-
-            //    for (int k = 0; k < productsInfo.Count; k++)
-            //    {
-            //        DatabaseAccess.GroupDetails gd = null;
-            //        try
-            //        {
-            //            gd = new DatabaseAccess.GroupDetails()
-            //            {
-            //                Product = products.Find(delegate(DatabaseAccess.Product prod)
-            //                {
-            //                    return prod.Name == productsInfo[k].Item1;
-            //                }),
-            //                Count = productsInfo[k].Item2,
-            //            };
-            //        }
-            //        catch
-            //        {
-            //            MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
-            //            return false;
-            //        }
-            //        //List<DatabaseAccess.Product> sameProducts = products.FindAll(delegate(DatabaseAccess.Product prod)
-            //        //        {
-            //        //            return prod.Name == productsInfo[0, k];
-            //        //        });
-            //        context.Products.Attach(gd.Product);
-
-            //        s.Group.GroupDetails.Add(gd);
-            //    }
-
-            //    context.Shifts.Add(s);
-
-            //    context.SaveChanges();
-
-            //    return true;
-            //}, t => Dispatcher.BeginInvoke(new Action(() =>
-            //{
-            //    mainWindow.ReloadWindow();
-            //    this.Close();
-            //})), tokenSource);
         }
 
         /// <summary>

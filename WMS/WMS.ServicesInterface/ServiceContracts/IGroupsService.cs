@@ -70,7 +70,7 @@ namespace WMS.ServicesInterface.ServiceContracts
         /// <returns>Odpowiedź z wykonanym przesunięciem</returns>
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<ShiftDto> AddNew(Request<ShiftDto> group);
+        Response<ShiftDto> AddNewShift(Request<ShiftDto> group);
 
         /// <summary>
         /// Dodaje nową grupę wraz z pierwszym przesunięciem. Ilości produktów w tworzonej partii muszą być nieujemne,
@@ -80,7 +80,7 @@ namespace WMS.ServicesInterface.ServiceContracts
         /// <returns>Odpowiedź z dodaną grupą</returns>
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
-        Response<GroupDto> AddNew(Request<GroupDto> group);
+        Response<Tuple<GroupDetailsDto, ShiftDto>> AddNewGroup(Request<Tuple<GroupDetailsDto, ShiftDto>> group);
 
         /// <summary>
         /// Sprawdzenie, czy nadawca przesunięcia jest magazynem wewnętrznym.

@@ -61,6 +61,15 @@ namespace WMS.ServicesInterface.ServiceContracts
         Response<WarehouseInfoDto> GetWarehouse(Request<int> warehouseId);
 
         /// <summary>
+        /// Pobiera informacjie o magazynie w którym znajduje się grupa o zadanym id
+        /// </summary>
+        /// <param name="groupId">Zapytanie z id grupy</param>
+        /// <returns>Odpowiedź z żądanym magazynem</returns>
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<WarehouseInfoDto> GetWarehouseByGroup(Request<int> groupId);
+
+        /// <summary>
         /// Pobiera sektory dla zadanego magazynu
         /// </summary>
         /// <param name="warehouseId">Zapytanie z id magazynu</param>

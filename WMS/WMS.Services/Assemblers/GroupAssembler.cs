@@ -104,7 +104,7 @@ namespace WMS.Services.Assemblers
         }
 
         /// <summary>
-        /// Konwersja z partii bazodanowej na partii-paczki do komunikacji z serwerem
+        /// Konwersja z partii bazodanowej do partii-paczki do komunikacji z serwerem
         /// z informacją o produktach w przesunięciu i ich ilościami.
         /// </summary>
         /// <param name="group">Konwertowana partia</param>
@@ -137,36 +137,58 @@ namespace WMS.Services.Assemblers
         /// </summary>
         /// <param name="group">Konwertowana partia</param>
         /// <returns>Przekonwertowana partia</returns>
-        public Group ToEntity(GroupDetailsDto g, Group ent = null)
+        public List<GroupDetails> ToGroupDetailsEntity(GroupDetailsDto groupDetails, List<GroupDetails> ents = null)
         {
-            if (ent != null && !g.Version.SequenceEqual(ent.Version))
-                throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
+            foreach (GroupDetails ent in ents)
+                if (ent != null && !groupDetails.Version.SequenceEqual(ent.Version))
+                    throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 
-            ent = ent ?? new Group();
+            ents = ents ?? new List<GroupDetails>(groupDetails.Products.Count);
 
-            //TODO - dopisać produkty
+            foreach (ProductDetailsDto p in groupDetails.Products)
+            {
+                if (p.Count < 0)
+                    throw new FaultException<ServiceException>(new ServiceException("Ilość produktów w przesunięciu musi być nieujemna."));
 
-            ent.SectorId = g.SectorId;
+                ents.Add(new GroupDetails()
+                {
+                    Count = p.Count,
+                    GroupId = groupDetails.Id,
+                    ProductId = p.Id,
+                });
+            }
 
-            return ent;
+            return ents;
         }
 
         /// <summary>
         /// Konwersja z przesunięcia-paczki do komunikacji z serwerem na przesunięcie bazodanowe.
         /// </summary>
-        /// <param name="group">Konwertowane przesunięcie</param>
+        /// <param name="shift">Konwertowane przesunięcie</param>
         /// <returns>Przekonwertowane przesunięcie</returns>
-        public Shift ToEntity(ShiftDto group, Shift ent = null)
+        public Shift ToShiftEntity(ShiftDto shift, Shift ent = null)
         {
-            if (ent != null && !group.Version.SequenceEqual(ent.Version))
+            if (ent != null && !shift.Version.SequenceEqual(ent.Version))
                 throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 
             ent = ent ?? new Shift();
 
-            ent.Date = group.Date;
-            ent.GroupId = group.Id;
-            ent.Latest = true;
-            ent.SenderId = group.SenderId;
+            ent.Date = shift.Date;
+            ent.GroupId = shift.GroupId;
+            ent.SenderId = shift.SenderId;
+
+            int shiftsAfterCount = 0;
+            using (var context = new SystemContext())
+            {
+                context.TransactionSync(tc =>
+                    {
+                        shiftsAfterCount = tc.Entities.Shifts.
+                            Where(x => x.GroupId == shift.GroupId && x.Date > shift.Date).
+                            ToList().Count;
+                    });
+            }
+
+            ent.Latest = shiftsAfterCount <= 0;
 
             return ent;
         }
@@ -178,7 +200,7 @@ namespace WMS.Services.Assemblers
         /// <param name="group">Konwertowane przesunięcie</param>
         /// <param name="ent">Edytowane bazodanowe przesunięcie</param>
         /// <returns>Przekonwertowane przesunięcie</returns>
-        public Group ToEntity(GroupDto group, Group ent = null)
+        public Group ToGroupEntity(GroupDto group, Group ent = null)
         {
             if (ent != null && !group.Version.SequenceEqual(ent.Version))
                 throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));

@@ -147,6 +147,28 @@ namespace WMS.Services
         }
 
         /// <summary>
+        /// Pobiera informacjie o magazynie w którym znajduje się grupa o zadanym id
+        /// </summary>
+        /// <param name="groupId">Zapytanie z id grupy</param>
+        /// <returns>Odpowiedź z żądanym magazynem</returns>
+        public Response<WarehouseInfoDto> GetWarehouseByGroup(Request<int> groupId)
+        {
+            CheckPermissions(PermissionLevel.User);
+            int warehouseId = 0;
+            Transaction(tc =>
+                {
+                    Group g = tc.Entities.Groups.Where(x => x.Id == groupId.Content).
+                        Include(x => x.Sector).FirstOrDefault();
+                    if (g == null)
+                        throw new FaultException<ServiceException>(new ServiceException("Partia nie istnieje"));
+                    warehouseId = g.Sector.WarehouseId;
+                });
+            return new Response<WarehouseInfoDto>(groupId.Id, Transaction(tc =>
+                tc.Entities.Warehouses.Where(x => x.Id == warehouseId).Include(x => x.Sectors).
+                Select(warehouseAssembler.ToDto).FirstOrDefault()));
+        }
+
+        /// <summary>
         /// Pobiera sektory dla zadanego magazynu
         /// </summary>
         /// <param name="warehouseId">Zapytanie z id magazynu</param>

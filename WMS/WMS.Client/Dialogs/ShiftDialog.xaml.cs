@@ -111,46 +111,26 @@ namespace WMS.Client.Dialogs
                 return;
             }
 
-            
-            //DatabaseAccess.Warehouse recipient =
-            //    ((DatabaseAccess.Sector)WarehousesComboBox.Items[WarehousesComboBox.SelectedIndex]).Warehouse;
+            ShiftDto shift = new ShiftDto()
+            {
+                Date = DateTime.Now,
+                GroupId = groupId,
+                Internal = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Internal,
+                RecipientSectorId = ((SectorDto)SectorsComboBox.SelectedItem).Id,
+                SenderName = group.WarehouseName,
+                WarehouseId = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Id,
+                WarehouseName = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Name,
+            };
+            Execute(() => WarehousesService.GetWarehouseByGroup(new Request<int>(groupId)), t =>
+                {
+                    shift.SenderId = t.Data.Id;
+                });
 
-            //DatabaseAccess.Sector sector = (DatabaseAccess.Sector)WarehousesComboBox.SelectedValue;
-
-            //DatabaseAccess.SystemContext.Transaction(context =>
-            //{
-            //    List<DatabaseAccess.Shift> shifts = (from sh in context.Shifts
-            //                                         where sh.GroupId == groupId
-            //                                         select sh).ToList();
-
-            //    foreach (DatabaseAccess.Shift shift in shifts)
-            //        shift.Latest = false;
-
-            //    context.SaveChanges();
-
-
-            //    context.Groups.Attach(group);
-
-            //    DatabaseAccess.Shift s = new DatabaseAccess.Shift();
-
-            //    s.Sender = group.Sector.Warehouse;
-            //    s.Recipient = recipient;
-            //    context.Warehouses.Attach(s.Recipient);
-            //    s.Date = new DateTime(DateTime.Now.Ticks);
-            //    s.Latest = true;
-            //    s.Group = group;
-
-            //    group.Sector = sector;
-
-            //    context.Shifts.Add(s);
-
-            //    context.SaveChanges();
-
-            //    return true;
-            //}
-
-            mainWindow.ReloadWindow();
-            this.Close();
+            Execute(() => GroupsService.AddNewShift(new Request<ShiftDto>(shift)), t =>
+                {
+                    mainWindow.ReloadWindow();
+                    this.Close();
+                });
         }
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)

@@ -95,17 +95,49 @@ namespace WMS.Services
         /// Dodaje nowe przesunięcie i przesuwa partię aktualizując jej położenie
         /// i ustawiając ostatnie przesunięcie danej partii na bierzące.
         /// Jeśli jest to próba przesunięcia partii, która już została wydana
-        /// do magazynu zewnętrznego (partnera), to rzucany jest wyjątek.
+        /// do magazynu zewnętrznego (partnera) to rzucany jest wyjątek.
         /// </summary>
         /// <param name="shift">Zapytanie z przesunięciem, które ma być dodane</param>
         /// <returns>Odpowiedź z wykonanym przesunięciem</returns>
-        public Response<ShiftDto> AddNew(Request<ShiftDto> shift)
+        public Response<ShiftDto> AddNewShift(Request<ShiftDto> shift)
         {
-            // TODO - uaktualnić położenie partii i ustawić poprawnie latest na przesunięciach
-            // no i ewentualnie psrawdzać czy nie wykonuje się złe przesunięcie
             CheckPermissions(PermissionLevel.User);
+            // Sprawdzenie czy przesunięcie jest z magazynu wewnętrznego:
+            Group g = null;
+            Transaction(tc => g = tc.Entities.Shifts.
+                Where(x => x.GroupId == shift.Content.GroupId && x.Latest).
+                FirstOrDefault().Group);
+            if (g != null && !g.Sector.Warehouse.Internal)
+                throw new FaultException<ServiceException>(new ServiceException("Nie można przesunąć już wydanej grupy"));
+
+            // Dodawanie przesunięcia:
             Shift s = null;
-            Transaction(tc => s = tc.Entities.Shifts.Add(groupAssembler.ToEntity(shift.Content)));
+            Transaction(tc =>
+                {
+                    // Sprawdzenie czy przesuwana grupa istnieje:
+                    Group group = tc.Entities.Groups.Where(x => x.Id == shift.Content.GroupId).FirstOrDefault();
+                    if (group == null)
+                        throw new FaultException<ServiceException>(new ServiceException("Nie ma takiej grupy :("));
+                    //Sprawdzanie poprawności daty:
+                    if (tc.Entities.Shifts.
+                            Where(x => x.GroupId == shift.Content.GroupId && x.Date > shift.Content.Date).
+                            ToList().Count > 0)
+                        throw new FaultException<ServiceException>(new ServiceException("Data aktualnego przesunięcia jest wcześniejsza niż poprzedniego."));
+                    // Sprawdzanie czy przesunięcie jest z magazynu wewnętrznego:
+                    Shift shiftBefore = tc.Entities.Shifts.Where(x => x.GroupId == shift.Content.GroupId && x.Latest).
+                        Include(x => x.Group.Sector.Warehouse).FirstOrDefault();
+                    if (shiftBefore == null)
+                        throw new FaultException<ServiceException>(new ServiceException("Wystąpił błąd podczas wykonywania przesunięcia :("));
+                    if (!shiftBefore.Group.Sector.Warehouse.Internal)
+                        throw new FaultException<ServiceException>(new ServiceException("Nie można wykonać przesunięcia parti z magazynu zewnętrznego (partnera)."));
+                    // Aktualizacja ostatniego przesunięcia:
+                    shiftBefore.Latest = false;
+                    // Dodawanie przesunięcia, które zawsze musi być ostatnie:
+                    s.Latest = true;
+                    s = tc.Entities.Shifts.Add(groupAssembler.ToShiftEntity(shift.Content));
+                    // Aktualizacja lokalizacji grupy:
+                    group.SectorId = shift.Content.RecipientSectorId;
+                });
             return new Response<ShiftDto>(shift.Id, groupAssembler.ToShiftDto(s));
         }
 
@@ -113,15 +145,38 @@ namespace WMS.Services
         /// Dodaje nową grupę wraz z pierwszym przesunięciem. Ilości produktów w tworzonej partii muszą być nieujemne,
         /// w przeciwnym przypadku rzucany jest wyjątek.
         /// </summary>
-        /// <param name="group">Zapytanie z dodawaną grupą</param>
-        /// <returns>Odpowiedź z dodaną grupą</returns>
-        public Response<GroupDto> AddNew(Request<GroupDto> group)
+        /// <param name="group">Dodawana grupa</param>
+        /// <returns>Dodaną grupa</returns>
+        public Response<Tuple<GroupDetailsDto, ShiftDto>> AddNewGroup(Request<Tuple<GroupDetailsDto, ShiftDto>> newGroup)
         {
-            // TODO - sprawdzać ilości produktów i je w ogłe dodawać (w groupAssembler)
             CheckPermissions(PermissionLevel.User);
+
+            GroupDetailsDto group = newGroup.Content.Item1;
+            ShiftDto shift = newGroup.Content.Item2;
+
             Group g = null;
-            Transaction(tc => g = tc.Entities.Groups.Add(groupAssembler.ToEntity(group.Content)));
-            return new Response<GroupDto>(group.Id, groupAssembler.ToGroupDto(g));
+            Shift s = null;
+            List<GroupDetails> gd = null;
+
+            Transaction(tc =>
+                {
+                    // Pierwsze przesunięcie musi być od magazynu zewnętrznego (partnera)
+                    // i i zarówno magazyn dostawcy jak i odbiorcy muszą być nieusunięte.
+                    Warehouse sender = tc.Entities.Warehouses.Where(x => x.Id == shift.SenderId && !x.Deleted).FirstOrDefault();
+                    Warehouse recipient = tc.Entities.Warehouses.Where(x => x.Id == shift.WarehouseId && !x.Deleted).FirstOrDefault();
+                    if (sender == null || recipient == null)
+                        throw new FaultException<ServiceException>(new ServiceException("Magazyn dostawcy lub odbiorcy nie istnieje lub został usunięty"));
+
+                    if (sender.Internal)
+                        throw new FaultException<ServiceException>(new ServiceException("Grupa nie moża przyjść z magazynu wewnętrznego"));
+
+                    g = tc.Entities.Groups.Add(groupAssembler.ToGroupEntity(group));
+                    gd = tc.Entities.GroupsDetails.AddRange(groupAssembler.ToGroupDetailsEntity(group)).ToList();
+                    s = tc.Entities.Shifts.Add(groupAssembler.ToShiftEntity(shift));
+                });
+
+            return new Response<Tuple<GroupDetailsDto, ShiftDto>>(newGroup.Id,
+                new Tuple<GroupDetailsDto, ShiftDto>(groupAssembler.ToGroupDetailsDto(g), groupAssembler.ToShiftDto(s)));
         }
 
         /// <summary>
@@ -135,7 +190,8 @@ namespace WMS.Services
             bool ret = false;
             Transaction(tc =>
                 {
-                    var s = tc.Entities.Groups.Include(x => x.Shifts).Where(x => x.Id == shift.Content.Id).FirstOrDefault().Shifts.Where(x => x.Latest == true).FirstOrDefault();
+                    var s = tc.Entities.Groups.Include(x => x.Shifts).Where(x => x.Id == shift.Content.Id).
+                        FirstOrDefault().Shifts.Where(x => x.Latest == true).FirstOrDefault();
                     ret = tc.Entities.Warehouses.Find(s.SenderId).Internal;
                 });
             return new Response<bool>(shift.Id, ret);
