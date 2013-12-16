@@ -34,6 +34,7 @@ namespace WMS.Client.Menus
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Przetwarzane Partie";
+            mainWindow.ReloadWindow = LoadData;
 
             isLoaded = false;
             InitializeComponent();
@@ -84,8 +85,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void AddNewButton_Click(object sender, RoutedEventArgs e)
         {
-            //GroupDialog dlg = new GroupDialog(mainWindow, 0);
-            //dlg.Show();
+            GroupDialog dlg = new GroupDialog(mainWindow, 0);
+            dlg.Show();
         }
 
         /// <summary>
@@ -194,8 +195,8 @@ namespace WMS.Client.Menus
 
             //if (toMove.InInternal())
             //{
-            //    ShiftDialog dlg = new ShiftDialog(mainWindow, (int)((sender as Button).Tag));
-            //    dlg.Show();
+            ShiftDialog dlg = new ShiftDialog(mainWindow, (int)((sender as Button).Tag));
+            dlg.Show();
             //}
             //else
             //    MessageBox.Show("Partia znajduje się u partnera. Nie mozna przesunąć", "Uwaga");

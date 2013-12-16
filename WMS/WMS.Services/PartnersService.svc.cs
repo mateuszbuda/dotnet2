@@ -28,7 +28,6 @@ namespace WMS.Services
         public Response<List<PartnerSimpleDto>> GetPartners(Request request)
         {
             CheckPermissions(PermissionLevel.User);
-            // TODO - sprawdzić czy nie pobierać tylko tych nieusuniętych
             return new Response<List<PartnerSimpleDto>>(request.Id, Transaction(tc =>
                 tc.Entities.Partners.Include(x => x.Warehouse).
                 Select(partnerAssembler.ToSimpleDto).ToList()));

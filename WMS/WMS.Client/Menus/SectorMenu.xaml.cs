@@ -107,8 +107,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void SendButtonClick(object sender, RoutedEventArgs e)
         {
-            //ShiftDialog dlg = new ShiftDialog(mainWindow, int.Parse((sender as Button).Tag as string));
-            //dlg.Show();
+            ShiftDialog dlg = new ShiftDialog(mainWindow, int.Parse((sender as Button).Tag as string));
+            dlg.Show();
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace WMS.Client.Menus
         /// <param name="e"></param>
         private void NewGroupButton_Click(object sender, RoutedEventArgs e)
         {
-            //GroupDialog dlg = new GroupDialog(mainWindow, sectorId);
-            //dlg.Show();
+            GroupDialog dlg = new GroupDialog(mainWindow, sectorId);
+            dlg.Show();
         }
 
         /// <summary>

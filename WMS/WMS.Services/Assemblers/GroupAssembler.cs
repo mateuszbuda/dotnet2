@@ -109,27 +109,27 @@ namespace WMS.Services.Assemblers
         /// </summary>
         /// <param name="group">Konwertowana partia</param>
         /// <returns>Przekonwertowana partia</returns>
-        public GroupDetailsDto ToGroupDetailsDto(Group g)
-        {
-            GroupDetailsDto newGroup = new GroupDetailsDto()
-            {
-                Id = g.Id,
-                Internal = g.Sector.Warehouse.Internal,
-                SectorId = g.SectorId,
-                SectorNumber = g.Sector.Number,
-                WarehouseName = g.Sector.Warehouse.Name,
-            };
-            newGroup.Products = new List<ProductDetailsDto>(g.GroupDetails.Count);
-            foreach (GroupDetails gd in g.GroupDetails)
-                newGroup.Products.Add(new ProductDetailsDto()
-                {
-                    Count = gd.Count,
-                    Name = gd.Product.Name,
-                    Price = gd.Product.Price,
-                    ProductionDate = gd.Product.Date,
-                });
-            return newGroup;
-        }
+        //public GroupDetailsDto ToGroupDetailsDto(Group g)
+        //{
+        //    GroupDetailsDto newGroup = new GroupDetailsDto()
+        //    {
+        //        Id = g.Id,
+        //        Internal = g.Sector.Warehouse.Internal,
+        //        SectorId = g.SectorId,
+        //        SectorNumber = g.Sector.Number,
+        //        WarehouseName = g.Sector.Warehouse.Name,
+        //    };
+        //    newGroup.Products = new List<ProductDetailsDto>(g.GroupDetails.Count);
+        //    foreach (GroupDetails gd in g.GroupDetails)
+        //        newGroup.Products.Add(new ProductDetailsDto()
+        //        {
+        //            Count = gd.Count,
+        //            Name = gd.Product.Name,
+        //            Price = gd.Product.Price,
+        //            ProductionDate = gd.Product.Date,
+        //        });
+        //    return newGroup;
+        //}
 
         /// <summary>
         /// Konwersja z partii-paczki do komunikacji z serwerem na partię bazodanową
@@ -139,9 +139,10 @@ namespace WMS.Services.Assemblers
         /// <returns>Przekonwertowana partia</returns>
         public List<GroupDetails> ToGroupDetailsEntity(GroupDetailsDto groupDetails, List<GroupDetails> ents = null)
         {
-            foreach (GroupDetails ent in ents)
-                if (ent != null && !groupDetails.Version.SequenceEqual(ent.Version))
-                    throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
+            if (ents != null)
+                foreach (GroupDetails ent in ents)
+                    if (ent != null && !groupDetails.Version.SequenceEqual(ent.Version))
+                        throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 
             ents = ents ?? new List<GroupDetails>(groupDetails.Products.Count);
 

@@ -99,7 +99,7 @@ namespace WMS.Services
         /// </summary>
         /// <param name="shift">Zapytanie z przesunięciem, które ma być dodane</param>
         /// <returns>Odpowiedź z wykonanym przesunięciem</returns>
-        public Response<ShiftDto> AddNewShift(Request<ShiftDto> shift)
+        public Response<bool> AddNewShift(Request<ShiftDto> shift)
         {
             CheckPermissions(PermissionLevel.User);
             // Sprawdzenie czy przesunięcie jest z magazynu wewnętrznego:
@@ -133,12 +133,12 @@ namespace WMS.Services
                     // Aktualizacja ostatniego przesunięcia:
                     shiftBefore.Latest = false;
                     // Dodawanie przesunięcia, które zawsze musi być ostatnie:
-                    s.Latest = true;
+                    //s.Latest = true;
                     s = tc.Entities.Shifts.Add(groupAssembler.ToShiftEntity(shift.Content));
                     // Aktualizacja lokalizacji grupy:
                     group.SectorId = shift.Content.RecipientSectorId;
                 });
-            return new Response<ShiftDto>(shift.Id, groupAssembler.ToShiftDto(s));
+            return new Response<bool>(shift.Id, true);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace WMS.Services
         /// </summary>
         /// <param name="group">Dodawana grupa</param>
         /// <returns>Dodaną grupa</returns>
-        public Response<Tuple<GroupDetailsDto, ShiftDto>> AddNewGroup(Request<Tuple<GroupDetailsDto, ShiftDto>> newGroup)
+        public Response<bool> AddNewGroup(Request<Tuple<GroupDetailsDto, ShiftDto>> newGroup)
         {
             CheckPermissions(PermissionLevel.User);
 
@@ -172,11 +172,17 @@ namespace WMS.Services
 
                     g = tc.Entities.Groups.Add(groupAssembler.ToGroupEntity(group));
                     gd = tc.Entities.GroupsDetails.AddRange(groupAssembler.ToGroupDetailsEntity(group)).ToList();
+                    shift.GroupId = g.Id;
+                    shift.Date = DateTime.Now;
                     s = tc.Entities.Shifts.Add(groupAssembler.ToShiftEntity(shift));
+
+                    tc.Entities.SaveChanges();
+                    g = tc.Entities.Groups.Where(x => x.Id == g.Id).Include(x => x.Sector.Warehouse).Include(x => x.GroupDetails).FirstOrDefault();
                 });
 
-            return new Response<Tuple<GroupDetailsDto, ShiftDto>>(newGroup.Id,
-                new Tuple<GroupDetailsDto, ShiftDto>(groupAssembler.ToGroupDetailsDto(g), groupAssembler.ToShiftDto(s)));
+            //return new Response<Tuple<GroupDetailsDto, ShiftDto>>(newGroup.Id,
+               // new Tuple<GroupDetailsDto, ShiftDto>(groupAssembler.ToGroupDetailsDto(g), groupAssembler.ToShiftDto(s)));
+            return new Response<bool>(newGroup.Id, true);
         }
 
         /// <summary>

@@ -35,6 +35,19 @@ namespace WMS.Services
         }
 
         /// <summary>
+        /// Zwraca listę magazynów partnerów.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Lista partnerów</returns>
+        public Response<List<WarehouseDetailsDto>> GetPartnersWarehouses(Request request)
+        {
+            CheckPermissions(PermissionLevel.User);
+            return new Response<List<WarehouseDetailsDto>>(request.Id,
+                Transaction(tc => tc.Entities.Warehouses.Where(x => !x.Internal && !x.Deleted).ToList().
+                    Select(warehouseAssembler.ToSimpleDto).ToList()));
+        }
+
+        /// <summary>
         /// Usuwa magazyn jeśli jest pusty
         /// </summary>
         /// <param name="warehouseId">Zapytanie z id magazynu do usunięcia</param>
