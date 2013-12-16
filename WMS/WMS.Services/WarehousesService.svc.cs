@@ -104,6 +104,8 @@ namespace WMS.Services
         {
             CheckPermissions(PermissionLevel.User);
             StatisticsDto stats = new StatisticsDto();
+            int all = 0;
+            int full = 0;
             Transaction(tc =>
                 {
                     stats.WarehousesCount = (from w in tc.Entities.Warehouses
@@ -116,9 +118,10 @@ namespace WMS.Services
                                          where g.Sector.Warehouse.Internal == true
                                          select g).Count();
                     stats.ShiftsCount = tc.Entities.Shifts.Count();
-                    int all = 0;
-                    int full = 0;
 
+                });
+            Transaction(tc =>
+                {
                     foreach (DatabaseAccess.Entities.Warehouse w in tc.Entities.Warehouses)
                         if (w.Internal == true && w.Deleted == false)
                             foreach (DatabaseAccess.Entities.Sector s in w.Sectors)
@@ -126,9 +129,9 @@ namespace WMS.Services
                                 all += s.Limit;
                                 full += s.Groups.Count;
                             }
-
-                    stats.FIllRate = all == 0 ? 0 : (full * 100) / all;
                 });
+
+            stats.FIllRate = all == 0 ? 0 : (full * 100) / all;
 
             return new Response<StatisticsDto>(request.Id, stats);
         }

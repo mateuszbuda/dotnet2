@@ -23,5 +23,25 @@ namespace WMS.ServicesInterface.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(ServiceException))]
         Response<UserDto> Authenticate(Request<UserDto> user);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<List<UserDto>> GetUsers(Request request);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<UserDto> GetUser(Request<int> userId);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<UserDto> AddNew(Request<UserDto> user);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<UserDto> Edit(Request<UserDto> user);
+
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<bool> Delete(Request<int> userId);
     }
 }

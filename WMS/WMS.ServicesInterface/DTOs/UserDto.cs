@@ -27,5 +27,19 @@ namespace WMS.ServicesInterface.DTOs
         /// Typ konta (okraśla prawa uzytkownika)
         /// </summary>
         public PermissionLevel Permissions { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is UserDto))
+                return false;
+
+            UserDto u = obj as UserDto;
+
+            if (u.Id == this.Id && u.Password == this.Password && u.Permissions == this.Permissions
+                && u.Username == this.Username)
+                return true;
+
+            return false;
+        }
     }
 }

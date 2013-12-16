@@ -60,7 +60,8 @@ namespace WMS.Client.Menus
         /// Inicjalizacja głównego menu
         /// </summary>
         /// <param name="mainWindow">Referencja do okna głównego</param>
-        public MainMenu(MainWindow mainWindow) : base(mainWindow)
+        public MainMenu(MainWindow mainWindow)
+            : base(mainWindow)
         {
             this.mainWindow = mainWindow;
             mainWindow.Title = "Menu Główne";
@@ -122,6 +123,16 @@ namespace WMS.Client.Menus
         private void ButtonProducts_Click(object sender, RoutedEventArgs e)
         {
             ChangeMenu(new ProductsMenu(mainWindow));
+        }
+
+        /// <summary>
+        /// Panel administratora
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeMenu(new AdminMenu(mainWindow));
         }
     }
 }

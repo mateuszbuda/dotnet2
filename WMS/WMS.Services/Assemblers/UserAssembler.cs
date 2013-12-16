@@ -37,9 +37,10 @@ namespace WMS.Services.Assemblers
         /// </summary>
         /// <param name="user">Konwertowany użytkownik</param>
         /// <returns>Przekonwertowany sektor użytkownik</returns>
-        public User ToEntity(UserDto user)
+        public User ToEntity(UserDto user, User ent = null)
         {
-            // TODO - dlaczego tutaj nie psrawdzamy entity
+            ent = ent ?? new User();
+
             byte[] value;
             byte[] input = Encoding.UTF8.GetBytes(user.Password);
             SHA256 hash = SHA256Managed.Create();
@@ -49,11 +50,10 @@ namespace WMS.Services.Assemblers
             foreach (byte x in value)
                 pwd.Append(x.ToString("x2"));
 
-            return new User()
-            {
-                Username = user.Username,
-                Password = pwd.ToString()
-            };
+            ent.Username = user.Username;
+            ent.Password = pwd.ToString();
+
+            return ent;
         }
     }
 }

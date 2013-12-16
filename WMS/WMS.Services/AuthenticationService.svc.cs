@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
-using WMS.DatabaseAccess.Entities;
+using WMS.ServicesInterface;
+using WMS.ServicesInterface.ServiceContracts;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
-using WMS.ServicesInterface.ServiceContracts;
+using WMS.Services.Assemblers;
+using WMS.DatabaseAccess.Entities;
 
 namespace WMS.Services
 {
@@ -32,6 +36,60 @@ namespace WMS.Services
                 throw new FaultException<ServiceException>(new ServiceException("Zły login lub hasło!"));
 
             return new Response<UserDto>(user.Id, userAssembler.ToDto(ret));
+        }
+
+        public Response<List<UserDto>> GetUsers(Request request)
+        {
+            CheckPermissions(PermissionLevel.Administrator);
+            return new Response<List<UserDto>>(request.Id, Transaction(tc =>
+                tc.Entities.Users.Select(userAssembler.ToDto).ToList()));
+        }
+
+        public Response<UserDto> GetUser(Request<int> userId)
+        {
+            CheckPermissions(PermissionLevel.Administrator);
+            return new Response<UserDto>(userId.Id, Transaction(tc =>
+                tc.Entities.Users.Where(x => x.Id == userId.Content).
+                Select(userAssembler.ToDto).FirstOrDefault()));
+        }
+
+        public Response<UserDto> AddNew(Request<UserDto> user)
+        {
+            CheckPermissions(PermissionLevel.Administrator);
+            User u = null;
+            Transaction(tc => u = tc.Entities.Users.Add(userAssembler.ToEntity(user.Content)));
+            return new Response<UserDto>(user.Id, userAssembler.ToDto(u));
+        }
+
+        public Response<UserDto> Edit(Request<UserDto> user)
+        {
+            CheckPermissions(PermissionLevel.Administrator);
+            User u = null;
+            Transaction(tc =>
+                {
+                    u = tc.Entities.Users.Find(user.Content.Id);
+                    if (u == null)
+                        throw new FaultException<ServiceException>(new ServiceException("Taki użytkownik nie istnieje!"));
+                    userAssembler.ToEntity(user.Content, u);
+                });
+            return new Response<UserDto>(user.Id, userAssembler.ToDto(u));
+        }
+
+
+        public Response<bool> Delete(Request<int> userId)
+        {
+            CheckPermissions(PermissionLevel.Administrator);
+            bool ret = false;
+
+            Transaction(tc =>
+            {
+                User user = tc.Entities.Users.Find(userId.Content);
+                if (user == null)
+                    throw new FaultException<ServiceException>(new ServiceException("Nie ma takiego użytkownika."));
+                tc.Entities.Users.Remove(user);
+            });
+
+            return new Response<bool>(userId.Id, ret);
         }
     }
 }
