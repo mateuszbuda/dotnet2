@@ -51,15 +51,13 @@ namespace WMS.Client.Dialogs
                     products = t.Data;
                     Execute(() => WarehousesService.GetWarehouses(new Request()), x =>
                         {
-                            foreach (WarehouseDetailsDto w in x.Data)
-                            {
-                                if (w.Internal)
-                                    this.internalOnes.Add(w);
-                                else
-                                    this.externalOnes.Add(w);
-                            }
-                            isLoaded = true;
-                            InitializeData();
+                            internalOnes = x.Data;
+                            Execute(() => WarehousesService.GetPartnersWarehouses(new Request()), y =>
+                                {
+                                    externalOnes = y.Data;
+                                    isLoaded = true;
+                                    InitializeData();
+                                });
                         });
                 });
         }
@@ -132,7 +130,7 @@ namespace WMS.Client.Dialogs
             Products.Items.Add(productRow);
 
             foreach (ProductDto p in products)
-                productRow.ProductsComboBox.Items.Add(p.Name);
+                productRow.ProductsComboBox.Items.Add(p);
         }
 
         /// <summary>
@@ -163,10 +161,20 @@ namespace WMS.Client.Dialogs
             {
                 if (productRow.ProductsComboBox.SelectedIndex < 0)
                 {
-                    MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga");
+                    MessageBox.Show("Wypełnij poprawnie wszystkie dane.", "Uwaga", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    (sender as Button).IsEnabled = true;
                     return;
                 }
-                ProductDetailsDto p = (ProductDetailsDto)productRow.ProductsComboBox.SelectedItem;
+
+                ProductDto p = (ProductDto)productRow.ProductsComboBox.SelectedItem;
+
+                if (group.Products.Find(x => x.Id == p.Id) != null)
+                {
+                    MessageBox.Show("Ten sam produkt został wybrany więcej niż 1 raz.", "Uwaga", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    (sender as Button).IsEnabled = true;
+                    return;
+                }
+
                 group.Products.Add(new ProductDetailsDto()
                 {
                     Count = int.Parse(productRow.Quantity.Text),
@@ -177,6 +185,22 @@ namespace WMS.Client.Dialogs
                 });
             }
 
+            ShiftDto shift = new ShiftDto()
+            {
+                Internal = true,
+                SenderId = ((WarehouseDetailsDto)PartnersComboBox.SelectedItem).Id,
+                SenderName = ((WarehouseDetailsDto)PartnersComboBox.SelectedItem).Name,
+                WarehouseId = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Id,
+                WarehouseName = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Name,
+                RecipientSectorId = ((SectorDto)SectorsComboBox.SelectedItem).Id
+            };
+
+            Execute(() => GroupsService.AddNewGroup(
+                new Request<Tuple<GroupDetailsDto, ShiftDto>>(new Tuple<GroupDetailsDto, ShiftDto>(group, shift))), t =>
+                {
+                    mainWindow.ReloadWindow();
+                    this.Close();
+                });
         }
 
         /// <summary>

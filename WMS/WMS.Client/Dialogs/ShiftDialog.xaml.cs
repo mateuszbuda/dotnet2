@@ -19,7 +19,7 @@ using WMS.ServicesInterface.DTOs;
 namespace WMS.Client.Dialogs
 {
     /// <summary>
-    /// Interaction logic for ShiftDialog.xaml
+    /// Przesuwanie partii
     /// </summary>
     public partial class ShiftDialog : BaseDialog
     {
@@ -53,8 +53,12 @@ namespace WMS.Client.Dialogs
                     Execute(() => WarehousesService.GetWarehouses(new Request()), x =>
                         {
                             warehouses = x.Data;
-                            isLoaded = true;
-                            InitializeData();
+                            Execute(() => WarehousesService.GetPartnersWarehouses(new Request()), y =>
+                                {
+                                    warehouses.AddRange(y.Data);
+                                    isLoaded = true;
+                                    InitializeData();
+                                });
                         });
                 });
         }
@@ -86,17 +90,32 @@ namespace WMS.Client.Dialogs
             if (wId == -1)
                 return;
 
-            Execute(() => WarehousesService.GetSectors(new Request<int>(wId)), t =>
+            if (!selectedW.Internal)
+            {
+                SectorsComboBox.IsEnabled = false;
+                Execute(() => WarehousesService.GetSectors(new Request<int>(wId)), t =>
                 {
                     secotrs = t.Data;
-                    LoadSectorsForChosenWarehouse();
+                    LoadSectorsForChosenWarehouse(true);
+                    SectorsComboBox.SelectedIndex = 0;
                 });
+            }
+            else
+            {
+                SectorsComboBox.IsEnabled = true;
+
+                Execute(() => WarehousesService.GetSectors(new Request<int>(wId)), t =>
+                    {
+                        secotrs = t.Data;
+                        LoadSectorsForChosenWarehouse(false);
+                    });
+            }
         }
 
         /// <summary>
         /// Ładowanie sektora
         /// </summary>
-        private void LoadSectorsForChosenWarehouse()
+        private void LoadSectorsForChosenWarehouse(bool inter)
         {
             if (secotrs == null)
                 return;
@@ -104,7 +123,7 @@ namespace WMS.Client.Dialogs
             SectorsComboBox.Items.Clear();
 
             foreach (SectorDto s in secotrs)
-                if (!s.Deleted && s.GroupsCount < s.Limit)
+                if (!s.Deleted && (s.GroupsCount < s.Limit || inter))
                     SectorsComboBox.Items.Add(s);
         }
 
@@ -134,16 +153,16 @@ namespace WMS.Client.Dialogs
                 WarehouseId = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Id,
                 WarehouseName = ((WarehouseDetailsDto)WarehousesComboBox.SelectedItem).Name,
             };
+
             Execute(() => WarehousesService.GetWarehouseByGroup(new Request<int>(groupId)), t =>
                 {
                     shift.SenderId = t.Data.Id;
-                });
-
-            Execute(() => GroupsService.AddNewShift(new Request<ShiftDto>(shift)), t =>
-                {
-                    mainWindow.ReloadWindow();
-                    this.Close();
-                });
+                    Execute(() => GroupsService.AddNewShift(new Request<ShiftDto>(shift)), x =>
+                    {
+                        mainWindow.ReloadWindow();
+                        this.Close();
+                    });
+                });            
         }
 
         /// <summary>

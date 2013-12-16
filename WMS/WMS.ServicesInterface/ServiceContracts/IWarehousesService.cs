@@ -25,6 +25,15 @@ namespace WMS.ServicesInterface.ServiceContracts
         Response<List<WarehouseDetailsDto>> GetWarehouses(Request request);
 
         /// <summary>
+        /// Zwraca listę magazynów partnerów.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Lista partnerów</returns>
+        [OperationContract]
+        [FaultContract(typeof(ServiceException))]
+        Response<List<WarehouseDetailsDto>> GetPartnersWarehouses(Request request);
+
+        /// <summary>
         /// Usuwa magazyn jeśli jest pusty
         /// </summary>
         /// <param name="warehouseId">Zapytanie z id magazynu do usunięcia</param>
