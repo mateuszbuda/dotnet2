@@ -42,16 +42,16 @@
                     <DataGridTemplateColumn Header="Użytkownik" Width="300">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Height="22" Text="{Binding Path=Username}" />
+                                <TextBox Height="22" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Typ Konta" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox Height="22"
+                                <ComboBox Name="userPermissions" Height="22"
                                           ItemsSource="{Binding Source={StaticResource permissions}}"
-                                          SelectedIndex="{Binding Path=PermissionsVal}" />
+                                          SelectedIndex="{Binding Path=PermissionsVal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

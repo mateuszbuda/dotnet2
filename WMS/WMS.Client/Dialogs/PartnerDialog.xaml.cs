@@ -162,8 +162,17 @@ namespace WMS.Client.Dialogs
 
                 Execute(() => PartnersService.Update(new Request<PartnerDto>(partner)), t =>
                     {
-                        mainWindow.ReloadWindow();
-                        this.Close();
+                        //Execute(() => WarehousesService.Edit(new Request<WarehouseInfoDto>(partner.Warehouse)), x =>
+                        //    {
+                                mainWindow.ReloadWindow();
+                                this.Close();
+                            //}, x =>
+                            //    {
+                            //        DefaultExceptionHandler(x);
+                            //        mainWindow.ReloadWindow();
+                            //        this.Close();
+                            //    });
+                        
                     }, t =>
                     {
                         DefaultExceptionHandler(t);

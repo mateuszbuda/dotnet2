@@ -100,11 +100,12 @@ namespace WMS.Services
 
             Transaction(tc =>
                 {
-                    var p = tc.Entities.Partners.Find(partner.Content.Id);
+                    var p = tc.Entities.Partners.Where(x => x.Id == partner.Content.Id).Include(x => x.Warehouse).FirstOrDefault();
                     if (p == null)
                         throw new FaultException<ServiceException>(new ServiceException("Ten partner nie istnieje!"));
 
                     partnerAssembler.ToEntity(partner.Content, p);
+                    tc.Entities.SaveChanges();
                     ret = partnerAssembler.ToDto(p);
                 });
 

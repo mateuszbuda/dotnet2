@@ -42,8 +42,8 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBox Name="username" Grid.Row="0" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Margin="1,19,0,19"/>
-            <PasswordBox Name="password" Grid.Row="1" HorizontalAlignment="Left" Height="22" VerticalAlignment="Center" Width="120" Margin="0,22,0,27"/>
+            <TextBox Name="username" Grid.Row="0" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"/>
+            <PasswordBox Name="password" Grid.Row="1" HorizontalAlignment="Left" Height="22" VerticalAlignment="Center" Width="120"/>
             <ComboBox Name="permissions" Grid.Row="2" HorizontalAlignment="Left" Height="22" VerticalAlignment="Center" Width="120"
                       ItemsSource="{Binding Source={StaticResource permissions}}"/>
             <Button Grid.Row="3" Content="OK" Click="OK_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"/>

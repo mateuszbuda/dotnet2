@@ -9,8 +9,8 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="admin" VerticalAlignment="Bottom" Width="200" Name="LoginTextBox" GotFocus="LoginTextBox_GotFocus"/>
-            <PasswordBox Grid.Row="1" HorizontalAlignment="Center" Height="23" Password="test" VerticalAlignment="Center" Width="200" Name="PasswordTextBox" GotFocus="PasswordTextBox_GotFocus"/>
+            <TextBox Grid.Row="0" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="Login..." VerticalAlignment="Bottom" Width="200" Name="LoginTextBox" GotFocus="LoginTextBox_GotFocus"/>
+            <PasswordBox Grid.Row="1" HorizontalAlignment="Center" Height="23" Password="123456" VerticalAlignment="Center" Width="200" Name="PasswordTextBox" GotFocus="PasswordTextBox_GotFocus"/>
             <Button Name="LoginButton" Grid.Row="2" Content="Zaloguj" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Click="Button_Click"/>
             
         </Grid>

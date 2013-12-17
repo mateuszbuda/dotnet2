@@ -67,6 +67,7 @@ namespace WMS.Services.Assemblers
         /// <returns>Przekonwertowany partner</returns>
         public Partner ToEntity(PartnerDto partner, Partner ent = null)
         {
+            
             if (ent != null && !partner.Version.SequenceEqual(ent.Version))
                 throw new FaultException<ServiceException>(new ServiceException("Ktoś przed chwilą zmodyfikował dane.\nSpróbuj jeszcze raz."));
 

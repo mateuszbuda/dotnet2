@@ -16,6 +16,7 @@ using System.ServiceModel;
 using WMS.ServicesInterface.DTOs;
 using WMS.ServicesInterface.DataContracts;
 using WMS.Client.Dialogs;
+using WMS.ServicesInterface;
 
 namespace WMS.Client.Menus
 {
@@ -61,7 +62,14 @@ namespace WMS.Client.Menus
                 users.Items.Add(u);
 
             foreach (UserDto u in usersList)
-                usersToCompare.Add(u);
+                usersToCompare.Add(new UserDto()
+                    {
+                        Id = u.Id,
+                        Password = u.Password,
+                        Permissions = u.Permissions,
+                        PermissionsVal = u.PermissionsVal,
+                        Username = u.Username,
+                    });
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
@@ -85,20 +93,46 @@ namespace WMS.Client.Menus
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.ReloadWindow();
+            LoadData();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            // Szukanie zmienionych userów
+            List<UserDto> editedUsers = new List<UserDto>();
             for (int i = 0; i < usersList.Count; i++)
             {
-                if (!usersList[i].Equals(usersToCompare[i]))
+                UserDto edited = ((UserDto)users.Items[i]);
+                if (!(edited.Equals(usersToCompare[i])))
+                    editedUsers.Add(new UserDto()
+                    {
+                        Id = ((UserDto)users.Items[i]).Id,
+                        Permissions = (PermissionLevel)((UserDto)users.Items[i]).PermissionsVal,
+                        Password = ((UserDto)users.Items[i]).Password,
+                        PermissionsVal = ((UserDto)users.Items[i]).PermissionsVal,
+                        Username = ((UserDto)users.Items[i]).Username,
+                    });
+            }
+
+            // Zapis zmienionych userów
+            int counter = editedUsers.Count;
+            foreach (UserDto u in editedUsers)
+            {
+                if (u.Username == null || u.Username.Length < 3 || u.Username.Length > 30)
                 {
-                    usersList[i].Permissions = (WMS.ServicesInterface.PermissionLevel)usersList[i].PermissionsVal;
-                    Execute(() => AuthenticationService.Edit(new Request<UserDto>(usersList[i])), t =>
-                        {
-                            mainWindow.ReloadWindow();
-                        },
+                    MessageBox.Show("Wprowadzono niepoprawne dane.", "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                Execute(() => AuthenticationService.Edit(new Request<UserDto>(u)), t =>
+                {
+                    counter--;
+                    if (counter == 0)
+                    {
+                        users.Items.Refresh();
+                        mainWindow.ReloadWindow();
+                        MessageBox.Show("Zmiany zostały pomyślanie zapisane");
+                    }
+                },
                         t =>
                         {
                             if (t.InnerException != null && t.InnerException.GetType() == typeof(FaultException<ServiceException>))
@@ -106,8 +140,8 @@ namespace WMS.Client.Menus
                             else
                                 MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                         });
-                }
             }
+
         }
 
         private void AddNewUser_Click(object sender, RoutedEventArgs e)
@@ -131,11 +165,6 @@ namespace WMS.Client.Menus
 
             content.Children.Remove(this);
             content.Children.Add(menu);
-        }
-
-        private void EditPassword_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
