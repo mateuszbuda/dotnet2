@@ -32,6 +32,7 @@ namespace WMS.Client.Menus
         public AdminMenu(MainWindow mainWindow)
             : base(mainWindow)
         {
+            this.mainWindow = mainWindow;
             InitializeComponent();
 
             LoadData();
@@ -89,6 +90,8 @@ namespace WMS.Client.Menus
             for (int i = 0; i < usersList.Count; i++)
             {
                 if (!usersList[i].Equals(usersToCompare[i]))
+                {
+                    usersList[i].Permissions = (WMS.ServicesInterface.PermissionLevel)usersList[i].PermissionsVal;
                     Execute(() => AuthenticationService.Edit(new Request<UserDto>(usersList[i])), t =>
                         {
                             mainWindow.ReloadWindow();
@@ -100,6 +103,7 @@ namespace WMS.Client.Menus
                             else
                                 MessageBox.Show("Nieznany błąd wewnętrzny serwera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                         });
+                }
             }
         }
 

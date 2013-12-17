@@ -28,6 +28,8 @@ namespace WMS.ServicesInterface.DTOs
         /// </summary>
         public PermissionLevel Permissions { get; set; }
 
+        public int PermissionsVal { get; set; }
+
         public override bool Equals(object obj)
         {
             if (!(obj is UserDto))
@@ -36,7 +38,7 @@ namespace WMS.ServicesInterface.DTOs
             UserDto u = obj as UserDto;
 
             if (u.Id == this.Id && u.Password == this.Password && u.Permissions == this.Permissions
-                && u.Username == this.Username)
+                && u.PermissionsVal == this.PermissionsVal && u.Username == this.Username)
                 return true;
 
             return false;

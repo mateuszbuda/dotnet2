@@ -28,7 +28,8 @@ namespace WMS.Services.Assemblers
                 Id = user.Id,
                 Username = user.Username,
                 Permissions = (PermissionLevel)user.Permissions,
-                Password = ""
+                PermissionsVal = user.Permissions,
+                Password = user.Password,
             };
         }
 
