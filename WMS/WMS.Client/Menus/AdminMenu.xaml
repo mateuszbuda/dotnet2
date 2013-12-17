@@ -55,7 +55,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="60">
+                    <DataGridTemplateColumn Header="Usuń" Width="60">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Height="30" Content="X" Click="Remove_Click" Tag="{Binding Path=Id}"/>
@@ -64,7 +64,14 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Dodaj nowego" Height="22" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 10, 10" Click="AddNewUser_Click" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="Dodaj nowego" Height="22" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 10, 10" Click="AddNewUser_Click" />
+                <Button Grid.Column="0" Content="Menu Główne" Height="22" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10, 0, 0, 10" Click="MainMenu_Click" />
+            </Grid>
         </Grid>
     </Grid>
 </Controls:BaseMenu>

@@ -102,6 +102,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\UserDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\WarehouseDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -132,6 +136,9 @@
     </Compile>
     <Compile Include="Dialogs\ShiftDialog.xaml.cs">
       <DependentUpon>ShiftDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\UserDialog.xaml.cs">
+      <DependentUpon>UserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\WarehouseDialog.xaml.cs">
       <DependentUpon>WarehouseDialog.xaml</DependentUpon>

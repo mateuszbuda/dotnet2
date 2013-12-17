@@ -33,6 +33,8 @@ namespace WMS.Client.Menus
             : base(mainWindow)
         {
             this.mainWindow = mainWindow;
+            mainWindow.ReloadWindow = LoadData;
+            mainWindow.Title = "Panel Administratora";
             InitializeComponent();
 
             LoadData();
@@ -66,7 +68,8 @@ namespace WMS.Client.Menus
         {
             if (MessageBox.Show("Na pewno chcesz usunąć tego użytkownika?", "Uwaga!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No, MessageBoxOptions.None) == MessageBoxResult.Yes)
             {
-                Execute(() => AuthenticationService.Delete(new Request<int>((int)((sender as Button).Tag))), t =>
+                int id = (int)((sender as Button).Tag);
+                Execute(() => AuthenticationService.Delete(new Request<int>(id)), t =>
                     {
                         mainWindow.ReloadWindow();
                     },
@@ -108,6 +111,29 @@ namespace WMS.Client.Menus
         }
 
         private void AddNewUser_Click(object sender, RoutedEventArgs e)
+        {
+            UserDialog userDialog = new UserDialog(mainWindow);
+            userDialog.Show();
+        }
+
+        private void MainMenu_Click(object sender, RoutedEventArgs e)
+        {
+            LoadNewMenu(new MainMenu(mainWindow));
+        }
+
+        /// <summary>
+        /// Ładowanie menu
+        /// </summary>
+        /// <param name="menu"></param>
+        private void LoadNewMenu(UserControl menu)
+        {
+            Grid content = Parent as Grid;
+
+            content.Children.Remove(this);
+            content.Children.Add(menu);
+        }
+
+        private void EditPassword_Click(object sender, RoutedEventArgs e)
         {
 
         }

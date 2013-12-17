@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WMS.ServicesInterface;
 using WMS.ServicesInterface.DataContracts;
 using WMS.ServicesInterface.DTOs;
 
@@ -133,6 +134,12 @@ namespace WMS.Client.Menus
         private void ButtonAdmin_Click(object sender, RoutedEventArgs e)
         {
             ChangeMenu(new AdminMenu(mainWindow));
+        }
+
+        private void BaseMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (mainWindow.Permissions > PermissionLevel.Administrator)
+                ButtonAdmin.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

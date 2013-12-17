@@ -53,6 +53,7 @@ namespace WMS.Services.Assemblers
 
             ent.Username = user.Username;
             ent.Password = pwd.ToString();
+            ent.Permissions = user.PermissionsVal;
 
             return ent;
         }
